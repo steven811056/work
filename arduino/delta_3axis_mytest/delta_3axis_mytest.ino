@@ -1,4 +1,5 @@
 #include "math.h"
+#include <Wire.h>
 
 #define first_arm 15
 #define second_arm 15
@@ -22,6 +23,7 @@ int16_t zero=10; //歸零用的感測器
 
 void setup()
 {
+  Wire.begin();
   Serial.begin(9600);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
