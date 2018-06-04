@@ -18,6 +18,7 @@ double thetal_B[2]={0,0}; //B的角度
 double turn[3]; //三軸所要運轉的角度
 char Hi;  //我所使用的歸零代號
 int16_t zero=10; //歸零用的感測器
+int adadad;
 
 void setup()
 {
