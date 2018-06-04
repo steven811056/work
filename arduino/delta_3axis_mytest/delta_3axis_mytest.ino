@@ -8,7 +8,7 @@ const int dirPin[3] = {3, 5, 7};
 
 int16_t Address[500][3];  //輸入位址的紀錄存放
 int16_t AddressGap[3];  //輸入與前一次所在的距離差
-int16_t Max=0;
+int16_t Max=0;  //運轉圈數
 int16_t P[3] = {0, 0, 0}; //本次輸入的存放位置
 uint16_t t; //運轉時間
 int16_t Test[3];
@@ -18,7 +18,7 @@ double thetal_B[2]={0,0}; //B的角度
 double turn[3]; //三軸所要運轉的角度
 char Hi;  //我所使用的歸零代號
 int16_t zero=10; //歸零用的感測器
-int adadad;
+
 
 void setup()
 {
@@ -38,7 +38,7 @@ void setup()
 }
 
 void loop()
-{
+{  
   ctrl_deg(Test[0], Test[1], Test[2], t);
   if(Serial.available())
   {
@@ -67,10 +67,11 @@ void ctrl_deg(int16_t T0, int16_t T1, int16_t T2, uint16_t Tt)
 
 void delta_3axis()
 {   
-  L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));
+  L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是
+                                        //弧度，需要*180/PI
   thetal[0] = acos((L_AC / (2 * first_arm))) * 180 / PI;
   thetal_B[0] = (180 - (2 * thetal[0]));
-  thetal[1] = atan(P[0]/P[1])*180/PI;
+  thetal[1] = atan(P[0]/P[1])*180/PI;   //A要轉thetal[1]的度數 需要為A來判斷C點的所在象限
   if(Max>0)
   {
     L_AC = sqrt(pow(Address[Max-1][0], 2) + pow(Address[Max-1][1], 2));
@@ -110,11 +111,11 @@ void scara_reset()
 
 void DegreeTurn()
 {
-  if(P[0]>0) 
+  if(P[0]>0) //向右轉
   {    
     digitalWrite(dirPin,LOW);
   }
-  if(P[0]<0)
+  if(P[0]<0) //向左轉
   {
     digitalWrite(dirPin,HIGH);
   }
