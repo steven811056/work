@@ -50,12 +50,11 @@ void loop()
       P[2] = Serial.parseInt();
       t = Serial.parseInt();   
       Hi=Serial.read();
-      L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是
-                                        //弧度，需要*180/PI
+      L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
       if(L_AC>30)
       {
         Serial.println("輸入錯誤");
-        break;                                    
+        break;                   
       }
       if(Hi=='1')
       {
