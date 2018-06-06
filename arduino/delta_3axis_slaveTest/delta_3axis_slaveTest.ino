@@ -2,8 +2,9 @@
 
 #define SlaveAddress 1
 
-const int stepPin[3] = {2, 4, 6};
-const int dirPin[3] = {3, 5, 7};
+const int stepPin=2;
+const int dirPin=3;
+
 boolean A_Direction;
 double turn[2];
 String slave;
@@ -23,7 +24,7 @@ void loop()
   
 }
 
-void DegreeTurn(int test)
+void DegreeTurn()
 {  
   while(Wire.available())
   {
@@ -36,9 +37,9 @@ void DegreeTurn(int test)
   
   for(int i=0;i<int(turn[1]);i++) //b點旋轉
   {
-    digitalWrite(stepPin[1], HIGH);
+    digitalWrite(stepPin, HIGH);
     delayMicroseconds(800);
-    digitalWrite(stepPin[1], LOW);
+    digitalWrite(stepPin, LOW);
     delayMicroseconds(800);
   }
 }

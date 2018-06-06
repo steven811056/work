@@ -54,7 +54,7 @@ void loop()
       if(L_AC>30)
       {
         Serial.println("輸入錯誤");
-        break;                   
+        break;
       }
       if(Hi=='1')
       {
