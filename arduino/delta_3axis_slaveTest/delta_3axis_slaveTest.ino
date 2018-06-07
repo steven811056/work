@@ -23,7 +23,7 @@ void setup()
   
 }
 
-void loop() 
+void loop()
 {
   
   
@@ -37,32 +37,51 @@ void DegreeTurn()
     slave=Wire.read();
     if(slave == 0)
     {
-      A_Direction=0;
+      turnRight();
+    }
+    if(slave == 1)
+    {
+      turnLeft();
     }
     if(slave == 3)
     {
-      digitalWrite(dirPin,HIGH);
-      delay(30);
-      while(reset1 == LOW) //  處碰到極限開關
-      {
-        digitalWrite(stepPin, HIGH);
-        delayMicroseconds(500);
-        digitalWrite(stepPin, LOW);
-        delayMicroseconds(500);
-      }
-      digitalWrite(dirPin,LOW);
-      delay(30);
-      for(int i=0;i<18;i++) 
-      { /*  往極限開關反方向轉18圈，大約2.025度，如果精度是1/16，
-        為了讓手臂放開極限開關  */
-        digitalWrite(stepPin, HIGH);
-        delayMicroseconds(500);
-        digitalWrite(stepPin, LOW);
-        delayMicroseconds(500);
-      }
-      returnStatus =1;
+      resetFunction();
     }
   }  
+  
+}
+
+void resetFunction()
+{
+  digitalWrite(dirPin,HIGH);
+  delay(30);
+  while(reset1 == LOW) //  處碰到極限開關
+  {
+    digitalWrite(stepPin, HIGH);
+    delayMicroseconds(500);
+    digitalWrite(stepPin, LOW);
+    delayMicroseconds(500);
+  }
+  digitalWrite(dirPin,LOW);
+  delay(30);
+  for(int i=0;i<18;i++) 
+  { /*  往極限開關反方向轉18圈，大約2.025度，如果精度是1/16，
+    為了讓手臂放開極限開關  */
+    digitalWrite(stepPin, HIGH);
+    delayMicroseconds(500);
+    digitalWrite(stepPin, LOW);
+    delayMicroseconds(500);
+  }
+  returnStatus =1;
+}
+
+void turnRight()
+{
+  
+}
+
+void turnLeft()
+{
   
 }
 
