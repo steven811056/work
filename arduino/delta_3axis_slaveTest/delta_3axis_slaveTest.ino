@@ -1,10 +1,13 @@
 #include <Wire.h>
 
+//  AB節臂
 #define SlaveAddress 1
 
 const int stepPin=2;
 const int dirPin=3;
 
+int returnStatus;
+boolean reset1;
 boolean A_Direction;
 double turn[2];
 String slave;
@@ -13,8 +16,10 @@ void setup()
 {
   Wire.begin(SlaveAddress);
   Wire.onReceive(DegreeTurn);
+  Wire.onRequest(requestEvent);
   Serial.begin(9600);
   Serial.println("I2C--Salve1---test");
+  pinMode(reset1,INPUT);
   
 }
 
@@ -29,18 +34,43 @@ void DegreeTurn()
   while(Wire.available())
   {
     Serial.println(slave);
-    if(slave=="A_Direction");
+    slave=Wire.read();
+    if(slave == 0)
     {
-      
+      A_Direction=0;
     }
-  }
+    if(slave == 3)
+    {
+      digitalWrite(dirPin,HIGH);
+      delay(30);
+      while(reset1 == LOW) //  處碰到極限開關
+      {
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(500);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(500);
+      }
+      digitalWrite(dirPin,LOW);
+      delay(30);
+      for(int i=0;i<18;i++) 
+      { /*  往極限開關反方向轉18圈，大約2.025度，如果精度是1/16，
+        為了讓手臂放開極限開關  */
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(500);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(500);
+      }
+      returnStatus =1;
+    }
+  }  
   
-  for(int i=0;i<int(turn[1]);i++) //b點旋轉
+}
+
+void requestEvent()
+{
+  if(returnStatus == 1)
   {
-    digitalWrite(stepPin, HIGH);
-    delayMicroseconds(800);
-    digitalWrite(stepPin, LOW);
-    delayMicroseconds(800);
+    Wire.write(1);
   }
 }
 

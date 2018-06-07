@@ -4,6 +4,9 @@
 #define first_arm 10
 #define second_arm 10
 
+//  slave 1 是控制AB節臂的馬達
+//  slave 2 是控制BC節臂的馬達
+//  slave 3 是控制Z軸的馬達
 const int stepPin[3] = {2, 4, 6};
 const int dirPin[3] = {3, 5, 7};
 
@@ -14,7 +17,7 @@ int16_t P[3] = {0, 0, 0}; //本次輸入的存放位置
 uint16_t t; //運轉時間
 int16_t Test1=0,Test2=0,Test3=0;
 double L_AC; //A到C點的距離
-double thetal[2]; //角BAC 與 直線AC與X的夾角
+double thetalOne,thrtalTwo; //角BAC 與 直線AC與X的夾角
 double thetal_B[2]={0,0}; //B的角度
 double turn[3]; //三軸所要運轉的角度
 char Hi;  //我所使用的歸零代號
@@ -48,46 +51,29 @@ void loop()
       P[0] = Serial.parseInt();
       P[1] = Serial.parseInt();
       P[2] = Serial.parseInt();
-      t = Serial.parseInt();   
-      Hi=Serial.read();
-      Quadrant_Judge();
+      t = Serial.parseInt();
       L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
-      if(L_AC>30)
+      if(L_AC>30 || L_AC<10 || P[0]<5)
       {
-        Serial.println("輸入錯誤");
+        Serial.println("輸入錯誤，重新輸入");
         break;
       }
-      if(Hi=='1')
-      {
-        
-      }
-      if(Hi=='0')
+      if(P[0]==0)
       {
         scara_reset();
       }
-      ctrl_deg(P[0],P[1],P[2],t);       
-      break;     
+      Quadrant_Judge();
+      ctrl_deg(P[0],P[1],P[2],t);
+      break;
+    }
+    if(Wire.requestFrom(1,4))
+    {
+      if(Wire.read()==1)
+      {
+        Serial.println("AB節臂歸零完成");
+      }
     }
   }
-  
-}
-
-void ctrl_deg(int16_t T0, int16_t T1, int16_t T2, uint16_t Tt)
-{         
-  t = Serial.parseInt();
-  Serial.print("輸入座標為-");
-  for(int i=0;i<3;i++)
-  {
-    Serial.print(P[i]);
-    Serial.print(" ");  
-  }
-  Serial.println();  
-  for(int i=0;i<3;i++)
-  {
-    Address[Max][i]=P[i];
-  }   
-  delta_3axis(); 
-  Max++;
       
 }
 
@@ -98,42 +84,39 @@ void Quadrant_Judge()
     if(P[1]>0)
     {
       Serial.println("第一象限");
+      Wire.beginTransmission(1);
+      Wire.write(0);
+      Wire.endTransmission();
     }
     if(P[1]<0)
     {
       Serial.println("第二象限");
-      thetal[0]=thetal[0]+90;
+      Wire.beginTransmission(1);
+      Wire.write(1);
+      Wire.endTransmission(); 
     }
   }
-//  if(P[0]<0)
-//  {
-//    if(P[1]>0)
-//    {
-//      Serial.println("第三象限");
-//      thetal[0]=thetal[0]+180;
-//    }
-//    if(P[1]<0)
-//    {
-//      Serial.println("第四象限");
-//      thetal[0]=thetal[0]+270;
-//    }
-//  }
+}
+
+void ctrl_deg(int16_t T0, int16_t T1, int16_t T2, uint16_t Tt)
+{         
+  
 }
 
 void delta_3axis()
 {   
 //  L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
-  thetal[0] = acos((L_AC / (2 * first_arm))) * 180 / PI;
-  thetal_B[0] = (180 - (2 * thetal[0]));
-  thetal[1] = atan(P[0]/P[1])*180/PI;   //A要轉thetal[1]的度數 需要為A來判斷C點的所在象限
+  thetalOne = acos((L_AC / (2 * first_arm))) * 180 / PI;
+  thetal_B[0] = (180 - (2 * thetalOne));
+  thetalTwo = atan(P[0]/P[1])*180/PI;   //A要轉thetal[1]的度數 需要為A來判斷C點的所在象限
   if(Max>0)
   {
     L_AC = sqrt(pow(Address[Max-1][0], 2) + pow(Address[Max-1][1], 2));
-    thetal[0] = acos((L_AC / (2 * first_arm))) * 180 / PI;
-    thetal_B[1] = (180 - (2 * thetal[0]));        
+    thetalOne = acos((L_AC / (2 * first_arm))) * 180 / PI;
+    thetal_B[1] = (180 - (2 * thetalOne));        
   }
   Serial.print("thetal_A轉動");
-  Serial.print(thetal[0]);
+  Serial.print(thetalOne);
   Serial.println("度");  
   Serial.print("thetal_B轉動");
   Serial.print(thetal_B[0]);
@@ -141,42 +124,20 @@ void delta_3axis()
 }
 
 void scara_reset()
-{
-  int reset1=0;
-  if(reset1==0) //旋轉到碰到極限開關為止
-  {
-    digitalWrite(dirPin,LOW);
-    while(zero==HIGH)
-    {
-      digitalWrite(stepPin[1], HIGH);
-      delayMicroseconds(500);
-      digitalWrite(stepPin[1], LOW);
-      delayMicroseconds(500);            
-    }
-    reset1=1;
-  }
-  delay(500);
-  if(reset1==1) //向反方向旋轉90度
-  {
-    digitalWrite(dirPin,HIGH);
-    for(int i=0;i<800;i++)
-    {
-      digitalWrite(stepPin[1], HIGH);
-      delayMicroseconds(500);
-      digitalWrite(stepPin[1], LOW);
-      delayMicroseconds(500);
-    }
-  }  
+{ /*  歸零方式我定為AB臂轉180度壓住極限開關
+  ，BC臂為壓到極限開關後往反方向旋轉135度  */
+  Wire.beginTransmission(1);
+  Wire.write(3);
+  Wire.endTransmission(); 
+  Wire.beginTransmission(2);
+  Wire.write(3);
+  Wire.endTransmission();   
 }
 
 void DegreeTurn()
 {
   if(P[0]>0) //向右轉
   { 
-//    Wire.beginTransmission(1);
-//    Wire.write("A_Direction");    
-//    Wire.write(0);
-//    Wire.endTransmission();   
     digitalWrite(dirPin,LOW);
   }
   if(P[0]<0) //向左轉
