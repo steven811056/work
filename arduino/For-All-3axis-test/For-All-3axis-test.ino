@@ -1,0 +1,158 @@
+#include "math.h"
+#include <Wire.h>
+
+#define first_arm 10
+#define second_arm 10
+
+//  slave 1 是控制AB節臂的馬達
+//  slave 2 是控制BC節臂的馬達
+//  slave 3 是控制Z軸的馬達
+const int stepPin[3] = {2, 4, 6};
+const int dirPin[3] = {3, 5, 7};
+
+//int16_t Address[100][3];  //輸入位址的紀錄存放
+//int16_t AddressGap[3];  //輸入與前一次所在的距離差
+int16_t Max=0;  //運轉圈數
+int16_t P[3] = {0, 0, 0}; //本次輸入的存放位置
+uint16_t t; //運轉時間
+int16_t Test1=0,Test2=0,Test3=0;
+double L_AC; //A到C點的距離
+double thetalOne,thetalTwo; //角BAC 與 直線AC與X的夾角
+double thetal_A[2]; //A所要轉的方向跟角度
+double thetal_B[2]; //B所要轉的方向跟角度
+//double turn[3]; //三軸所要運轉的角度
+//char Hi;  //我所使用的歸零代號
+//int16_t zero=10; //歸零用的感測器
+
+
+void setup()
+{
+  Wire.begin();
+  Serial.begin(9600);
+  pinMode(stepPin, OUTPUT);
+  pinMode(dirPin, OUTPUT);  
+  Serial.print("目前初始位置:(");
+  for (int i = 0; i < 3; i++)
+  {
+    Serial.print(P[i]);
+    if (i < 2)
+      Serial.print(",");
+  }
+  Serial.println(")");
+  Serial.println();
+}
+
+void loop()
+{ 
+  while(1)
+  {   
+    if(Serial.available())
+    {       
+      P[0] = Serial.parseInt();
+      Serial.print("53--");
+      Serial.println(P[0]); 
+      P[1] = Serial.parseInt();
+      P[2] = Serial.parseInt();
+      t = Serial.parseInt();
+      L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
+//      if(L_AC>30 || L_AC<10 || P[0]<5)
+//      {
+//        Serial.println("輸入錯誤，重新輸入");
+//        break;
+//      }            
+//      Quadrant_Judge();
+//      ctrl_deg(P[0],P[1],P[2],t);
+//      break;
+      Wire.beginTransmission(1);
+      Wire.write((byte)P[0]);
+      Wire.endTransmission();
+      Serial.println((byte)P[0]);  
+      Wire.write((byte)P[1]);
+      Wire.beginTransmission(1);
+      Serial.println((byte)P[1]); 
+      Wire.endTransmission();
+      Wire.beginTransmission(1);
+      Serial.println((byte)P[2]); 
+      Wire.endTransmission();
+    }
+    if(Wire.requestFrom(1,4))
+    {
+      if(Wire.read()==1)
+      {
+        Serial.println("AB節臂歸零完成");
+      }
+    }
+    if(Wire.requestFrom(1,4))
+    {
+      if(Wire.read()==2)
+      {
+        Serial.println("BC節臂歸零完成");
+      }
+    }
+  }
+      
+}
+
+void Quadrant_Judge()
+{      
+  if(P[0]>0)
+  {
+    if(P[1]>0)
+    {
+      Serial.println("第一象限");      
+
+    }
+    if(P[1]<0)
+    {      
+      Serial.println("第二象限");
+     
+    }
+  }
+}
+
+void ctrl_deg(int16_t T0, int16_t T1, int16_t T2, uint16_t Tt)
+{         
+  
+}
+
+void delta_3axis()
+{   
+//  L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
+  thetalOne = acos((L_AC / (2 * first_arm))) * 180 / PI;  
+  thetal_B[1] = (180 - (2 * thetalOne));
+  thetalTwo = atan(P[0]/P[1])*180/PI;   //A要轉thetalTwo的度數 需要為A來判斷C點的所在象限
+  thetal_A[1] = thetalOne+thetalTwo;
+  Wire.beginTransmission(1);
+  Wire.write((byte)thetal_A[0]);   
+  Wire.write((byte)thetal_A[1]);  
+  Wire.endTransmission();  
+  Serial.print("thetal_A轉動");
+  Serial.print(thetal_A[1]);
+  Serial.println("度");  
+  Serial.print("thetal_B轉動");
+  Serial.print(thetal_B[1]);
+  Serial.println("度");  
+}
+
+void scara_reset()
+{ /*  歸零方式我定為AB臂轉180度壓住極限開關
+  ，BC臂為壓到極限開關後往反方向旋轉135度  */
+  for(int i=0;i<3;i++)
+  {
+    P[i]=0; 
+  }
+  for(int i=0;i<2;i++)
+  {
+    thetal_A[i]=0;
+    thetal_B[i]=0;
+  }
+  Wire.beginTransmission(1);
+  Wire.write(3);
+  Wire.endTransmission(); 
+  Wire.beginTransmission(2);
+  Wire.write(3);
+  Wire.endTransmission();   
+}
+
+
+
