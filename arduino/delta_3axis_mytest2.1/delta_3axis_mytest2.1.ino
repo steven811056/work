@@ -93,19 +93,11 @@ void Quadrant_Judge()
   {
     if(P[1]>0)
     {
-      Serial.println("第一象限");
-      
-//      Wire.beginTransmission(1);
-//      Wire.write(0);
-//      Wire.endTransmission();
+      Serial.println("第一象限"); 
     }
     if(P[1]<0)
     {      
       Serial.println("第二象限");
-     
-//      Wire.beginTransmission(1);
-//      Wire.write(1);
-//      Wire.endTransmission(); 
     }
   }
 }
@@ -141,38 +133,14 @@ void scara_reset()
   {
     thetal_A[i]=0;
     thetal_B[i]=0;
-  }
-  Wire.beginTransmission(1);
+  }  
+  Wire.beginTransmission(0x01);
   Wire.write(3);
   Wire.endTransmission(); 
+  Serial.println("reset");
   Wire.beginTransmission(2);
   Wire.write(3);
   Wire.endTransmission();   
-}
-
-void DegreeTurn()
-{
-//  if(P[0]>0) //向右轉
-//  { 
-//    digitalWrite(dirPin,LOW);
-//  }
-//  if(P[0]<0) //向左轉
-//  {
-//    digitalWrite(dirPin,HIGH);
-//  }
-//  turn[1] = (thetal_B-thetal[1])/ 0.1125;
-//  if ((turn[1] - int(turn[1])) * 10 >= 5)
-//  {
-//    turn[1] = turn[1] + 1;
-//  }
-//  
-//  for(int i=0;i<int(turn[1]);i++) //b點旋轉
-//  {
-//    digitalWrite(stepPin[1], HIGH);
-//    delayMicroseconds(800);
-//    digitalWrite(stepPin[1], LOW);
-//    delayMicroseconds(800);
-//  }  
 }
 
 
