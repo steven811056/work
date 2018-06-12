@@ -10,14 +10,14 @@ void setup()
 
 void loop()
 {
-  digitalWrite(dirPin,HIGH);  
+  digitalWrite(dirPin,LOW);  
   delay(50);  
   for(int i=0;i<500;i++ )
   {  
     digitalWrite(stepperPin, HIGH);  
-    delayMicroseconds(10000);  
+    delayMicroseconds(1000);  
     digitalWrite(stepperPin, LOW);  
-    delayMicroseconds(10000); 
+    delayMicroseconds(1000); 
   }
-  delay(500);
+  delay(50);
 }

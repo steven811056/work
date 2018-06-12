@@ -71,18 +71,16 @@ void loop()
     }
     if(Wire.requestFrom(1,4))
     {
-      if(Wire.read()==1)
+      Test1=Wire.read();
+      if(Test1==1)
       {
         Serial.println("AB節臂歸零完成");
       }
-    }
-    if(Wire.requestFrom(1,4))
-    {
-      if(Wire.read()==2)
+      if(Test1==2)
       {
         Serial.println("BC節臂歸零完成");
       }
-    }
+    }    
   }
       
 }

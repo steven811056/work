@@ -87,9 +87,9 @@ void loop()
 
 void Quadrant_Judge()
 {      
-  if(P[0]>0)
+  if(P[1]>0)
   {
-    if(P[1]>0)
+    if(P[0]>0)
     {
       Serial.println("第一象限");
       
@@ -97,7 +97,7 @@ void Quadrant_Judge()
 //      Wire.write(0);
 //      Wire.endTransmission();
     }
-    if(P[1]<0)
+    if(P[0]<0)
     {      
       Serial.println("第二象限");
      
@@ -142,7 +142,8 @@ void scara_reset()
   }
   Wire.beginTransmission(1);
   Wire.write(3);
-  Wire.endTransmission(); 
+  Wire.endTransmission();
+  Serial.println("reset"); 
   Wire.beginTransmission(2);
   Wire.write(3);
   Wire.endTransmission();   

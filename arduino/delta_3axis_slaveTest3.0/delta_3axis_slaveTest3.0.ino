@@ -26,6 +26,18 @@ void setup()
 
 void loop()
 {
+  if(slave == 1)
+  {
+    Serial.println("TurnRight");
+    turnRight(10);
+    slave =0;
+  }
+  if(slave == 2)
+  {
+    Serial.println("TurnLeft");
+    turnLeft(10);
+    slave =0;
+  }
   if(slave == 3)
   {
     Serial.println("resetFunction");
@@ -42,14 +54,7 @@ void DegreeTurn()
   {
     slave=Wire.read();
     Serial.println(slave);
-    if(slave == 0)
-    {
-      turnRight(10);
-    }
-    if(slave == 1)
-    {
-      turnLeft(10);
-    }    
+        
   }  
   
 }
