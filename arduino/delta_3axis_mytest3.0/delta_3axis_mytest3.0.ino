@@ -20,7 +20,7 @@ double L_AC; //A到C點的距離
 double thetalOne,thetalTwo; //角BAC 與 直線AC與X的夾角
 double thetal_A[2]; //A所要轉的方向跟角度
 double thetal_B[2]; //B所要轉的方向跟角度
-//double turn[3]; //三軸所要運轉的角度
+double turn[3]; //三軸所要運轉的角度
 //char Hi;  //我所使用的歸零代號
 //int16_t zero=10; //歸零用的感測器
 
@@ -67,6 +67,7 @@ void loop()
       }
       Quadrant_Judge();
       ctrl_deg(P[0],P[1],P[2],t);
+      delta_3axis();
       break;
     }
     if(Wire.requestFrom(1,4))
@@ -100,7 +101,7 @@ void Quadrant_Judge()
     if(P[0]<0)
     {      
       Serial.println("第二象限");
-     
+      
 //      Wire.beginTransmission(1);
 //      Wire.write(1);
 //      Wire.endTransmission(); 
@@ -120,13 +121,18 @@ void delta_3axis()
   thetal_B[1] = (180 - (2 * thetalOne));
   thetalTwo = atan(P[0]/P[1])*180/PI;   //A要轉thetalTwo的度數 需要為A來判斷C點的所在象限
   thetal_A[1] = thetalOne+thetalTwo;
-  Wire.beginTransmission(1);
-  Wire.write((byte)thetal_A[0]);
-  Wire.write((byte)thetal_A[1]);
-  Wire.endTransmission();  
+  turn[0]=thetalOne/0.1125;
+  turn[1]=thetalTwo/0.1125;
+//  Wire.beginTransmission(1);
+//  Wire.write("turn");
+//  Wire.write((byte)turn[0]);
+//  Wire.write((byte)turn[1]);
+//  Wire.endTransmission();  
   Serial.print("thetal_A轉動");
-  Serial.print(thetal_A[1]);
+  Serial.print(thetal_A[1]);  
   Serial.println("度");
+  Serial.print("thetal_A--byte->");
+  Serial.println((byte)thetal_A[1]);
   Serial.print("thetal_B轉動");
   Serial.print(thetal_B[1]);
   Serial.println("度");  
@@ -134,9 +140,11 @@ void delta_3axis()
 
 void scara_reset()
 { /*  歸零方式我定為AB臂轉180度壓住極限開關
-  ，BC臂為壓到極限開關後往反方向旋轉135度  */ 
+  ，BC臂為壓到極限開關後往反方向旋轉135度  */
   for(int i=0;i<2;i++)
   {
+    thetalOne = 0;
+    thetalTwo = 0;
     thetal_A[i]=0;
     thetal_B[i]=0;
   }

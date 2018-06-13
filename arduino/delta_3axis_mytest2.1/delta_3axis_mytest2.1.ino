@@ -133,9 +133,9 @@ void scara_reset()
     thetal_B[i]=0;
   }  
   Wire.beginTransmission(0x01);
-  Wire.write(3);
+  Wire.write(3);  
   Wire.endTransmission(); 
-  Serial.println("reset");
+  Serial.println("reset"); 
   Wire.beginTransmission(2);
   Wire.write(3);
   Wire.endTransmission();   
