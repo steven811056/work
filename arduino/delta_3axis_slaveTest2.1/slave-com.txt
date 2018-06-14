@@ -1,0 +1,21 @@
+I2C--Salve1---test
+
+DegreeTurn
+3
+-1	//沒收到值
+DegreeTurn--End
+
+resetFun 	//還在print時收到master第139行的Wire.write，slave中段目前在做的事
+DegreeTurn	
+10
+-1
+DegreeTurn--End	//結束第139行接收後所需要做的事
+ction---in Loop	//繼續接收第139行之前在做的事
+
+resetFunction
+reset
+returnStatus = 1
+
+requestEvent
+
+得到結論 arduino的I2C傳輸做的就像事中斷一樣，如果再做其他事，會先跳到中斷之後再繼續

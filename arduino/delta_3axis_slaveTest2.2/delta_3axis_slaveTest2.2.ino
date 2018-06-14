@@ -12,7 +12,7 @@ boolean reset1;
 boolean A_Direction;
 double turn[2];
 int slave;
-int test1;
+int test1,test2;
 
 void setup() 
 {
@@ -46,8 +46,7 @@ void loop()
     Serial.println();
     Serial.println("resetFunction---in Loop");
     resetFunction();
-    slave =0;
-    delay(1);
+    slave =0;   
   }
   
 }
@@ -58,8 +57,9 @@ void DegreeTurn()
   Serial.println("DegreeTurn"); 
   if(Wire.available())
   {    
-    slave=Wire.read();        
+    slave=Wire.read();   
     test1=Wire.read();
+    test2=Wire.read();
     Serial.println(slave);
     Serial.println(test1);
     

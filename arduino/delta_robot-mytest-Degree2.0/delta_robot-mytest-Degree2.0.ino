@@ -1,12 +1,12 @@
 #include "DeltaRobInverseKin.h"
 #include "math.h"
 
-#define L_UPPER 0.100
-#define L_LOWER 0.220
-#define WB 0.109
-#define WP 0.040
-#define UP 0.080
-#define SP 0.138
+#define L_UPPER 0.100 //上臂長
+#define L_LOWER 0.220 //下臂長
+#define WB 0.109  //底座正三角型重心到邊的長度
+#define WP 0.040  //下方小正三角形重心到鞭長的長度
+#define UP 0.080  //下方小正三角形重心到頂點的長度
+#define SP 0.138  //下方正三角型的邊長
 
 const int stepPin[3] = {2,4,6};
 const int dirPin[3] = {3,5,7};
@@ -53,7 +53,8 @@ void setup()
 
 void loop()
 {  
-  Serial.println("輸入要轉的角度跟速度與加速度");  
+  Serial.println("輸入要轉的角度跟速度與加速度");
+  input();  
   ctrl_deg(D1,D2,D3,Dt);
   
 }

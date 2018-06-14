@@ -134,8 +134,8 @@ void scara_reset()
   }  
   Wire.beginTransmission(0x01);
   Wire.write(3);
-  Wire.endTransmission(); 
-  Wire.beginTransmission(0x01);
+//  Wire.endTransmission(); 
+//  Wire.beginTransmission(0x01);
   Wire.write(10);  
   Wire.endTransmission(); 
   Serial.println("reset"); 

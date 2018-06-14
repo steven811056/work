@@ -46,8 +46,7 @@ void loop()
     Serial.println();
     Serial.println("resetFunction---in Loop");
     resetFunction();
-    slave =0;
-    delay(1);
+    slave =0;   
   }
   
 }
