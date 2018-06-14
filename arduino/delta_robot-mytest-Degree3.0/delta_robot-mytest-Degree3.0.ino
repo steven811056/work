@@ -65,7 +65,28 @@ void input()
           }
           delayMicroseconds(800);    
         } 
-               
+        delay(3000);
+        digitalWrite(dirPin[0],LOW);
+        digitalWrite(dirPin[1],HIGH);         
+        digitalWrite(dirPin[2],HIGH); 
+        delay(10);
+        for(int i=0;i<90;i++)
+        {
+          digitalWrite(stepPin[0],HIGH);
+          if(i<45)
+          {
+            digitalWrite(stepPin[1],HIGH);
+            digitalWrite(stepPin[2],HIGH);
+          }
+          delayMicroseconds(800);
+          digitalWrite(stepPin[0],LOW); 
+          if(i<45)
+          {
+            digitalWrite(stepPin[1],LOW);
+            digitalWrite(stepPin[2],LOW);
+          }
+          delayMicroseconds(800);    
+        }      
       } //A1 --END      
 
       if(Kevin == 'B')
@@ -74,6 +95,28 @@ void input()
         digitalWrite(dirPin[0],LOW);         
         digitalWrite(dirPin[1],HIGH);         
         digitalWrite(dirPin[2],LOW); 
+        delay(10);
+        for(int i=0;i<90;i++)
+        {
+          digitalWrite(stepPin[1],HIGH);
+          if(i<45)
+          {
+            digitalWrite(stepPin[0],HIGH);
+            digitalWrite(stepPin[2],HIGH);
+          }
+          delayMicroseconds(800);
+          digitalWrite(stepPin[1],LOW); 
+          if(i<45)
+          {
+            digitalWrite(stepPin[0],LOW);
+            digitalWrite(stepPin[2],LOW);
+          }
+          delayMicroseconds(800);    
+        }
+        Serial.println("B方案");
+        digitalWrite(dirPin[0],HIGH);         
+        digitalWrite(dirPin[1],LOW);         
+        digitalWrite(dirPin[2],HIGH); 
         delay(10);
         for(int i=0;i<90;i++)
         {
@@ -118,7 +161,33 @@ void input()
           }
           delayMicroseconds(800);    
         }
+        digitalWrite(dirPin[0],HIGH);         
+        digitalWrite(dirPin[1],HIGH);         
+        digitalWrite(dirPin[2],LOW); 
+        delay(10);
+        for(int i=0;i<90;i++)
+        {
+          digitalWrite(stepPin[2],HIGH);
+          if(i<45)
+          {
+            digitalWrite(stepPin[0],HIGH);
+            digitalWrite(stepPin[1],HIGH);
+          }
+          delayMicroseconds(800);
+          digitalWrite(stepPin[2],LOW); 
+          if(i<45)
+          {
+            digitalWrite(stepPin[0],LOW);
+            digitalWrite(stepPin[1],LOW);
+          }
+          delayMicroseconds(800);    
+        }
       } // A3--END
+
+      else
+      {
+        Serial.println("輸入錯誤，重新輸入");
+      }
       
       while(Serial.read() >= 0){}
           

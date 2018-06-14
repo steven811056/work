@@ -1,0 +1,3 @@
+A4988的dirPin分別是3,5,7腳位，對應的stepPin是2,4,6腳位。
+
+指令有A，B，C三種，輸入A or B or C
