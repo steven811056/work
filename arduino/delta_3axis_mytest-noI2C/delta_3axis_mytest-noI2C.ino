@@ -64,7 +64,6 @@ void loop()
       if(P[0]==0)
       {
         scara_reset();
-        break;
       }
       Quadrant_Judge();
       ctrl_deg(P[0],P[1],P[2],t);

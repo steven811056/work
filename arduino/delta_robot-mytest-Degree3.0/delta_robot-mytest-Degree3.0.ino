@@ -56,14 +56,14 @@ void input()
             digitalWrite(stepPin[1],HIGH);
             digitalWrite(stepPin[2],HIGH);
           }
-          delayMicroseconds(800);
+          delayMicroseconds(2300);
           digitalWrite(stepPin[0],LOW); 
           if(i<45)
           {
             digitalWrite(stepPin[1],LOW);
             digitalWrite(stepPin[2],LOW);
           }
-          delayMicroseconds(800);    
+          delayMicroseconds(2300);   
         } 
         delay(3000);
         digitalWrite(dirPin[0],LOW);
@@ -78,18 +78,18 @@ void input()
             digitalWrite(stepPin[1],HIGH);
             digitalWrite(stepPin[2],HIGH);
           }
-          delayMicroseconds(800);
+          delayMicroseconds(2300);
           digitalWrite(stepPin[0],LOW); 
           if(i<45)
           {
             digitalWrite(stepPin[1],LOW);
             digitalWrite(stepPin[2],LOW);
           }
-          delayMicroseconds(800);    
+          delayMicroseconds(2300);
         }      
       } //A1 --END      
 
-      if(Kevin == 'B')
+      else if(Kevin == 'B')
       { // A2--Start
         Serial.println("B方案");
         digitalWrite(dirPin[0],LOW);         
@@ -104,16 +104,16 @@ void input()
             digitalWrite(stepPin[0],HIGH);
             digitalWrite(stepPin[2],HIGH);
           }
-          delayMicroseconds(800);
+          delayMicroseconds(2300);
           digitalWrite(stepPin[1],LOW); 
           if(i<45)
           {
             digitalWrite(stepPin[0],LOW);
             digitalWrite(stepPin[2],LOW);
           }
-          delayMicroseconds(800);    
+          delayMicroseconds(2300);
         }
-        Serial.println("B方案");
+        delay(3000);        
         digitalWrite(dirPin[0],HIGH);         
         digitalWrite(dirPin[1],LOW);         
         digitalWrite(dirPin[2],HIGH); 
@@ -126,18 +126,18 @@ void input()
             digitalWrite(stepPin[0],HIGH);
             digitalWrite(stepPin[2],HIGH);
           }
-          delayMicroseconds(800);
+          delayMicroseconds(2300);
           digitalWrite(stepPin[1],LOW); 
           if(i<45)
           {
             digitalWrite(stepPin[0],LOW);
             digitalWrite(stepPin[2],LOW);
           }
-          delayMicroseconds(800);    
+          delayMicroseconds(2300);
         }
       } // A2--END
 
-      if(Kevin == 'C')
+      else if(Kevin == 'C')
       { // A3--Start
         Serial.println("C方案");
         digitalWrite(dirPin[0],LOW);         
@@ -152,15 +152,16 @@ void input()
             digitalWrite(stepPin[0],HIGH);
             digitalWrite(stepPin[1],HIGH);
           }
-          delayMicroseconds(800);
+          delayMicroseconds(2300);
           digitalWrite(stepPin[2],LOW); 
           if(i<45)
           {
             digitalWrite(stepPin[0],LOW);
             digitalWrite(stepPin[1],LOW);
           }
-          delayMicroseconds(800);    
+          delayMicroseconds(2300);
         }
+        delay(3000);
         digitalWrite(dirPin[0],HIGH);         
         digitalWrite(dirPin[1],HIGH);         
         digitalWrite(dirPin[2],LOW); 
@@ -173,20 +174,20 @@ void input()
             digitalWrite(stepPin[0],HIGH);
             digitalWrite(stepPin[1],HIGH);
           }
-          delayMicroseconds(800);
+          delayMicroseconds(2300);
           digitalWrite(stepPin[2],LOW); 
           if(i<45)
           {
             digitalWrite(stepPin[0],LOW);
             digitalWrite(stepPin[1],LOW);
           }
-          delayMicroseconds(800);    
+          delayMicroseconds(2300);
         }
       } // A3--END
 
       else
       {
-        Serial.println("輸入錯誤，重新輸入");
+        Serial.println("輸入錯誤請重新輸入");
       }
       
       while(Serial.read() >= 0){}
@@ -195,6 +196,5 @@ void input()
     }
   }
 }
-
 
 
