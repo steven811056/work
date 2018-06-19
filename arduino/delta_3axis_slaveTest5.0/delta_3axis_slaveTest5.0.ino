@@ -52,7 +52,8 @@ void loop()
 }
 
 void DegreeTurn()
-{  
+{ 
+  slave2=""; 
   Serial.println("DegreeTurn"); 
   if(Wire.available())
   {
@@ -74,10 +75,7 @@ void DegreeTurn()
         Serial.println(slave);
         Serial.println("int");
       }
-//      Serial.print((char)c);
-//      Serial.println("----");
-    }
-  
+    }  
   }  
   
 }

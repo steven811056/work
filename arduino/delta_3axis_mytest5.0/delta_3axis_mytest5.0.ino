@@ -66,9 +66,8 @@ void loop()
         scara_reset();
         break;
       }      
-      Quadrant_Judge();
-      ctrl_deg(P[0],P[1],P[2],t);
-      delta_3axis();      
+      Quadrant_Judge();      
+      delta_3axis();
       break;
     }
     if(Wire.requestFrom(1,4))
@@ -118,7 +117,7 @@ void ctrl_deg(int16_t T0, int16_t T1, int16_t T2, uint16_t Tt)
 void delta_3axis()
 {   
 //  L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
-  thetalOne = acos((L_AC / (2 * first_arm))) * 180 / PI;  
+  thetalOne = acos((L_AC / (2 * first_arm))) * 180 / PI;
   thetal_B[1] = (180 - (2 * thetalOne));
   thetalTwo = atan(P[0]/P[1])*180/PI;   //A要轉thetalTwo的度數 需要為A來判斷C點的所在象限
   thetal_A[1] = thetalOne+thetalTwo;
@@ -164,29 +163,5 @@ void scara_reset()
   Wire.endTransmission();   
 }
 
-void DegreeTurn()
-{
-//  if(P[0]>0) //向右轉
-//  { 
-//    digitalWrite(dirPin,LOW);
-//  }
-//  if(P[0]<0) //向左轉
-//  {
-//    digitalWrite(dirPin,HIGH);
-//  }
-//  turn[1] = (thetal_B-thetal[1])/ 0.1125;
-//  if ((turn[1] - int(turn[1])) * 10 >= 5)
-//  {
-//    turn[1] = turn[1] + 1;
-//  }
-//  
-//  for(int i=0;i<int(turn[1]);i++) //b點旋轉
-//  {
-//    digitalWrite(stepPin[1], HIGH);
-//    delayMicroseconds(800);
-//    digitalWrite(stepPin[1], LOW);
-//    delayMicroseconds(800);
-//  }  
-}
 
 
