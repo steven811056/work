@@ -4,3 +4,5 @@ I2C注意事項
 2.I2C的onRequest類的東西，會像是中斷一樣不斷的跑，就算沒有特別去呼叫也會跟著Loop一起跑，算是一個迴圈。
 3.I2C傳送字元會自動轉成ascii碼
 4.Wire.write(33); //ascii碼傳輸!  之前用3沒有顯是是因為ascii碼的3是^C的意思
+5.目前測試發現I2Cmaster傳送字源自串資料到slave端會轉換成ascii碼，想要傳送字串我目前想到的方法是傳送字元的ascii碼到slave端
+，然後再slave端轉換成字元，再把所有的字元加到一個空的字串String
