@@ -12,8 +12,9 @@ boolean reset1;
 boolean A_Direction;
 double turn[2];
 int slave;
-int slave3[4][1]; //讓I2C在傳輸之前先給資料型態存在第一維度
+//int slave3[4][1]; //讓I2C在傳輸之前先給資料型態存在第一維度
                 //0,1,2,3 -> 0為int, 1為float, 2為double, 3為char
+int slave3; //                
 String slave2;
 double test1,test2;
 
@@ -52,30 +53,42 @@ void loop()
 }
 
 void DegreeTurn()
-{ 
-  slave2=""; 
-  Serial.println("DegreeTurn"); 
+{   
+  Serial.println("DegreeTurn");   
   if(Wire.available())
-  {
+  {  
     while(Wire.available())
     {
-      int c= Wire.read();    // receive a byte as character
-      if(c == 3)
-      {
-        while(Wire.available())
-        {
-          slave2=slave2+((char)Wire.read());
-        }
-        Serial.println(slave2);
-        Serial.println("char");
-      }
-      if(c == 0)
-      {
-        slave = Wire.read();
-        Serial.println(slave);
-        Serial.println("int");
-      }
-    }  
+      slave2=slave2+(char)Wire.read(); 
+    }
+    if(slave2 == "kevin1")
+    {
+      Serial.println("kevin1");
+    }
+    if(slave2 == "kevin2")
+    {
+      Serial.println("kevin2");
+      slave2="";
+    }
+//    while(Wire.available())
+//    {      
+//      int c= Wire.read();    // receive a byte as character
+//      if(c == 3)
+//      {
+//        while(Wire.available())
+//        {
+//          slave2=slave2+((char)Wire.read());
+//        }
+//        Serial.println(slave2);
+//        Serial.println("char");
+//      }
+//      if(c == 0)
+//      {
+//        slave = Wire.read();
+//        Serial.println(slave);
+//        Serial.println("int");
+//      }
+//    }  
   }  
   
 }
