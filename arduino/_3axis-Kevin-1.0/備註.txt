@@ -1,0 +1,9 @@
+1.有新增緩起動的Kevin控制
+
+2.A4988的dirPin分別是3,5,7腳位，對應的stepPin是2,4,6腳位。
+
+3.指令有A，B，C三種，輸入A or B or C
+
+4.如果要更改脈波傳送頻率，請變更delayKevin2變數
+
+5.如果要變更脈波傳送波數，請變更degreeKevin變數
