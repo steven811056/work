@@ -45,27 +45,38 @@ void setup()
 
 void loop()
 { 
-  while(1)
-  { 
-    if(choose =='!')
-    {
-      Serial.println("選擇模式");
-      choose=0;
-    }
+  if(choose =='!')
+  {
+    Serial.println("選擇模式");
+    choose=0;
+  }
+  while(1)  
+  {     
     if(Serial.available())
     { 
       choose=Serial.read();
-      Serial.println(choose);    
+      Serial.println(choose);
       if(choose == '1') //1號模式 輸入座標
       {
         Serial.println("座標模式");
         Wire.beginTransmission(1);
         Wire.write("kevin1");
         Wire.endTransmission();
-        P[0] = Serial.parseInt();
-        P[1] = Serial.parseInt();
-        P[2] = Serial.parseInt();
-        t = Serial.parseInt();
+      }
+      if(choose == '1')
+      {
+        while(1)
+        {
+          if(Serial.available())
+          {
+            P[0] = Serial.parseInt();
+            P[1] = Serial.parseInt();
+            P[2] = Serial.parseInt();
+            t = Serial.parseInt();
+            break; 
+          }                   
+        }
+        Serial.println("角度輸入完成--開始運算"); 
         L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
         if(L_AC>30 || L_AC<10)
         {
@@ -78,7 +89,7 @@ void loop()
         if(P[0]==0)
         {
           scara_reset();
-          break;
+          break;                          
         } 
         if(L_AC<30 && L_AC>10)
         {
@@ -86,10 +97,12 @@ void loop()
           {
             Quadrant_Judge();
             delta_3axis();
+            choose='!';
             break;     
           }    
-        }        
-        break;
+        } 
+        Serial.println();
+        break;       
       }
       if(Wire.requestFrom(1,4))
       {
@@ -110,9 +123,11 @@ void loop()
         Wire.write("kevin2");
         Wire.endTransmission();
         choose='!';
+        Serial.println();
+        break;
       }
     }  
-  }
+  } 
 }
 
 void Quadrant_Judge()
@@ -122,12 +137,10 @@ void Quadrant_Judge()
     if(P[0]>0)
     {
       Serial.println("第一象限");
-
     }
     if(P[0]<0)
     {      
       Serial.println("第二象限");
-
     }
   }
 }
@@ -144,8 +157,8 @@ void delta_3axis()
   thetal_B[1] = (180 - (2 * thetalOne));
   thetalTwo = atan(P[0]/P[1])*180/PI;   //A要轉thetalTwo的度數 需要為A來判斷C點的所在象限
   thetal_A[1] = thetalOne+thetalTwo;  
-  turn[0]=thetalOne/0.1125;
-  turn[1]=thetalTwo/0.1125;
+  turn[0]=thetal_A[1]/1.8; //16微步是0.1125  一微步是1.8
+  turn[1]=thetal_B[1]/1.8;
   Wire.beginTransmission(1);
   Wire.write("turn");
   Wire.endTransmission();

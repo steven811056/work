@@ -31,6 +31,7 @@ void setup()
 
 void loop()
 {
+//  Wire.onReceive(DegreeTurn);
   if(slave == 1)
   {
     Serial.println("TurnRight");
@@ -64,33 +65,23 @@ void DegreeTurn()
     if(slave2 == "kevin1")
     {
       Serial.println("kevin1");
+      slave2="";
     }
     if(slave2 == "kevin2")
     {
       Serial.println("kevin2");
+      Wire.onReceive(DegreeTurn2);
       slave2="";
     }
-//    while(Wire.available())
-//    {      
-//      int c= Wire.read();    // receive a byte as character
-//      if(c == 3)
-//      {
-//        while(Wire.available())
-//        {
-//          slave2=slave2+((char)Wire.read());
-//        }
-//        Serial.println(slave2);
-//        Serial.println("char");
-//      }
-//      if(c == 0)
-//      {
-//        slave = Wire.read();
-//        Serial.println(slave);
-//        Serial.println("int");
-//      }
-//    }  
+    
   }  
   
+}
+
+void DegreeTurn2()
+{
+  Serial.println("123");
+  Serial.println(slave2);
 }
 
 void resetFunction()

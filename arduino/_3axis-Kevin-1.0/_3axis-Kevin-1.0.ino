@@ -6,8 +6,8 @@ const int stepPin[3] = {2,4,6};   //A4988的stepPin腳位宣告
 char Kevin; //轉動方案變數
 char Kevin2; //選擇delta或是scara的變數
 int delayKevin;  
-int delayKevin2 = 1500; //delay的時間
-int degreeKevin = 1400;  //轉動圈數
+int delayKevin2 = 800; //delay的時間
+int degreeKevin = 3000;  //轉動圈數
 
 void setup()
 {
@@ -106,8 +106,12 @@ void outputA()
   {
     if(i == 0)
     {
-      delayKevin=delayKevin2+1000;
-    }       
+      delayKevin=delayKevin2+2000;
+    }
+    if(i >= (degreeKevin-30))
+    {
+      delayKevin=delayKevin+200;       
+    }
     digitalWrite(stepPin[0],HIGH);
     if(i<(degreeKevin/2))
     {
@@ -122,9 +126,12 @@ void outputA()
       digitalWrite(stepPin[2],LOW);
     }
     delayMicroseconds(delayKevin);
-    if(delayKevin > delayKevin2)
+    if(i <= (degreeKevin-30))
     {
-      delayKevin=delayKevin-100;    
+      if(delayKevin > delayKevin2)
+      {
+        delayKevin=delayKevin-200;    
+      }
     }
   } 
   delay(3000);
@@ -136,7 +143,11 @@ void outputA()
   {
     if(i == 0)
     {
-      delayKevin=delayKevin2+1000;
+      delayKevin=delayKevin2+2000;
+    }
+    if(i >= (degreeKevin-30))
+    {
+      delayKevin=delayKevin+200;       
     }
     digitalWrite(stepPin[0],HIGH);
     if(i<(degreeKevin/2))
@@ -152,9 +163,12 @@ void outputA()
       digitalWrite(stepPin[2],LOW);
     }
     delayMicroseconds(delayKevin);
-    if(delayKevin > delayKevin2)
+    if(i <= (degreeKevin-30))
     {
-      delayKevin=delayKevin-5;
+      if(delayKevin > delayKevin2)
+      {
+        delayKevin=delayKevin-200;    
+      }
     }
   }
 }
@@ -166,29 +180,36 @@ void outputB()
   digitalWrite(dirPin[1],HIGH);         
   digitalWrite(dirPin[2],LOW); 
   delay(10);
-  for(int i=0;i<140;i++)
+  for(int i=0;i<degreeKevin;i++)
   {
     if(i == 0)
     {
       delayKevin=delayKevin2+1000;
     }  
+    if(i >= (degreeKevin-30))
+    {
+      delayKevin=delayKevin+200;       
+    }
     digitalWrite(stepPin[1],HIGH);
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],HIGH);
       digitalWrite(stepPin[2],HIGH);
     }
     delayMicroseconds(delayKevin);
     digitalWrite(stepPin[1],LOW); 
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],LOW);
       digitalWrite(stepPin[2],LOW);
     }
     delayMicroseconds(delayKevin);
-    if(delayKevin > delayKevin2)
+    if(i <= (degreeKevin-30))
     {
-      delayKevin=delayKevin-5;
+      if(delayKevin > delayKevin2)
+      {
+        delayKevin=delayKevin-200;    
+      }
     }
   }
   delay(3000);        
@@ -196,29 +217,36 @@ void outputB()
   digitalWrite(dirPin[1],LOW);         
   digitalWrite(dirPin[2],HIGH); 
   delay(10);
-  for(int i=0;i<140;i++)
+  for(int i=0;i<degreeKevin;i++)
   {
     if(i == 0)
     {
       delayKevin=delayKevin2+1000;
     } 
+    if(i >= (degreeKevin-30))
+    {
+      delayKevin=delayKevin+200;       
+    }
     digitalWrite(stepPin[1],HIGH);
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],HIGH);
       digitalWrite(stepPin[2],HIGH);
     }
     delayMicroseconds(delayKevin);
     digitalWrite(stepPin[1],LOW); 
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],LOW);
       digitalWrite(stepPin[2],LOW);
     }
     delayMicroseconds(delayKevin);
-    if(delayKevin > delayKevin2)
+    if(i <= (degreeKevin-30))
     {
-      delayKevin=delayKevin-5;
+      if(delayKevin > delayKevin2)
+      {
+        delayKevin=delayKevin-200;    
+      }
     }
   }
 }
@@ -230,29 +258,36 @@ void outputC()
   digitalWrite(dirPin[1],LOW);         
   digitalWrite(dirPin[2],HIGH); 
   delay(10);
-  for(int i=0;i<140;i++)
+  for(int i=0;i<degreeKevin;i++)
   {
     if(i == 0)
     {
       delayKevin=delayKevin2+1000;
     } 
+    if(i >= (degreeKevin-30))
+    {
+      delayKevin=delayKevin+200;       
+    }
     digitalWrite(stepPin[2],HIGH);
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],HIGH);
       digitalWrite(stepPin[1],HIGH);
     }
     delayMicroseconds(delayKevin);
     digitalWrite(stepPin[2],LOW); 
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],LOW);
       digitalWrite(stepPin[1],LOW);
     }
     delayMicroseconds(delayKevin);
-    if(delayKevin > delayKevin2)
+    if(i <= (degreeKevin-30))
     {
-      delayKevin=delayKevin-5;
+      if(delayKevin > delayKevin2)
+      {
+        delayKevin=delayKevin-200;    
+      }
     }
   }
   delay(3000);
@@ -260,29 +295,36 @@ void outputC()
   digitalWrite(dirPin[1],HIGH);         
   digitalWrite(dirPin[2],LOW); 
   delay(10);
-  for(int i=0;i<140;i++)
+  for(int i=0;i<degreeKevin;i++)
   {
     if(i == 0)
     {
       delayKevin=delayKevin2+1000;
     } 
+    if(i >= (degreeKevin-30))
+    {
+      delayKevin=delayKevin+200;       
+    }
     digitalWrite(stepPin[2],HIGH);
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],HIGH);
       digitalWrite(stepPin[1],HIGH);
     }
     delayMicroseconds(delayKevin);
     digitalWrite(stepPin[2],LOW); 
-    if(i<70)
+    if(i<(degreeKevin/2))
     {
       digitalWrite(stepPin[0],LOW);
       digitalWrite(stepPin[1],LOW);
     }
     delayMicroseconds(delayKevin);
-    if(delayKevin > delayKevin2)
+    if(i <= (degreeKevin-30))
     {
-      delayKevin=delayKevin-5;
+      if(delayKevin > delayKevin2)
+      {
+        delayKevin=delayKevin-200;    
+      }
     }
   }
 }
