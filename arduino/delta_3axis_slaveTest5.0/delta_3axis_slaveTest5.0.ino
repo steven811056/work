@@ -14,7 +14,7 @@ double turn[2];
 int slave;
 //int slave3[4][1]; //讓I2C在傳輸之前先給資料型態存在第一維度
                 //0,1,2,3 -> 0為int, 1為float, 2為double, 3為char
-int slave3; //                
+int slave3; 
 String slave2;
 double test1,test2;
 
@@ -31,8 +31,7 @@ void setup()
 
 void loop()
 {
-//  Wire.onReceive(DegreeTurn);
-  if(slave == 1)
+ /* if(slave == 1)
   {
     Serial.println("TurnRight");
     turnRight(10);
@@ -49,7 +48,7 @@ void loop()
     Serial.println("resetFunction");
     resetFunction();
     slave =0;
-  }
+  }*/
   
 }
 
@@ -60,28 +59,36 @@ void DegreeTurn()
   {  
     while(Wire.available())
     {
-      slave2=slave2+(char)Wire.read(); 
+		slave2=slave2+(char)Wire.read(); 
     }
     if(slave2 == "kevin1")
     {
-      Serial.println("kevin1");
-      slave2="";
+		Serial.println("kevin1");
+		slave2="";
     }
     if(slave2 == "kevin2")
     {
-      Serial.println("kevin2");
-      Wire.onReceive(DegreeTurn2);
-      slave2="";
+		//Wire.onReceive(DegreeTurn2);	//在程式執行之中可以改變onReceive呼叫的函式
+		Serial.println("kevin2");	  
+		slave2="";
     }
+  }    
     
-  }  
-  
 }
 
+/*DegreeTurn2 -- For test*/
 void DegreeTurn2()
 {
-  Serial.println("123");
-  Serial.println(slave2);
+	Serial.println("123");
+	if (Wire.available())
+	{
+		Serial.println("321");
+		while (Wire.available())
+		{
+			slave2 = Wire.read();
+		}
+		
+	}
 }
 
 void resetFunction()

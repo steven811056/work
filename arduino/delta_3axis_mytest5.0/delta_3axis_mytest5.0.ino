@@ -56,6 +56,11 @@ void loop()
     { 
       choose=Serial.read();
       Serial.println(choose);
+	  if (choose == '0')
+	  {
+		  scara_reset();
+		  break;
+	  }
       if(choose == '1') //1號模式 輸入座標
       {
         Serial.println("座標模式");
@@ -118,10 +123,14 @@ void loop()
       }  
       if(choose == '2')  //2號模式 輸入角度
       {
-        Serial.println("角度模式");
-        Wire.beginTransmission(1);
+        Serial.println("角度模式");		
+        Wire.beginTransmission(0x01);
+		Serial.println("開始與slave1通訊");
+		Serial.println("傳送kevin2");
         Wire.write("kevin2");
         Wire.endTransmission();
+		Serial.println("結束與slave1通訊");
+		Serial.println();
         choose='!';
         Serial.println();
         break;
