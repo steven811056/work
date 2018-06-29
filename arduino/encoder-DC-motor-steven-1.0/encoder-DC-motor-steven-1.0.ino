@@ -1,5 +1,6 @@
+#include <LiquidCrystal.h>
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>  
+ 
 
 #define SENSOR_Pin  2 //Interrupt PIN only D2/D3
 #define SENSOR2_Pin 3 //Interrupt PIN only D2/D3

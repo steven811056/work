@@ -69,7 +69,9 @@ void DegreeTurn()
     if(slave2 == "kevin2")
     {
 		//Wire.onReceive(DegreeTurn2);	//在程式執行之中可以改變onReceive呼叫的函式
-		Serial.println("kevin2");	  
+		//當程式執行到這個Wire.onReceive，會先執行完上次呼叫的receive的函式，
+		//下次呼叫onReceive時就會開始執行另一個函式
+		Serial.println("kevin2");
 		slave2="";
     }
   }    
@@ -77,7 +79,7 @@ void DegreeTurn()
 }
 
 /*DegreeTurn2 -- For test*/
-void DegreeTurn2()
+/*oid DegreeTurn2()
 {
 	Serial.println("123");
 	if (Wire.available())
@@ -86,10 +88,12 @@ void DegreeTurn2()
 		while (Wire.available())
 		{
 			slave2 = Wire.read();
+			slave2 = "";
+			
 		}
 		
 	}
-}
+}*/
 
 void resetFunction()
 {
