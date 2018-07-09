@@ -152,7 +152,7 @@ void DeltaRobInverseKin::_computeGoalPos()
 	for (int i = 0; i < 3; i++) {
 		posArr[maxArrIndex][i] = (int)(_theta2[i] * _rat);
 		goalPos[i] = (int)(_theta2[i] * _rat);
-    mygoalPos[i]= _t2Den[i];
+		mygoalPos[i]= _t2Den[i];
 	}
 	posArr[maxArrIndex][3] = _state;
 

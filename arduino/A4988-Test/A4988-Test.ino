@@ -1,7 +1,7 @@
-int dirPin = 3;
-int stepperPin = 2;
+int dirPin = 5;
+int stepperPin = 4;
 int C=0;
-int delaytime = 2000;
+int delaytime = 289;
 
 void setup()
 {
@@ -54,7 +54,7 @@ void A()
 {
   digitalWrite(dirPin,HIGH);  
   delay(50);  
-  for(int i=0;i<550;i++ )
+  for(int i=0;i<5500;i++ )
   {  
     digitalWrite(stepperPin, HIGH);  
     delayMicroseconds(delaytime);  
@@ -63,13 +63,33 @@ void A()
   }
   delay(50);
   C=0;
+  
+//  digitalWrite(dirPin,HIGH);  
+//  delay(50);  
+//  for(int i=0;i<100;i++ )
+//  {  
+//    digitalWrite(stepperPin, HIGH);  
+//    delayMicroseconds(delaytime);  
+//    digitalWrite(stepperPin, LOW);  
+//    delayMicroseconds(delaytime); 
+//  }  
+//  for(int i=0;i<1000;i++)
+//  {
+//    digitalWrite(stepperPin, HIGH);  
+//    delayMicroseconds(delaytime);  
+//    digitalWrite(stepperPin, LOW);  
+//    delayMicroseconds(delaytime); 
+//    delaytime=delaytime-30;
+//  }
+//  delay(50);
+//  C=0;
 }
 
 void B()
 {
   digitalWrite(dirPin,LOW);  
   delay(50);  
-  for(int i=0;i<550;i++ )
+  for(int i=0;i<5500;i++ )
   {  
     digitalWrite(stepperPin, HIGH);  
     delayMicroseconds(delaytime);  
