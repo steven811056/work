@@ -30,8 +30,11 @@ void setup()
 {
   Wire.begin();
   Serial.begin(9600);
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);  
+  for (int i = 0; i < 3; i++)
+  {
+	  pinMode(stepPin[i], OUTPUT);
+	  pinMode(dirPin[i], OUTPUT);
+  }  
   Serial.print("目前初始位置:(");
   for (int i = 0; i < 3; i++)
   {
@@ -64,7 +67,7 @@ void loop()
       if(choose == '1') //1號模式 輸入座標
       {
         Serial.println("座標模式");
-        Wire.beginTransmission(1);
+        Wire.beginTransmission(0x01);
         Wire.write("kevin1");
         Wire.endTransmission();
       }

@@ -13,7 +13,6 @@
 #ifndef _VSARDUINO_H_
 #define _VSARDUINO_H_
 #define __AVR_ATmega2560__
-#define _VMDEBUG 1
 #define F_CPU 16000000L
 #define ARDUINO 10803
 #define ARDUINO_AVR_MEGA2560
@@ -75,6 +74,6 @@ typedef void *__builtin_va_list;
 #define pgm_read_float(address_short) float()
 #define pgm_read_ptr(address_short)   short()
 
-#include "delta_3axis_mytest5.0.ino"
+#include "delta_3axis_mytest3.0.ino"
 #endif
 #endif

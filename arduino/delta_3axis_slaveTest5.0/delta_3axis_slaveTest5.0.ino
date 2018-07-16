@@ -78,8 +78,8 @@ void DegreeTurn()
     
 }
 
-/*DegreeTurn2 -- For test*/
-/*oid DegreeTurn2()
+//DegreeTurn2 -- For test
+void DegreeTurn2()
 {
 	Serial.println("123");
 	if (Wire.available())
@@ -93,7 +93,7 @@ void DegreeTurn()
 		}
 		
 	}
-}*/
+}
 
 void resttest()
 {

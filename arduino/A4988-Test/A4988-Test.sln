@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "delta_3axis_mytest5.0", "delta_3axis_mytest5.0.vcxproj", "{0211E33C-485B-4716-9C44-8B8E3F633366}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "delta_3axis_mytest3.0", "..\delta_3axis_mytest3.0\delta_3axis_mytest3.0.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A4988-Test", "A4988-Test.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,10 +11,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0211E33C-485B-4716-9C44-8B8E3F633366}.Debug|x86.ActiveCfg = Debug|Win32
-		{0211E33C-485B-4716-9C44-8B8E3F633366}.Debug|x86.Build.0 = Debug|Win32
-		{0211E33C-485B-4716-9C44-8B8E3F633366}.Release|x86.ActiveCfg = Release|Win32
-		{0211E33C-485B-4716-9C44-8B8E3F633366}.Release|x86.Build.0 = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.ActiveCfg = Debug|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.Build.0 = Debug|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
@@ -26,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A6B41FAA-80A5-4AF2-8E98-AFB244791A0D}
+		SolutionGuid = {F6301622-8647-4B2E-92A7-9747E2AD385E}
 	EndGlobalSection
 EndGlobal
