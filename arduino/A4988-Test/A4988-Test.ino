@@ -1,7 +1,7 @@
-int dirPin = 3;
-int stepperPin = 2;
-//int dirPin = 5;
-//int stepperPin = 4;
+//int dirPin = 3;
+//int stepperPin = 2;
+int dirPin = 5;
+int stepperPin = 4;
 int C=0;
 int delaytime = 15;
 
@@ -10,6 +10,7 @@ void setup()
   pinMode(dirPin, OUTPUT);  
   pinMode(stepperPin, OUTPUT);
   Serial.begin(9600);
+  Serial.println("start");
 }
 
 void loop()
