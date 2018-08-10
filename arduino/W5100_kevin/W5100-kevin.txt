@@ -1,0 +1,6 @@
+ex:
+輸入json格式  {"data":"asdfg","name":"steven2"}
+
+會回傳name = steven2
+然後把傳過來的json字串再傳回去  {"data":"asdfg","name":"steven2"}
+最後會再多傳 --OK-- 的字串

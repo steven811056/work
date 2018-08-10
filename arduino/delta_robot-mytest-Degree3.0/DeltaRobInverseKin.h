@@ -10,7 +10,7 @@ public:
 	void setGoalCoordinates(double x, double y, double z, int state);
 	void resetArr();
 	bool debugFlag;
-  int mygoalPos[3];
+    int mygoalPos[3];
 	int goalPos[3];
 	int posArr[100][4];
 	int maxArrIndex;
