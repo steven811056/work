@@ -1,7 +1,19 @@
 #include "math.h"
 #include <Wire.h>
+#include <EEPROM.h>
+#include <ArduinoJson.hpp>
+#include <ArduinoJson.h>
+#include <Ethernet.h>
+#include <SPI.h>
+
 #include "Scara_3Axis.h"
 
+// W5100的初始設定
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+byte ip[] = { 192,168,50,200 };
+byte server[] = { 192,168,50,156 }; 
+EthernetClient client;
+StaticJsonBuffer<600> jsonBuffer;
 
 #define first_arm 10	//第一節臂長度 cm
 #define second_arm 10	//第二節臂長度
@@ -98,7 +110,7 @@ void loop()
 			Serial.println(thetalOne);
 			Serial.println((P[0][1]) / (P[0][0]));
 			Serial.println(thetalTwo);
-			delta_3axis_movie();
+			//delta_3axis_movie();
 	}
 	while (choose == '2')
 	 {
@@ -125,20 +137,20 @@ void Quadrant_Judge()
 
 void delta_3axis()
 {
+		
 		L_AC = sqrt(pow(P[0][0], 2) + pow(P[0][1], 2));   
 		thetalOne = acos((L_AC/2)/first_arm) * 180 / PI; 	//arduino的三角函數出來都是弧度，需要*180/PI	
 		thetalTwo = atan((double)(P[0][1]) /( P[0][0])) * 180 / PI;   //A要轉thetalTwo的度數 需要為A來判斷C點的所在象限
 		thetal_B[1] = (180 - (2 * thetalOne));
-		thetal_A[1] = thetalOne + thetalTwo;
-		turn[0] = thetal_A[1] / 1.8;  //16微步是0.1125  一微步是1.8
-		turn[1] = thetal_B[1] / 1.8;
-		Wire.beginTransmission(1);
+		thetal_A[1] = thetalOne + thetalTwo;		
+		Wire.beginTransmission(slave1);
+		Serial.println("Trans with slave1");
 		Wire.write("turn");
 		Wire.endTransmission();
-		Wire.beginTransmission(1);
-		Wire.write((byte)turn[0]);
-		Wire.write((byte)turn[1]);
-		Wire.endTransmission();
+		Serial.println("end Trans with slave1");
+		/*Wire.beginTransmission(slave1);
+		Wire.write((byte)thetal_A[1]);		
+		Wire.endTransmission();*/
 		Serial.print("thetal_A轉動");
 		Serial.print(thetal_A[1]);
 		Serial.println("度");

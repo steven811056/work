@@ -1,12 +1,12 @@
 //int dirPin = 3;
 //int stepperPin = 2;
-int dirPin = 5;
-int stepperPin = 4;
-//int dirPin = 7;
-//int stepperPin = 6;
+//int dirPin = 5;
+//int stepperPin = 4;
+int dirPin = 7;
+int stepperPin = 6;
 
 int C=0;
-int delaytime = 500;
+int delaytime = 30;
 
 void setup()
 {

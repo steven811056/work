@@ -13,7 +13,7 @@ boolean A_Direction;
 double turn[2];
 int slave;
 //int slave3[4][1]; //讓I2C在傳輸之前先給資料型態存在第一維度
-                //0,1,2,3 -> 0為int, 1為float, 2為double, 3為char
+				//0,1,2,3 -> 0為int, 1為float, 2為double, 3為char
 int slave3; 
 String slave2;
 double test1,test2;

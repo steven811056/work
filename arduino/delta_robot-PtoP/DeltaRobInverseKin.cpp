@@ -10,9 +10,9 @@ DeltaRobInverseKin::DeltaRobInverseKin(double L, double l, double wb, double wp,
 	// The parameters here match up with the onces mentioned
 	// in Robert L. William's Delta Robot Publication page 5 & 6 (see README.md)
 	// Units: [m]
-  // DelataRobInverseKin的_L...等是private的，因此需要再建立一個DelataRobInverseKin裡面的
-  // 屬性，此還是取名為DelataRobInverseKin，把新的DelataRobInverseKin裡面的L放到
-  // private的_L裡面，讓原本DelataRobInverseKin裡面的其他屬性可以運算。
+   // DelataRobInverseKin的_L...等是private的，因此需要再建立一個DelataRobInverseKin裡面的
+   // 屬性，此還是取名為DelataRobInverseKin，把新的DelataRobInverseKin裡面的L放到
+   // private的_L裡面，讓原本DelataRobInverseKin裡面的其他屬性可以運算。
 	_L = L;
 	_l = l;
 	_wb = wb;
@@ -25,8 +25,8 @@ DeltaRobInverseKin::DeltaRobInverseKin(double L, double l, double wb, double wp,
 	// The ratio of one full  of the motors in this mathematical model to
 	// one the number off pulses for one full rotation of the real motor:
 	// ratio = 2 * PI / pulses per rotation
-	_rat = 18000 / PI;
-
+	//_rat = 18000 / PI;
+	_rat = 180 / PI;
 	// debugFlag: computed parameters will be printed out when set to "true"
 	debugFlag = false;
 }

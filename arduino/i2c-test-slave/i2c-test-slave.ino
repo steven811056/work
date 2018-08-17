@@ -29,6 +29,7 @@ void loop()
 }*/
 void test(int t)//receiveEvent跟howMany可以隨意更動
 {
+	//Serial.println("receive get");
     //在 receiveEvent() 中，程式的邏輯很簡單，
     //只是利用 Wire.available() 檢查是否有資料，
     //接著利用 Wire.read() 將資料出來再丟到 serial port 上。

@@ -1,12 +1,12 @@
 #include "DeltaRobInverseKin.h"
 #include "math.h"
 
-#define L_UPPER 0.12 //上臂長
+#define L_UPPER 0.12 //上臂長		單位：公尺
 #define L_LOWER 0.285 //下臂長
-#define WB 0.075  //底座正三角型重心到邊的長度
-#define WP 0.02  //下方小正三角形重心到邊長的長度
-#define UP 0.04  //下方小正三角形重心到頂點的長度
-#define SP 0.07  //下方正三角型的邊長
+#define WB 0.13  //底座正三角型重心到邊的長度
+#define WP 0.013  //下方小正三角形重心到邊長的長度
+#define UP 0.026  //下方小正三角形重心到頂點的長度
+#define SP 0.045  //下方正三角型的邊長
 
 const int stepPin[3] = { 2,4,6 };
 const int dirPin[3] = { 3,5,7 };
@@ -29,7 +29,7 @@ double MaxSpeed;
 double AddSpeed;
 double Add = 0;
 double add[3];
-int degreeTurn[3];
+double degreeTurn[3];
 
 void setup()
 {
@@ -132,15 +132,15 @@ void PtoP_input()
 //-------ctrl_PtoP---------
 void ctrl_PtoP(int16_t x0, int16_t y0 , int16_t z0)
 {
-	Serial.println("ctrl_PtoP");
-	OK();
+	Serial.print("ctrl_PtoP");
+	OK();	
 	Serial.print(x0);
 	Serial.print(" , ");
 	Serial.print(y0);
 	Serial.print(" , ");
 	Serial.print(z0);
 	Serial.println();
-	delta.setGoalCoordinates(x0*0.001, y0*0.001, z0*0.001,0);
+	delta.setGoalCoordinates(x0*0.01, y0*0.01, z0*0.01,0);
 	delay(10);
 	PtoP_output();
 }
@@ -154,6 +154,7 @@ void PtoP_output()
 	for (int i = 0; i < 3; i++)
 	{
 		D[i] = delta.goalPos[i];
+		degreeTurn[i] = D[i] -  delta.posArr[delta.maxArrIndex-2][i];
 	}	
 	Serial.print("三顆馬達轉動角度 = ");
 	for (int i = 0; i < 3; i++)
@@ -164,9 +165,37 @@ void PtoP_output()
 			Serial.print(" , ");
 		}
 	}
+	Serial.println();
+	Serial.print("三顆馬達轉動角度 2= ");
+	for (int i = 0; i < 3; i++)
+	{
+		Serial.print(D[i]);
+		if (i < 2)
+		{
+			Serial.print(" , ");
+		}
+	}
+	if (delta.maxArrIndex > 1)
+	{
+		Serial.println();
+		Serial.println(delta.maxArrIndex);
+		for (int i = 0; i < 3; i++)
+		{
+			Serial.println(delta.posArr[delta.maxArrIndex-2][i]);
+		};		
+		Serial.print("兩次輸入度數差 = ");
+		for (int i = 0; i < 3; i++)
+		{
+			Serial.print(degreeTurn[i]);
+			if (i < 2)
+			{
+				Serial.print(" , ");
+			}
+		}
+	}
+	
 	
 }
-
 //--------PtoP_output----------end-----
 
 //--------ctrl_deg(int16_t d1, int16_t d2, int16_t d3, uint16_t rs, uint16_t ra)----------
@@ -200,6 +229,7 @@ void PtoP_output()
 //}
 //---------DegreeAddSpeed()  END-------------
 
+//----------- DegreeContralSpeed----------
 //void DegreeContralSpeed()
 //{
 //	for (int A = 0; A<3; A++)
@@ -230,6 +260,7 @@ void PtoP_output()
 //		}
 //	}
 //}
+//----------- DegreeContralSpeed----------end---------
 
 //---------------DegreeOutput()----------------
 //void DegreeOutput()
@@ -316,8 +347,6 @@ void PtoP_output()
 //}
 //---------------DegerrOutput()  END------------------
 
-
-
 //void input()
 //{
 //	while (1)
@@ -347,4 +376,6 @@ void PtoP_output()
 void OK()
 {
 	Serial.println("OK");
+	Serial.println();
 }
+
