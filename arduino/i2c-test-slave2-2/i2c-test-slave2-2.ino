@@ -32,35 +32,35 @@ void loop() {
 }
   
 void receiveEvent(int count) {
-  if (Wire.available()) {
-    for (int i = 0; i < 3; i++) data[i] = Wire.read();
-    while (Wire.available()) Wire.read();
-    dataReceived = true;
-    dataReturned = false;
-  }
+		if (Wire.available()) {
+				for (int i = 0; i < 3; i++) data[i] = Wire.read();
+				while (Wire.available()) Wire.read();
+				dataReceived = true;
+				dataReturned = false;
+		}
 }
   
 void requestEvent()
 {
-  char op = (char) data[1];
-  Serial.print("op = ");
-  Serial.println(op);
-  switch (op) {
-    case 'A':
-      data[3] = data[0] & data[2];
-      break;
-    case 'O':
-      data[3] = data[0] | data[2];
-      break;
-    case 'X':
-      data[3] = data[0] ^ data[2];
-      break;
-    default:
-      data[3] = 0xFF;
-      break;
-  }
-  Wire.write(data, 4);
-  dataReceived = false;
-  dataReturned = true;
+		char op = (char) data[1];
+		Serial.print("op = ");
+		Serial.println(op);
+		switch (op) {
+		case 'A':
+			data[3] = data[0] & data[2];
+			break;
+		case 'O':
+			data[3] = data[0] | data[2];
+			break;
+		case 'X':
+			data[3] = data[0] ^ data[2];
+			break;
+		default:
+			data[3] = 0xFF;
+			break;
+		 }
+		Wire.write(data, 4);
+		dataReceived = false;
+		dataReturned = true;
 }
 

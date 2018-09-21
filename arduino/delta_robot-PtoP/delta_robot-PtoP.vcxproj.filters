@@ -24,9 +24,15 @@
     <ClInclude Include="DeltaRobInverseKin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="My.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeltaRobInverseKin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="My.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
