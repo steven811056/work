@@ -13,7 +13,7 @@ const int dirPin[3] = {3, 5, 7};
 //int16_t Address[100][3];  //輸入位址的紀錄存放
 //int16_t AddressGap[3];  //輸入與前一次所在的距離差
 int16_t Max=0;  //運轉圈數
-int16_t P[3] = {0, 0, 0};  //本次輸入的存放位置
+int32_t P[3] = {0, 0, 0};  //本次輸入的存放位置
 uint16_t t;  //運轉時間
 int16_t Test1=0,Test2=0,Test3=0;
 char choose='!';  //選擇輸入模式
@@ -25,6 +25,11 @@ double turn[3];  //三軸所要運轉的角度
 //char Hi;   //我所使用的歸零代號
 //int16_t zero=10; //歸零用的感測器
 
+union unionType
+{
+	byte a[4] = {0,0,0,0};
+	int b;
+};
 
 void setup()
 {
@@ -85,7 +90,7 @@ void loop()
 						break; 
 					}                   
 				}
-				Serial.println("角度輸入完成--開始運算"); 
+				Serial.println("座標輸入完成--開始運算"); 
 				L_AC = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
 				if(L_AC>30 || L_AC<10)
 				{
@@ -127,20 +132,85 @@ void loop()
 			}  
 			if(choose == '2')  //2號模式 輸入角度
 			{
-				Serial.println("角度模式");		
-				Wire.beginTransmission(0x01);
-				Serial.println("開始與slave1通訊");
-				Serial.println("傳送kevin2");
-				Wire.write("kevin2");
-				Wire.endTransmission();
-				Serial.println("結束與slave1通訊");
-				Serial.println();
+				Serial.println("角度模式");	
+				Serial.println("開始與slave通訊");
+				connect();				
+				Serial.println("結束與slave通訊");
 				choose='!';
 				Serial.println();
 				break;
 			}
 		}  
 	} 
+}
+
+void connect()
+{
+	unionType Slave1;
+	unionType Slave2;
+	unionType Slave3;
+	Wire.beginTransmission(0x01);		
+	Wire.write("start");
+	Wire.endTransmission();	
+	Wire.beginTransmission(0x02);	
+	Wire.write("start");
+	Wire.endTransmission();
+	Wire.beginTransmission(0x03);	
+	Wire.write("start");
+	Wire.endTransmission();
+	Serial.println();
+	Serial.println("輸入三軸角度");
+	while (1)
+	{
+		if (Serial.available())
+		{
+			P[0] = Serial.parseInt();
+			P[1] = Serial.parseInt();
+			P[2] = Serial.parseInt();
+			break;
+		}
+	}
+	Slave1.b = P[0];
+	Slave2.b = P[1];
+	Slave3.b = P[2];
+	Serial.println(Slave1.b);
+	Serial.println(Slave2.b);
+	Serial.println(Slave3.b);
+	Serial.println();
+	Wire.beginTransmission(0x01);
+	Serial.println("beginTransmission(0x01)");
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave1.a[i] != 0)
+		{
+			Wire.write(Slave1.a[i]);
+			Serial.println(Slave1.a[i]);
+		}
+	}	
+	Wire.endTransmission();
+	Wire.beginTransmission(0x02);
+	Serial.println("beginTransmission(0x02)");
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave2.a[i] != 0)
+		{
+			Wire.write(Slave2.a[i]);
+			Serial.println(Slave2.a[i]);
+		}
+	}
+	Wire.endTransmission();
+	Wire.beginTransmission(0x03);
+	Serial.println("beginTransmission(0x03)");
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave3.a[i] != 0)
+		{
+			Wire.write(Slave3.a[i]);
+			Serial.println(Slave3.a[i]);
+		}
+	}
+	Wire.endTransmission();
+
 }
 
 void Quadrant_Judge()

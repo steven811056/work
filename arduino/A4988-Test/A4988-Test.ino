@@ -8,7 +8,7 @@ int dirPin = 2;
 int stepperPin = 3;
 
 int C=0;
-int delaytime = 50;
+int delaytime = 20;
 
 void setup()
 {

@@ -28,6 +28,13 @@ int16_t locationNumber=0;
 int16_t ring;		//輸入位置的次數  暫時沒用到
 int shownumber;
 
+
+union unionType
+{
+	byte a[2];
+	int b;
+};
+
 void setup()
 {
 	Serial.begin(9600);
@@ -310,62 +317,62 @@ void PtoP_output()
 //---------reutrnO---------
 void return0()		//歸零函式
 {
-		Serial.println("歸零啟動");
-		Serial.println((int)digitalRead(8));
-		Serial.println(digitalRead(senser[1]));
-		Serial.println(digitalRead(senser[2]));
-		//-----1-----
-		Wire.beginTransmission(1);
-		if (debug)
-		{
-				Serial.println("beginTransmission to 1");
-		}
-		Wire.write("return0");
-		Wire.endTransmission();
-		Wire.beginTransmission(1);
-		Wire.write("start");
-		Wire.endTransmission();	
-		//-----2-----
-		Wire.beginTransmission(2);
-		if (debug)
-		{
-				Serial.println("beginTransmission to 2");
-		}
-		Wire.write("return0");
-		Wire.endTransmission();
-		Wire.beginTransmission(2);
-		Wire.write("start");
-		Wire.endTransmission();
-		//-----3-----.	
-		Wire.beginTransmission(3);	
-		if (debug)
-		{
-				Serial.println("beginTransmission to 3");
-		}
-		Wire.write("return0");
-		Wire.endTransmission();
-		Wire.beginTransmission(3);
-		Wire.write("start");
-		Wire.endTransmission();	
-		/*delay(2000);
-		while (1)
-		{
-				Wire.requestFrom(1,4);
-				if (Wire.available())
-				{
-						returnData = Wire.read();
-						if (debug)
-						{
-								Serial.println(returnData);
-						}
+	Serial.println("歸零啟動");
+	Serial.println((int)digitalRead(8));
+	Serial.println(digitalRead(senser[1]));
+	Serial.println(digitalRead(senser[2]));
+	//-----1-----
+	Wire.beginTransmission(1);
+	if (debug)
+	{
+			Serial.println("beginTransmission to 1");
+	}
+	Wire.write("return0");
+	Wire.endTransmission();
+	Wire.beginTransmission(1);
+	Wire.write("start");
+	Wire.endTransmission();	
+	//-----2-----
+	Wire.beginTransmission(2);
+	if (debug)
+	{
+			Serial.println("beginTransmission to 2");
+	}
+	Wire.write("return0");
+	Wire.endTransmission();
+	Wire.beginTransmission(2);
+	Wire.write("start");
+	Wire.endTransmission();
+	//-----3-----.	
+	Wire.beginTransmission(3);	
+	if (debug)
+	{
+			Serial.println("beginTransmission to 3");
+	}
+	Wire.write("return0");
+	Wire.endTransmission();
+	Wire.beginTransmission(3);
+	Wire.write("start");
+	Wire.endTransmission();	
+	/*delay(2000);
+	while (1)
+	{
+			Wire.requestFrom(1,4);
+			if (Wire.available())
+			{
+					returnData = Wire.read();
+					if (debug)
+					{
+							Serial.println(returnData);
+					}
 
-				}
-				if (returnData == 1)
-				{
+			}
+			if (returnData == 1)
+			{
 
-					break;
-				}
-		}*/
+				break;
+			}
+	}*/
 }
 //---------reutrnO---------end----------
 
@@ -398,8 +405,15 @@ void ShowRE()
 	Wire.write("start");
 	Wire.endTransmission();
 }
+
 void Show()
-{	
+{		
+	unionType Slave1;
+	unionType Slave2;
+	unionType Slave3;
+	Slave1.b = 130;
+	Slave2.b = 130;
+	Slave3.b = 400;
 	if (Serial.available())
 	{
 		Serial.println("hi");
@@ -409,8 +423,7 @@ void Show()
 	{
 		Serial.println("hi   1");
 		Wire.beginTransmission(1);
-		Wire.write("start");
-		Serial.println(sizeof("start"));
+		Wire.write("start");		
 		Wire.endTransmission();
 		Wire.beginTransmission(2);
 		Wire.write("start");	
@@ -423,65 +436,15 @@ void Show()
 		Serial.println("beginTransmission(3);");
 		delay(10);
 		Wire.beginTransmission(1);
-		Wire.write(130);
+		Wire.write(Slave1.a[0]);
 		Wire.endTransmission();
 		Wire.beginTransmission(2);
-		Wire.write(130);
+		Wire.write(Slave2.a[0]);
 		Wire.endTransmission();
 		Wire.beginTransmission(0x03);
-		Wire.write(400);
+		Wire.write(Slave3.a[0]);
+		Wire.write(Slave3.a[1]);
 		Wire.endTransmission();
-		delay(3000);
-		Wire.beginTransmission(1);
-		Wire.write(130);
-		Wire.endTransmission();
-		Wire.beginTransmission(2);
-		Wire.write(130);
-		Wire.endTransmission();
-		Wire.beginTransmission(0x03);
-		Wire.write(400);
-		Serial.println(sizeof(400));
-		Wire.endTransmission();
-
 		shownumber = 0;
-
 	}		
-
-}
-
-void Show1()
-{	
-	Wire.beginTransmission(1);
-	Wire.write("start");
-	Serial.println("beginTransmission(1);");
-	Wire.endTransmission();
-	Wire.beginTransmission(1);
-	Wire.write(1000);
-	Wire.endTransmission();
-	while (1)
-	{
-		Wire.requestFrom(1, 10);
-		if (Wire.available())
-		{
-			//if (Wire.read() == "finish")
-			break;
-		}
-	}
-	delay(10000);
-	////-----2-----
-	//Wire.beginTransmission(2);
-	//Wire.write("start");
-	//Wire.endTransmission();
-	//Wire.beginTransmission(2);
-	//Wire.write(50);
-	//Wire.endTransmission();
-	////-----3-----.	
-	//Wire.beginTransmission(3);
-	//Wire.write("start");
-	//Wire.endTransmission();
-	//Wire.beginTransmission(3);
-	//Wire.write(30);
-	//Wire.endTransmission();
-	//delay(6000);
-	
 }
