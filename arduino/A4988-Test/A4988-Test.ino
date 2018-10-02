@@ -4,8 +4,8 @@
 //int stepperPin = 4;
 //int dirPin = 7;
 //int stepperPin = 6;
-int dirPin = 2;
-int stepperPin = 3;
+int dirPin = A0;
+int stepperPin = A1;
 
 int C=0;
 int delaytime = 20;
