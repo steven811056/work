@@ -8,12 +8,13 @@ String incomingString = "";
 int dirPin = A0;
 int stepperPin = A1;
 const int senser = 2 ;
-int incomingInt =0;
+uint32_t incomingInt =0;
 const int delaytime = 30;
 int8_t data[2];
 boolean debug = 1;
 int incomingIntShow = 100;
-int Show;
+int Show = 0;
+uint8_t First_Senser = 0;
 
 UnionTurn testU;
 
@@ -32,25 +33,35 @@ void setup()
 	pinMode(dirPin, OUTPUT);	
 	pinMode(A2, OUTPUT);
 	digitalWrite(senser, LOW);
+
 }
 
 void loop()
 {
-	if (digitalRead(senser) == LOW)
+	/*if (First_Senser == 0)
 	{
-		Serial.println("senser  LOW");
-		digitalWrite(A2, LOW);
-		digitalWrite(dirPin, HIGH);
-		uint32_t  i = 40000;
-		Serial.println(i);
-		for (i; i > 0; i = i - 1)
+		if (digitalRead(senser) == LOW)
 		{
-			digitalWrite(stepperPin, HIGH);
-			delayMicroseconds(delaytime);
-			digitalWrite(stepperPin, LOW);
-			delayMicroseconds(delaytime);
+			Serial.println("senser  LOW");
+			digitalWrite(A2, LOW);
+			digitalWrite(dirPin, HIGH);
+			uint32_t  i = 40000;
+			Serial.println(i);
+			for (i; i > 0; i = i - 1)
+			{
+				digitalWrite(stepperPin, HIGH);
+				delayMicroseconds(delaytime);
+				digitalWrite(stepperPin, LOW);
+				delayMicroseconds(delaytime);
+			}
+			First_Senser = 1;
 		}
+	}*/
+	if (Show == 1)
+	{
+		Turn();
 	}
+
 }
 
 void test(int t)
@@ -84,7 +95,6 @@ void requestEvent()
 {
 	Serial.println(data[0]);
 	Wire.write(data[0]);
-
 }
 
 void testUU(int a)
@@ -92,11 +102,11 @@ void testUU(int a)
 	testU.Start();
 	if (testU.END() == 1)
 	{
-		Turn(1);
+		Show = 1;
 	}
 }
 
-void Turn(int t)
+void Turn()
 {
 	if (debug)
 	{
@@ -106,7 +116,7 @@ void Turn(int t)
 	Serial.println(incomingInt);	
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, HIGH);	
-	uint32_t  i = (incomingInt * 20) / 0.225;
+	uint32_t  i =  (uint32_t)incomingInt*6400+320;
 	Serial.println(i);
 	for ( i ; i > 0; i = i - 1)
 	{
@@ -117,7 +127,7 @@ void Turn(int t)
 		/*Serial.print("-->");
 		Serial.println(i);*/
 	}	
-	delay(5500);
+	delay(10000);
 	Turn2(1);
 
 }
@@ -130,7 +140,7 @@ void Turn2(int t)
 	}		
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, LOW);	
-	uint32_t i = (incomingInt * 20) / 0.225  ;
+	uint32_t i = incomingInt * 6400+320;
 	for ( i ; i > 0; i = i - 1)
 	{
 		digitalWrite(stepperPin, HIGH);
@@ -142,7 +152,7 @@ void Turn2(int t)
 	}
 	incomingInt = 0;
 	Wire.onReceive(test);
-
+	Show = 0;
 }
 
 void return0(int t)

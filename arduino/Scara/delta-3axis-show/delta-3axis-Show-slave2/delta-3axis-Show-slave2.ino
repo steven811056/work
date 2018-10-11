@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include "C:\Users\USER\Desktop\arduino-1.8.3 - bootloader\libraries\SlaveUnion\SlaveUnion.h"
+#include <arduino.h>
 
 const int SLAVE_ADDRESS = 0x02;
 char incomingByte = '0';
@@ -7,13 +8,13 @@ String incomingString = "";
 
 int dirPin = A0;
 int stepperPin = A1;
-const int senser=  2;
-int incomingInt = 0;
-const int delaytime = 20;
+const int senser = 2;
+uint32_t incomingInt = 0;
+const int delaytime = 30;
 int8_t data[2];
 boolean debug = 1;
 int incomingIntShow = 100;
-int Show;
+int Show = 0;
 
 UnionTurn testU;
 
@@ -26,17 +27,24 @@ void setup()
 	if (debug)
 	{
 		Serial.println("--> Slave 2 Ready");
-	}	
+	}
 	pinMode(senser, INPUT);
 	pinMode(stepperPin, OUTPUT);
-	pinMode(dirPin, OUTPUT);	
+	pinMode(dirPin, OUTPUT);
 	pinMode(A2, OUTPUT);
 	digitalWrite(senser, LOW);
 }
 
 void loop()
 {
-
+	if (Show == 1)
+	{
+		Turn();
+	}
+	if (Show == 2)
+	{
+		Turn2();
+	}
 }
 
 void test(int t)
@@ -64,6 +72,10 @@ void test(int t)
 	{
 		Wire.onReceive(testUU);
 	}
+	if (incomingString == "start2")
+	{
+		Wire.onReceive(testUZ);
+	}
 }
 
 void requestEvent()
@@ -78,21 +90,30 @@ void testUU(int a)
 	testU.Start();
 	if (testU.END() == 1)
 	{
-		Turn(1);
+		Show = 1;
 	}
 }
 
-void Turn(int t)
+void testUZ(int a)
+{
+	testU.Start();
+	if (testU.END() == 1)
+	{
+		Show = 2;
+	}
+}
+
+void Turn()
 {
 	if (debug)
 	{
-		Serial.println("--> Turn start");
+		Serial.println("--> Turn1 start");
 	}
 	incomingInt = testU.incommingByte;
 	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, HIGH);
-	uint32_t  i = (incomingInt * 20) / 0.225;
+	uint32_t  i = (incomingInt * 10) / 0.05625;
 	Serial.println(i);
 	for (i; i > 0; i = i - 1)
 	{
@@ -102,21 +123,32 @@ void Turn(int t)
 		delayMicroseconds(delaytime);
 		/*Serial.print("-->");
 		Serial.println(i);*/
+	}	
+	if (Show == 1)
+	{
+		Serial.println("delay---");
+		delay(10000);
+		Turn2();
 	}
-	delay(5500);
-	Turn2(1);
-
+	if (Show == 2)
+	{
+		incomingInt = 0;
+		Show = 0;
+		Wire.onReceive(test);
+	}
 }
 
-void Turn2(int t)
+void Turn2()
 {
 	if (debug)
 	{
-		Serial.println("--> Turn start");
+		Serial.println("--> Turn2 start");
 	}
+	incomingInt = testU.incommingByte;
+	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, LOW);
-	uint32_t i = (incomingInt * 20) / 0.225;
+	uint32_t i = (incomingInt * 10) / 0.05625;
 	for (i; i > 0; i = i - 1)
 	{
 		digitalWrite(stepperPin, HIGH);
@@ -125,10 +157,19 @@ void Turn2(int t)
 		delayMicroseconds(delaytime);
 		/*Serial.print("-->");
 		Serial.println(i);*/
+	}	
+	if (Show == 1)
+	{
+		incomingInt = 0;
+		Show = 0;
+		Wire.onReceive(test);
+	}	
+	if (Show == 2)
+	{
+		Serial.println("delay---");
+		delay(10000);
+		Turn();
 	}
-	incomingInt = 0;
-	Wire.onReceive(test);
-
 }
 
 void return0(int t)
@@ -194,7 +235,7 @@ void return1()
 		}
 		if (digitalRead(senser) == LOW)
 		{
-			Serial.println("senser[0]  OK");
+			Serial.println("senser  OK");
 			Wire.onReceive(test);
 			incomingString = "";
 

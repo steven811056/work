@@ -3,6 +3,7 @@
 #include "My.h"
 #include <Wire.h>
 
+
 #define L_UPPER 0.12 //上臂長		單位：公尺
 #define L_LOWER 0.285 //下臂長
 #define WB 0.13  //底座正三角型重心到邊的長度

@@ -9,12 +9,12 @@ String incomingString = "";
 int dirPin = A0;
 int stepperPin = A1;
 const int senser = 2 ;
-int incomingInt = 0;
+uint32_t incomingInt = 0;
 const int delaytime = 20;
 int8_t data[2];
 boolean debug = 1;
-int incomingIntShow = 100;
-int Show;
+int incomingIntShow = 0;
+int Show =0 ;
 
 UnionTurn testU;
 
@@ -37,7 +37,11 @@ void setup()
 
 void loop()
 {
-
+	if (Show == 1)
+	{
+		Turn();		
+	}
+	
 }
 
 void test(int t)
@@ -79,11 +83,11 @@ void testUU(int a)
 	testU.Start();
 	if (testU.END() == 1)
 	{
-		Turn(1);
-	}
+		Show = 1 ; 
+	}	
 }
 
-void Turn(int t)
+void Turn()
 {
 	if (debug)
 	{
@@ -93,7 +97,7 @@ void Turn(int t)
 	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, HIGH);
-	uint32_t  i = (incomingInt * 20) / 0.225;
+	uint32_t  i = (incomingInt * 20) / 0.05625;
 	Serial.println(i);
 	for (i; i > 0; i = i - 1)
 	{
@@ -105,12 +109,11 @@ void Turn(int t)
 		Serial.println(i);*/
 	}
 	Serial.println("delay---");
-	delay(3500);
-	Turn2(1);
-
+	delay(10000);
+	Turn2();
 }
 
-void Turn2(int t)
+void Turn2(void)
 {
 	if (debug)
 	{
@@ -118,7 +121,7 @@ void Turn2(int t)
 	}
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, LOW);
-	uint32_t i = (incomingInt * 20) / 0.225;
+	uint32_t i = (incomingInt * 20) / 0.05625;
 	for (i; i > 0; i = i - 1)
 	{
 		digitalWrite(stepperPin, HIGH);
@@ -130,7 +133,8 @@ void Turn2(int t)
 	}
 	incomingInt = 0;
 	Wire.onReceive(test);
-
+	Show = 0;
+	incomingIntShow = 0;
 }
 
 void return0(int t)
