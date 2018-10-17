@@ -129,7 +129,7 @@ void Turn()
 	if (Show == 1)
 	{
 		Serial.println("delay---");
-		delay(10000);
+		delay(1000);
 		Turn2();
 	}
 	if (Show == 2)
@@ -169,7 +169,7 @@ void Turn2()
 	if (Show == 2)
 	{
 		Serial.println("delay---");
-		delay(10000);
+		delay(1000);
 		Turn();
 	}
 }

@@ -8,7 +8,7 @@ int dirPin = A0;
 int stepperPin = A1;
 
 int C=0;
-int delaytime = 25;
+int delaytime = 100;
 
 void setup()
 {

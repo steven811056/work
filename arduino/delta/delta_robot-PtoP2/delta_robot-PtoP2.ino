@@ -11,11 +11,6 @@
 #define UP 0.026  //下方小正三角形重心到頂點的長度
 #define SP 0.045  //下方正三角型的邊長
 
-
-const int stepPin[3] = { 2,4,6 };
-const int dirPin[3] = { 3,5,7 };
-const int senser[3] = { 8,9,10 };
-const int delaytime = 3;
 boolean debug = 1;
 
 DeltaRobInverseKin delta(L_UPPER, L_LOWER, WB, WP, UP, SP);
@@ -61,6 +56,10 @@ void setup()
 
 void loop()
 {
+	if (Serial.available())
+	{
+		shownumber = Serial.read();
+	}
 	Show();
 	/*while (1)
 	{

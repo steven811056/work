@@ -1,3 +1,5 @@
+#include <ArduinoJson.hpp>
+#include <ArduinoJson.h>
 #include <Stop.h>
 #include "math.h"
 #include <Wire.h>
@@ -15,8 +17,10 @@ const int dirPin[3] = { 3, 5, 7 };
 
 //int16_t Address[100][3];  //輸入位址的紀錄存放
 int16_t AddressGap[3];  //輸入與前一次所在的距離差
+
 int8_t Max = 0;  //運轉圈數
-double P[3] = { 0, 0, 0 };  //本次輸入的存放位置
+
+double P[3] = { 0, 0, 0 };  //本次輸入的位置
 uint16_t t;  //運轉時間
 char choose = '!';  //選擇輸入模式
 double L_AB;  //A到B點的距離
@@ -26,12 +30,15 @@ double L_AG, L_CG, L_AE, L_BF;
 double C_X1, C_X2, C_Y1, C_Y2;
 double thetalOne, thetalTwo;  //角BAC 與 直線AC與X的夾角
 double thetalThree, thetalFour, thetalTF;
-double thetal_A[2];  //A所要轉的方向跟角度
+double thetal_A[2] = {0,0};  //A所要轉的方向跟角度
 double thetal_A2[2] = {0,0};
-double thetal_B[2];  //B所要轉的方向跟角度
+double thetal_A3[2] = { 0,0 };
+double thetal_B[2] = { 0,0 }; //B所要轉的方向跟角度
 double thetal_B2[2] = {0,0};
-double thetal_Z[2];
+double thetal_B3[2] = { 0,0 };
+double thetal_Z[2] = { 0,0 };
 double thetal_Z2[2] = { 0,0 };
+double thetal_Z3[2] = { 0,0 };
 double turn;  //y比x的比值		
 
 union unionType
@@ -163,20 +170,21 @@ void Quadrant_Judge()
 }
 //*******----------象限判斷-----------
 
-//---------兩元方程式-------------
-//void circle()
-//{
-//
-//}
-//**********---------兩元方程式-------------
-
 //----------座標角度轉換------------
 void delta_3axis()
-{
-	//Max++;
+{	
+	Max++;
 	unionType Slave1;
 	unionType Slave2;
 	unionType Slave3;
+	for (int i = 0; i < 2; i++)
+	{
+		thetal_A2[i] = thetal_A[i];
+		thetal_B2[i] = thetal_B[i];
+		thetal_Z2[i] = thetal_Z[i];
+	}
+	Serial.print("運轉圈數 --> ");
+	Serial.println(Max);
 	L_AB = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
 	Serial.print("L_AB -> ");
 	Serial.println(L_AB);
@@ -249,25 +257,67 @@ void delta_3axis()
 	Serial.print("thetal_A轉動");
 	Serial.print(thetal_A[1]);
 	Serial.println("度");
+	//----
+	thetal_Z[1] = P[2];
+	thetal_B[1] = thetalTF;
+	thetal_A3[1] = thetal_A[1] - thetal_A2[1];
+	thetal_B3[1] = thetal_B[1] - thetal_B2[1];
+	thetal_Z3[1] = thetal_Z[1] - thetal_Z2[1];
+	delay(1);
+	if (thetal_A3[1] < 0)
+	{
+		thetal_A3[0] = 1;
+		thetal_A3[1] = -(thetal_A3[1]);
+		Serial.println("<0");
+	}
+	else
+	{
+		thetal_A3[0] = 0;		
+		Serial.println(">0");
+	}
+	//
+	if (thetal_B3[1] < 0)
+	{
+		thetal_B3[0] = 1;
+		thetal_B3[1] = -(thetal_B3[1]);
+		Serial.println("<0");
+	}
+	else
+	{
+		thetal_B3[0] = 0;	
+		Serial.println(">0");
+	}
+	//
+	if (thetal_Z3[1] < 0)
+	{
+		thetal_Z3[0] = 1;
+		thetal_Z3[1] = -(thetal_Z3[1]);
+		Serial.println("<0");
+	}
+	else
+	{
+		thetal_Z3[0] = 0;	
+		Serial.println(">0");
+	}
+	Serial.print("輸出的3個角度 --> ");
+	Serial.print(thetal_A3[0]);
+	Serial.print(" <---> ");
+	Serial.print(thetal_A3[1]);
+	Serial.println();
+	Serial.print(thetal_B3[0]);
+	Serial.print(" <---> ");
+	Serial.print(thetal_B3[1]);
+	Serial.println();
+	Serial.print(thetal_Z3[0]);
+	Serial.print(" <---> ");
+	Serial.print(thetal_Z3[1]);
+	Serial.println();
+	//-----****
 	thetal_Z[1] = P[2];
 	thetal_B[1] = thetalTF;
 	Slave1.b = thetal_A[1];
 	Slave2.b = thetal_B[1];
-	Slave3.b = thetal_Z[1];
-	/*if (Max > 1)
-	{
-		AddressGap[0] = thetal_A[1] - thetal_A2[1];
-		AddressGap[1] = thetal_B[1] - thetal_B2[1];
-		AddressGap[2] = thetal_Z[1] - thetal_Z2[1];
-		for (int i = 0; i < 3; i++)
-		{
-			Serial.print("AddressGap"); Serial.print(i); Serial.print(" = ");
-			Serial.println(AddressGap[i]);
-		}		
-		thetal_A2[1] = thetal_A[1];
-		thetal_B2[1] = thetal_B[1];
-		thetal_Z2[1] = thetal_Z[1];
-	}*/
+	Slave3.b = thetal_Z[1];	
 	Wire.beginTransmission(0x01);
 	Serial.println("beginTransmission(0x01)");
 	for (int i = 0; i < 4; i++)

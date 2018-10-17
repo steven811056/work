@@ -110,7 +110,7 @@ void Turn()
 		/*Serial.print("-->");
 		Serial.println(i);*/
 	}	
-	delay(10000);
+	delay(1000);
 	Turn2(1);
 
 }

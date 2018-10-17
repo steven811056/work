@@ -1,38 +1,52 @@
+#include <SlaveUnion.h>
 #include <Wire.h>
-const int SLAVE_ADDRESS = 2;
+const int SLAVE_ADDRESS = 0x02;
 char incomingByte = '0';
 String incomingString = "";
 
-const int stepPin[3] = { 2,4,6 };
-const int dirPin[3] = { 3,5,7 };
-const int senser[3] = { 8,9,10 };
-const int delaytime = 300;
+int dirPin = A0;
+int stepperPin = A1;
+const int senser = 2;
+uint32_t incomingInt = 0;
+const int delaytime = 10;
+int8_t data[2];
 boolean debug = 1;
-int incomingIntShow = 50;
+int incomingIntShow = 100;
+int Show = 0;
 
 void setup()
 {
 	Wire.begin(SLAVE_ADDRESS);
 	Wire.onReceive(test);
 	Serial.begin(9600);
-	Serial.println("--> Slave 2 Ready");
-	for (int i = 0; i < 3; i++)
+	pinMode(A2, OUTPUT);
+	if (debug)
 	{
-		pinMode(senser[i + 8], INPUT);
-		pinMode(stepPin[i], OUTPUT);
-		pinMode(dirPin[i], OUTPUT);
+		Serial.println("--> Slave 2 Ready");
 	}
+	pinMode(senser, INPUT);
+	pinMode(stepperPin, OUTPUT);
+	pinMode(dirPin, OUTPUT);
+	pinMode(A2, OUTPUT);
+	digitalWrite(senser, LOW);
 }
 
 void loop()
 {
-	/*return1();
-	delay(1200);
-	turn1();
-	delay(1200);
-	return1();
-	delay(1200);*/
-
+	if (incomingString == "reset")
+	{
+		Serial.println("reset");
+		return1();
+		Serial.println("reset  END ");
+	}
+	if (Show == 1)
+	{
+		Turn();
+	}
+	if (Show == 2)
+	{
+		Turn2();
+	}
 }
 
 void test(int t)
@@ -40,138 +54,148 @@ void test(int t)
 	if (debug)
 	{
 		Serial.println("Slave 2 receive get");
-	}	
+	}
+	incomingString = "";
 	while (Wire.available())
 	{
 		incomingByte = (char)Wire.read();
 		incomingString = incomingString + incomingByte;
 		if (debug)
 		{
-			Serial.println(incomingByte);
-		}		
+			Serial.println(incomingString);
+		}
 
-	}
-	if (incomingString == "return0")
-	{		
-		Wire.onReceive(return0);
 	}
 	if (incomingString == "start")
 	{
-		Wire.onReceive(Turn);
+		Wire.onReceive(testUU);
+	}
+	if (incomingString == "start2")
+	{
+		Wire.onReceive(testUZ);
 	}
 }
 
-void Turn(int t)
+//void requestEvent()
+//{
+//	Serial.println(data[0]);
+//	Wire.write(data[0]);
+//
+//}
+
+void testUU(int a)
 {
-	int incomingInt;
+	testU.Start();
+	if (testU.END() == 1)
+	{
+		Show = 1;
+	}
+}
+
+void testUZ(int a)
+{
+	testU.Start();
+	if (testU.END() == 1)
+	{
+		Show = 2;
+	}
+}
+
+void Turn()
+{
 	if (debug)
 	{
-		Serial.println("--> Turn start");
+		Serial.println("--> Turn1 start");
 	}
-	incomingString = "";
-	while (Wire.available())
+	incomingInt = testU.incommingByte;
+	Serial.println(incomingInt);
+	digitalWrite(A2, LOW);
+	digitalWrite(dirPin, HIGH);
+	uint32_t  i = (incomingInt * 10) / (0.05625 * 2);
+	Serial.println(i);
+	for (i; i > 0; i = i - 1)
 	{
-		incomingInt = (int)Wire.read();
-
-		if (debug)
-		{
-			Serial.println(incomingInt);
-		}
+		digitalWrite(stepperPin, HIGH);
+		delayMicroseconds(delaytime);
+		digitalWrite(stepperPin, LOW);
+		delayMicroseconds(delaytime);
+		/*Serial.print("-->");
+		Serial.println(i);*/
 	}
-	digitalWrite(dirPin[1], LOW);
-	for (int i = (incomingInt / 0.225); i > 0; i = i - 1)
+	if (Show == 1)
 	{
-		digitalWrite(stepPin[1], HIGH);
-		delayMicroseconds(delaytime);
-		digitalWrite(stepPin[1], LOW);
-		delayMicroseconds(delaytime);
-		Serial.print("-->");
-		Serial.println(i);
+		Serial.println("delay---");
+		delay(10000);
+		Turn2();
 	}
-	Wire.onReceive(test);
-
+	if (Show == 2)
+	{
+		incomingInt = 0;
+		Show = 0;
+		Wire.onReceive(test);
+	}
 }
 
-void return0(int t)
+void Turn2()
 {
-	incomingString = "";
-	while (Wire.available())
+	if (debug)
 	{
-		incomingByte = (char)Wire.read();
-		incomingString = incomingString + incomingByte;
-		if (debug)
-		{
-			Serial.println(incomingByte);
-		}	
-
+		Serial.println("--> Turn2 start");
 	}
-	if (incomingString == "start")
+	incomingInt = testU.incommingByte;
+	Serial.println(incomingInt);
+	digitalWrite(A2, LOW);
+	digitalWrite(dirPin, LOW);
+	uint32_t i = (incomingInt * 10) / (0.05625 * 2);
+	for (i; i > 0; i = i - 1)
 	{
-		if (debug)
-		{
-			Serial.println("frequency send");
-		}		
-		while (incomingString == "start")
-		{
-			digitalWrite(dirPin[1], HIGH);
-			if (digitalRead(senser[1]) == HIGH)
-			{
-				digitalWrite(stepPin[1], HIGH);
-				delayMicroseconds(delaytime);
-				digitalWrite(stepPin[1], LOW);
-				delayMicroseconds(delaytime);
-				Serial.println("senser[1]  start");
-
-			}
-			if (digitalRead(senser[1]) == LOW)
-			{
-				Serial.println("senser[1]  OK");
-				Wire.onReceive(test);
-				incomingString = "";
-				break;
-
-			}
-		}
-	}
-
-}
-
-void turn1()
-{
-	digitalWrite(dirPin[1], LOW);
-	for (int i = (incomingIntShow / 0.225); i > 0; i = i - 1)
-	{
-		digitalWrite(stepPin[1], HIGH);
+		digitalWrite(stepperPin, HIGH);
 		delayMicroseconds(delaytime);
-		digitalWrite(stepPin[1], LOW);
+		digitalWrite(stepperPin, LOW);
 		delayMicroseconds(delaytime);
-		Serial.print("-->");
-		Serial.println(i);
+		/*Serial.print("-->");
+		Serial.println(i);*/
 	}
-	Wire.onReceive(test);
+	if (Show == 1)
+	{
+		incomingInt = 0;
+		Show = 0;
+		Wire.onReceive(test);
+	}
+	if (Show == 2)
+	{
+		Serial.println("delay---");
+		delay(10000);
+		Turn();
+	}
 }
 
 void return1()
 {
+	incomingString = "";
 	while (1)
 	{
-		digitalWrite(dirPin[1], HIGH);
-		if (digitalRead(senser[1]) == HIGH)
+		digitalWrite(dirPin, LOW);
+		if (digitalRead(senser) == HIGH)
 		{
-			digitalWrite(stepPin[1], HIGH);
+			digitalWrite(stepperPin, HIGH);
 			delayMicroseconds(delaytime);
-			digitalWrite(stepPin[1], LOW);
+			digitalWrite(stepperPin, LOW);
 			delayMicroseconds(delaytime);
-			Serial.println("senser[1]  start");
-
 		}
-		if (digitalRead(senser[1]) == LOW)
+		if (digitalRead(senser) == LOW)
 		{
-			Serial.println("senser[1]  OK");
-			Wire.onReceive(test);
+			Serial.println("senser  OK");
 			incomingString = "";
-
-
+			digitalWrite(dirPin, HIGH);
+			uint32_t i = (87 * 10) / 0.05625;
+			for (i; i > 0; i = i - 1)
+			{
+				digitalWrite(stepperPin, HIGH);
+				delayMicroseconds(delaytime);
+				digitalWrite(stepperPin, LOW);
+				delayMicroseconds(delaytime);
+			}
 			break;
 		}
 
