@@ -30,11 +30,11 @@ double L_AG, L_CG, L_AE, L_BF;
 double C_X1, C_X2, C_Y1, C_Y2;
 double thetalOne, thetalTwo;  //角BAC 與 直線AC與X的夾角
 double thetalThree, thetalFour, thetalTF;
-double thetal_A[2] = {0,0};  //A所要轉的方向跟角度
-double thetal_A2[2] = {0,0};
+double thetal_A[2] = { 0,0 };  //A所要轉的方向跟角度
+double thetal_A2[2] = { 0,0 };
 double thetal_A3[2] = { 0,0 };
 double thetal_B[2] = { 0,0 }; //B所要轉的方向跟角度
-double thetal_B2[2] = {0,0};
+double thetal_B2[2] = { 0,0 };
 double thetal_B3[2] = { 0,0 };
 double thetal_Z[2] = { 0,0 };
 double thetal_Z2[2] = { 0,0 };
@@ -44,7 +44,7 @@ double turn;  //y比x的比值
 union unionType
 {
 	byte a[4] = { 0,0,0,0 };
-	int32_t b;	
+	int32_t b;
 };
 union unionType2
 {
@@ -84,11 +84,11 @@ void loop()
 		if (Serial.available())
 		{
 			choose = Serial.read();
-			Serial.println(choose);			
+			Serial.println(choose);
 			if (choose == '0')
 			{
 				scara_reset();
-				
+
 				break;
 			}
 			if (choose == '1') //1號模式 輸入座標
@@ -98,7 +98,7 @@ void loop()
 				choose = '!';
 				Serial.println();
 				return;
-			}			
+			}
 			if (choose == '2')  //2號模式 輸入角度
 			{
 				Serial.println("角度模式");
@@ -108,14 +108,14 @@ void loop()
 				choose = '!';
 				Serial.println();
 				break;
-			}			
+			}
 		}
 	}
 }
 
 //----------------座標輸入---------------
 void ctrl_deg()
-{	
+{
 	L_AB = 0;  //A到B點的距離
 	F_CD = 0; //CD直線的斜率
 	L_EF = 0;
@@ -127,12 +127,12 @@ void ctrl_deg()
 	//Emergency_Stop.EMStop();
 	Serial.println("輸入座標");
 	while (1)
-	{		
+	{
 		if (Serial.available())
 		{
 			P[0] = Serial.parseInt();
 			P[1] = Serial.parseInt();
-			P[2] = Serial.parseInt();			
+			P[2] = Serial.parseInt();
 			break;
 		}
 	}
@@ -172,7 +172,7 @@ void Quadrant_Judge()
 
 //----------座標角度轉換------------
 void delta_3axis()
-{	
+{
 	Max++;
 	unionType Slave1;
 	unionType Slave2;
@@ -253,7 +253,7 @@ void delta_3axis()
 	if (P[0] < 0)
 	{
 		thetal_A[1] = 180 - thetalTwo - thetalOne;
-	}	
+	}
 	Serial.print("thetal_A轉動");
 	Serial.print(thetal_A[1]);
 	Serial.println("度");
@@ -272,7 +272,7 @@ void delta_3axis()
 	}
 	else
 	{
-		thetal_A3[0] = 0;		
+		thetal_A3[0] = 0;
 		Serial.println(">0");
 	}
 	//
@@ -284,7 +284,7 @@ void delta_3axis()
 	}
 	else
 	{
-		thetal_B3[0] = 0;	
+		thetal_B3[0] = 0;
 		Serial.println(">0");
 	}
 	//
@@ -296,7 +296,7 @@ void delta_3axis()
 	}
 	else
 	{
-		thetal_Z3[0] = 0;	
+		thetal_Z3[0] = 0;
 		Serial.println(">0");
 	}
 	Serial.print("輸出的3個角度 --> ");
@@ -317,7 +317,7 @@ void delta_3axis()
 	thetal_B[1] = thetalTF;
 	Slave1.b = thetal_A[1];
 	Slave2.b = thetal_B[1];
-	Slave3.b = thetal_Z[1];	
+	Slave3.b = thetal_Z[1];
 	Wire.beginTransmission(0x01);
 	Serial.println("beginTransmission(0x01)");
 	for (int i = 0; i < 4; i++)
@@ -347,7 +347,7 @@ void delta_3axis()
 	Serial.print("thetal_B轉動 -> ");
 	Serial.print(thetal_B[1]);
 	Serial.println("度");
-	Serial.print("Z軸旋轉 -> ");	
+	Serial.print("Z軸旋轉 -> ");
 	Serial.println(P[2]);
 
 }
@@ -427,21 +427,21 @@ void connect()
 void scara_reset()
 { /*  歸零方式我定為AB臂轉180度壓住極限開關
   ，BC臂為壓到極限開關後往反方向旋轉135度  */
-	//Wire.beginTransmission(1);
-	//  Wire.write(33);  
-	//ascii碼傳輸!  之前用3沒有顯是是因為ascii碼的3是^C的意思
-	//Wire.endTransmission();
-	/*for (int i = 0; i<2; i++)
-	{
-		thetalOne = 0;
-		thetalTwo = 0;
-		thetal_A[i] = 0;
-		thetal_B[i] = 0;
-	}*/
+  //Wire.beginTransmission(1);
+  //  Wire.write(33);  
+  //ascii碼傳輸!  之前用3沒有顯是是因為ascii碼的3是^C的意思
+  //Wire.endTransmission();
+  /*for (int i = 0; i<2; i++)
+  {
+  thetalOne = 0;
+  thetalTwo = 0;
+  thetal_A[i] = 0;
+  thetal_B[i] = 0;
+  }*/
 	Serial.println("reset");
 	Wire.beginTransmission(0x01);
-	Wire.write("reset");	
-	Wire.endTransmission();		
+	Wire.write("reset");
+	Wire.endTransmission();
 	Wire.beginTransmission(0x02);
 	Wire.write("reset");
 	Wire.endTransmission();

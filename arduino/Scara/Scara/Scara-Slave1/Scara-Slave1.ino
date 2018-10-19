@@ -10,7 +10,7 @@ int dirPin = A0;
 int stepperPin = A1;
 const int senser = 2;
 uint32_t incomingInt = 0;
-const int delaytime = 20;
+const int delaytime = 30;
 int8_t data[2];
 boolean debug = 1;
 int incomingIntShow = 100;
@@ -108,7 +108,8 @@ void Turn()
 	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, HIGH);
-	uint32_t  i = (incomingInt * 20) /( 0.05625*2);
+	//int32_t  i = (incomingInt * 20) /( 0.05625*2);
+	uint32_t i = incomingInt;
 	Serial.println(i);
 	for (i; i > 0; i = i - 1)
 	{
@@ -119,7 +120,7 @@ void Turn()
 		/*Serial.print("-->");
 		Serial.println(i);*/
 	}
-	if (Show == 1)
+	/*if (Show == 1)
 	{
 		Serial.println("delay---");
 		delay(1000);
@@ -130,7 +131,9 @@ void Turn()
 		incomingInt = 0;
 		Show = 0;
 		Wire.onReceive(test);
-	}
+	}*/
+	Show = 0;
+	Wire.onReceive(test);
 }
 
 void Turn2()
@@ -143,17 +146,16 @@ void Turn2()
 	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, LOW);
-	uint32_t i = (incomingInt * 20) / (0.05625 * 2);
+	//uint32_t i = (incomingInt * 20) / (0.05625 * 2);
+	uint32_t i = incomingInt;
 	for (i; i > 0; i = i - 1)
 	{
 		digitalWrite(stepperPin, HIGH);
 		delayMicroseconds(delaytime);
 		digitalWrite(stepperPin, LOW);
-		delayMicroseconds(delaytime);
-		/*Serial.print("-->");
-		Serial.println(i);*/
+		delayMicroseconds(delaytime);		
 	}
-	if (Show == 1)
+	/*if (Show == 1)
 	{
 		incomingInt = 0;
 		Show = 0;
@@ -164,7 +166,9 @@ void Turn2()
 		Serial.println("delay---");
 		delay(1000);
 		Turn();
-	}
+	}*/
+	Show = 0;
+	Wire.onReceive(test);
 }
 
 void return1()
@@ -172,7 +176,7 @@ void return1()
 	incomingString = "";
 	while (1)
 	{
-		digitalWrite(dirPin, LOW);
+		digitalWrite(dirPin, HIGH);
 		if (digitalRead(senser) == HIGH)
 		{
 			digitalWrite(stepperPin, HIGH);
@@ -184,8 +188,8 @@ void return1()
 		{
 			Serial.println("senser  OK");
 			incomingString = "";
-			digitalWrite(dirPin, HIGH);
-			uint32_t i = (87 * 10) / 0.05625;
+			digitalWrite(dirPin, LOW);
+			uint32_t i = (178 * 20) / (0.05625*2);
 			for (i; i > 0; i = i - 1)
 			{
 				digitalWrite(stepperPin, HIGH);
