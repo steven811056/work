@@ -2,6 +2,8 @@
 #include <Wire.h>
 #include <arduino.h>
 
+#define turndegree 33
+
 const int SLAVE_ADDRESS = 4;
 char incomingByte = '0';
 String incomingString = "";
@@ -62,7 +64,7 @@ void loop()
 			Serial.println("TURN");
 		}
 		digitalWrite(dirPin, HIGH);
-		uint32_t i = (31) / (0.05625 * 2);
+		uint32_t i = (turndegree) / (0.05625 * 2);
 		for (i; i > 0; i = i - 1)
 		{
 			digitalWrite(stepperPin, HIGH);

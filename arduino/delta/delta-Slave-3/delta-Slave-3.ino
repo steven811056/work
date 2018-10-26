@@ -1,3 +1,4 @@
+#include <SlaveUnion.h>
 #include <Wire.h>
 #include <arduino.h>
 
@@ -9,12 +10,14 @@ int dirPin = A0;
 int stepperPin = A1;
 const int senser = 2;
 uint32_t incomingInt = 0;
-const int delaytime = 50;
+const int delaytime = 250;
+int reset_delaytime = 40;
 int8_t data[2];
 boolean debug = 1;
 int incomingIntShow = 100;
 int Show = 0;
-uint8_t First_Senser = 0;
+
+UnionTurn testU;
 
 void setup()
 {
@@ -46,7 +49,10 @@ void loop()
 	{
 		Turn();
 	}
-
+	if (Show == 2)
+	{
+		Turn2();
+	}
 }
 
 void test(int t)
@@ -64,17 +70,16 @@ void test(int t)
 		{
 			Serial.println(incomingString);
 		}
+
 	}
 	if (incomingString == "start")
 	{
 		Wire.onReceive(testUU);
 	}
-}
-
-void requestEvent()
-{
-	Serial.println(data[0]);
-	Wire.write(data[0]);
+	if (incomingString == "start2")
+	{
+		Wire.onReceive(testUZ);
+	}
 }
 
 void testUU(int a)
@@ -86,17 +91,27 @@ void testUU(int a)
 	}
 }
 
+void testUZ(int a)
+{
+	testU.Start();
+	if (testU.END() == 1)
+	{
+		Show = 2;
+	}
+}
+
 void Turn()
 {
 	if (debug)
 	{
-		Serial.println("--> Turn start");
+		Serial.println("--> Turn1 start");
 	}
 	incomingInt = testU.incommingByte;
 	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, HIGH);
-	uint32_t  i = (uint32_t)incomingInt * 3200 + 320;
+	//int32_t  i = (incomingInt * 20) /( 0.05625*2);
+	uint32_t i = incomingInt;
 	Serial.println(i);
 	for (i; i > 0; i = i - 1)
 	{
@@ -107,20 +122,34 @@ void Turn()
 		/*Serial.print("-->");
 		Serial.println(i);*/
 	}
-	delay(10000);
-	Turn2(1);
-
+	/*if (Show == 1)
+	{
+	Serial.println("delay---");
+	delay(1000);
+	Turn2();
+	}
+	if (Show == 2)
+	{
+	incomingInt = 0;
+	Show = 0;
+	Wire.onReceive(test);
+	}*/
+	Show = 0;
+	Wire.onReceive(test);
 }
 
-void Turn2(int t)
+void Turn2()
 {
 	if (debug)
 	{
-		Serial.println("--> Turn start");
+		Serial.println("--> Turn2 start");
 	}
+	incomingInt = testU.incommingByte;
+	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
 	digitalWrite(dirPin, LOW);
-	uint32_t i = incomingInt * 3200 + 320;
+	//uint32_t i = (incomingInt * 20) / (0.05625 * 2);
+	uint32_t i = incomingInt;
 	for (i; i > 0; i = i - 1)
 	{
 		digitalWrite(stepperPin, HIGH);
@@ -130,9 +159,20 @@ void Turn2(int t)
 		/*Serial.print("-->");
 		Serial.println(i);*/
 	}
+	/*if (Show == 1)
+	{
 	incomingInt = 0;
-	Wire.onReceive(test);
 	Show = 0;
+	Wire.onReceive(test);
+	}
+	if (Show == 2)
+	{
+	Serial.println("delay---");
+	delay(1000);
+	Turn();
+	}*/
+	Show = 0;
+	Wire.onReceive(test);
 }
 
 void return1()
@@ -152,10 +192,7 @@ void return1()
 		{
 			Serial.println("senser  OK");
 			incomingString = "";
-
 			break;
 		}
-
 	}
-
 }

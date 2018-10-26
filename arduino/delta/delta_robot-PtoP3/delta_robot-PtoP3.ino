@@ -1,46 +1,55 @@
+#include <ArduinoJson.hpp>
+#include <ArduinoJson.h>
 #include "DeltaRobInverseKin.h"
 #include "math.h"
 #include "My.h"
 #include <Wire.h>
 
-#define L_UPPER 0.12 //¤WÁuªø		³æ¦ì¡G¤½¤Ø
-#define L_LOWER 0.285 //¤UÁuªø
-#define WB 0.13  //©³®y¥¿¤T¨¤«¬­«¤ß¨ìÃäªºªø«×
-#define WP 0.013  //¤U¤è¤p¥¿¤T¨¤§Î­«¤ß¨ìÃäªøªºªø«×
-#define UP 0.026  //¤U¤è¤p¥¿¤T¨¤§Î­«¤ß¨ì³»ÂIªºªø«×
-#define SP 0.045  //¤U¤è¥¿¤T¨¤«¬ªºÃäªø
+#define L_UPPER 0.12 //ä¸Šè‡‚é•·		å–®ä½ï¼šå…¬å°º
+#define L_LOWER 0.285 //ä¸‹è‡‚é•·
+#define WB 0.13  //åº•åº§æ­£ä¸‰è§’å‹é‡å¿ƒåˆ°é‚Šçš„é•·åº¦
+#define WP 0.013  //ä¸‹æ–¹å°æ­£ä¸‰è§’å½¢é‡å¿ƒåˆ°é‚Šé•·çš„é•·åº¦
+#define UP 0.026  //ä¸‹æ–¹å°æ­£ä¸‰è§’å½¢é‡å¿ƒåˆ°é ‚é»çš„é•·åº¦
+#define SP 0.045  //ä¸‹æ–¹æ­£ä¸‰è§’å‹çš„é‚Šé•·
 
+#define My_Serial Serial
+#define MySlave1 0x01
+#define MySlave2 0x02
+#define MySlave3 0x03
+#define MySlave4 0x04
 boolean debug = 1;
 
 DeltaRobInverseKin delta(L_UPPER, L_LOWER, WB, WP, UP, SP);
+//--json
+char json[200];
+int jsonNumber = 0;
+//-----
+char *choose;
+int suck;
 
-double coordinate[3];			//¿é¤Jªºx , y , z
-int16_t D[3] = { 0,0,0 };	//§ì¨úºtºâªk¥X¨ÓªºgoalPosªº¨¤«×
-uint8_t returnData = 0;	//Âk¹s§¹¶Ç¦^ªº¼Æ­È
-double degreeTurn[1][3];		//»P«e¤@¦¸¬Û´î«á¹BÂà¤è¦V»P¨¤«×
-double location[2][3];	//¥Î¨Ó¦s¤§«eªº¦ì¸m
+double coordinate[3];			//è¼¸å…¥çš„x , y , z
+int16_t D[3] = { 0,0,0 };	//æŠ“å–æ¼”ç®—æ³•å‡ºä¾†çš„goalPosçš„è§’åº¦
+uint8_t returnData = 0;	//æ­¸é›¶å®Œå‚³å›çš„æ•¸å€¼
+double degreeTurn[1][3];		//èˆ‡å‰ä¸€æ¬¡ç›¸æ¸›å¾Œé‹è½‰æ–¹å‘èˆ‡è§’åº¦
+double location[2][3];	//ç”¨ä¾†å­˜ä¹‹å‰çš„ä½ç½®
 int16_t locationNumber = 0;
-int16_t ring;		//¿é¤J¦ì¸mªº¦¸¼Æ  ¼È®É¨S¥Î¨ì
+int16_t ring;		//è¼¸å…¥ä½ç½®çš„æ¬¡æ•¸  æš«æ™‚æ²’ç”¨åˆ°
 int shownumber;
 
 
 union unionType
 {
-	byte a[2];
-	int b;
+	byte a[4];
+	int32_t b;
 };
 
 void setup()
 {
-	Serial.begin(9600);
+	My_Serial.begin(9600);
 	Wire.begin();	
-
-	delta.debugFlag = false;	
-	pinMode(8, INPUT);
-	digitalWrite(8, HIGH);
-	shownumber = 0;
-	Serial.println(" start ");
-	Serial.println();
+	delta.debugFlag = false;		
+	My_Serial.println(" start ");
+	My_Serial.println();
 	for (int i = 0; i < 2; i++)
 	{
 		for (int i2 = 0; i2< 3; i2++)
@@ -52,39 +61,34 @@ void setup()
 }
 
 void loop()
-{	
-	if (digitalRead(8) == 0)
-	{
-		shownumber = 1;
-	}	
-	if (shownumber == 1)
-	{
-		Show();
-	}	
+{		
+	ForJson();
+	
+	Show();
 	/*while (1)
 	{
-	Serial.println();
-	Serial.println("¿é¤J¥Ø¼ĞÂIªºX , Y , Z");
+	My_Serial.println();
+	My_Serial.println("è¼¸å…¥ç›®æ¨™é»çš„X , Y , Z");
 	PtoP_input();
 	ctrl_PtoP(coordinate[0], coordinate[1], coordinate[2]);
 	}*/
 }
 
-//----PtoP-----¿é¤JX Y Zªº¨ç¦¡
+//----PtoP-----è¼¸å…¥X Y Zçš„å‡½å¼
 void PtoP_input()
 {
-	Serial.println("PtoP input		Start ");
+	My_Serial.println("PtoP input		Start ");
 	int D = 0;
 	while (1)
 	{
 		if (D == 0)
 		{
-			Serial.println("¿é¤JX¶b°Ñ¼Æ");
+			My_Serial.println("è¼¸å…¥Xè»¸åƒæ•¸");
 			while (1)
 			{
-				if (Serial.available())
+				if (My_Serial.available())
 				{
-					coordinate[0] = Serial.parseInt();
+					coordinate[0] = My_Serial.parseInt();
 					D++;
 					break;
 				}
@@ -92,12 +96,12 @@ void PtoP_input()
 		}
 		if (D == 1)
 		{
-			Serial.println("¿é¤JY¶b°Ñ¼Æ");
+			My_Serial.println("è¼¸å…¥Yè»¸åƒæ•¸");
 			while (1)
 			{
-				if (Serial.available())
+				if (My_Serial.available())
 				{
-					coordinate[1] = Serial.parseInt();
+					coordinate[1] = My_Serial.parseInt();
 					D++;
 					break;
 				}
@@ -105,12 +109,12 @@ void PtoP_input()
 		}
 		if (D == 2)
 		{
-			Serial.println("¿é¤JZ¶b°Ñ¼Æ");
+			My_Serial.println("è¼¸å…¥Zè»¸åƒæ•¸");
 			while (1)
 			{
-				if (Serial.available())
+				if (My_Serial.available())
 				{
-					coordinate[2] = 0 - Serial.parseInt();
+					coordinate[2] = 0 - My_Serial.parseInt();
 					D++;
 					break;
 				}
@@ -118,15 +122,15 @@ void PtoP_input()
 		}
 		if (D == 3)
 		{
-			Serial.print("¥Ø«eX , Y , Z ¶b°Ñ¼Æ = ");
-			Serial.print(coordinate[0]);
-			Serial.print(" , ");
-			Serial.print(coordinate[1]);
-			Serial.print(" , ");
-			Serial.print(coordinate[2]);
-			Serial.println();
+			My_Serial.print("ç›®å‰X , Y , Z è»¸åƒæ•¸ = ");
+			My_Serial.print(coordinate[0]);
+			My_Serial.print(" , ");
+			My_Serial.print(coordinate[1]);
+			My_Serial.print(" , ");
+			My_Serial.print(coordinate[2]);
+			My_Serial.println();
 			D = 0;
-			Serial.println("PtoP input		END ");
+			My_Serial.println("PtoP input		END ");
 			break;
 		}
 
@@ -135,27 +139,26 @@ void PtoP_input()
 //----PtoP-----end----------
 
 //-------ctrl_PtoP---------
-void ctrl_PtoP(int16_t x0, int16_t y0, int16_t z0)	//¿é¤Jx,y,z¶i¨Ó
+void ctrl_PtoP(int16_t x0, int16_t y0, int16_t z0)	//è¼¸å…¥x,y,zé€²ä¾†
 {
-	Serial.print("ctrl_PtoP  ");
-	Serial.println("Start");
-	//¿é¤J 0 0 0 ¶i¤JÂk¹sª¬ºA
+	My_Serial.print("ctrl_PtoP  ");
+	My_Serial.println("Start");
+	//è¼¸å…¥ 0 0 0 é€²å…¥æ­¸é›¶ç‹€æ…‹
 	if (coordinate[0] == 0 && coordinate[1] == 0 && coordinate[2] == 0)
 	{
 		//DeltaTest.return1();		
-		return0();
-		AfterCompare();		//¹ï«e¤@¦¸ªº¦ì¸m¶i¦æÂĞ¼g
-
+		reset_delta();
+		AfterCompare();		//å°å‰ä¸€æ¬¡çš„ä½ç½®é€²è¡Œè¦†å¯«
 	}
-	Serial.print(x0);
-	Serial.print(" , ");
-	Serial.print(y0);
-	Serial.print(" , ");
-	Serial.print(z0);
-	Serial.println();
+	My_Serial.print(x0);
+	My_Serial.print(" , ");
+	My_Serial.print(y0);
+	My_Serial.print(" , ");
+	My_Serial.print(z0);
+	My_Serial.println();
 	delta.setGoalCoordinates(x0*0.01, y0*0.01, z0*0.01, 0);
 	delay(10);
-	//¶i¤J¦ì¸m¤ñ¹ï
+	//é€²å…¥ä½ç½®æ¯”å°
 	LocationCompare();
 	//PtoP_output();
 	if (coordinate[0] != 0 || coordinate[1] != 0 || coordinate[2] != 0)
@@ -163,15 +166,15 @@ void ctrl_PtoP(int16_t x0, int16_t y0, int16_t z0)	//¿é¤Jx,y,z¶i¨Ó
 		turn();
 
 	}
-	Serial.print("ctrl_PtoP			END		 ");
+	My_Serial.print("ctrl_PtoP			END		 ");
 
 }
 //-------ctrl_PtoP---------end--------
 
 //-------- LocationCompare -------------
-void LocationCompare()		//²{¦b¦ì¸m»P«e¤@¦¸ªº¤ñ¹ï
+void LocationCompare()		//ç¾åœ¨ä½ç½®èˆ‡å‰ä¸€æ¬¡çš„æ¯”å°
 {
-	Serial.println("LocationCompare		start	");
+	My_Serial.println("LocationCompare		start	");
 	for (int i = 0; i < 3; i++)
 	{
 		location[0][i] = delta.goalPos[i];
@@ -179,21 +182,21 @@ void LocationCompare()		//²{¦b¦ì¸m»P«e¤@¦¸ªº¤ñ¹ï
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		Serial.print("location[0]");
-		Serial.println(location[0][i]);
-		Serial.print("location[1]");
-		Serial.println(location[1][i]);
-		Serial.println();
+		My_Serial.print("location[0]");
+		My_Serial.println(location[0][i]);
+		My_Serial.print("location[1]");
+		My_Serial.println(location[1][i]);
+		My_Serial.println();
 
 	}
 	if (location[0] != location[1])
 	{
-		Serial.println("location[0] != location[1]");
+		My_Serial.println("location[0] != location[1]");
 		for (int i = 0; i < 3; i++)
 		{
 			degreeTurn[0][i] = location[0][i] - location[1][i];
-			Serial.print("degreeTurn = ");
-			Serial.println(degreeTurn[0][i]);
+			My_Serial.print("degreeTurn = ");
+			My_Serial.println(degreeTurn[0][i]);
 
 		}
 		AfterCompare();
@@ -203,50 +206,50 @@ void LocationCompare()		//²{¦b¦ì¸m»P«e¤@¦¸ªº¤ñ¹ï
 //-------- LocationCompare -------------end ------------
 
 //------turn-----
-void turn()		//°¨¹FÂà°Ê¨ç¦¡
+void turn()		//é¦¬é”è½‰å‹•å‡½å¼
 {
 	Wire.beginTransmission(1);
 	if (debug)
 	{
-		Serial.println("-->Turn -->beginTransmission to 1");
+		My_Serial.println("-->Turn -->beginTransmission to 1");
 	}
 	Wire.write("start");
 	Wire.endTransmission();
-	Wire.beginTransmission(1);
 	if (debug)
 	{
-		Serial.println((int)degreeTurn[0][0]);
+		My_Serial.println((int)degreeTurn[0][0]);
 	}
+	Wire.beginTransmission(1);	
 	Wire.write((int)degreeTurn[0][0]);
 	Wire.endTransmission();
 	//-----2-----
 	Wire.beginTransmission(2);
 	if (debug)
 	{
-		Serial.println("-->Turn -->beginTransmission to 2");
+		My_Serial.println("-->Turn -->beginTransmission to 2");
 	}
 	Wire.write("start");
 	Wire.endTransmission();
-	Wire.beginTransmission(2);
 	if (debug)
 	{
-		Serial.println((int)degreeTurn[0][1]);
+		My_Serial.println((int)degreeTurn[0][1]);
 	}
+	Wire.beginTransmission(2);	
 	Wire.write((int)degreeTurn[0][1]);
 	Wire.endTransmission();
 	//-----3-----.	
 	Wire.beginTransmission(3);
 	if (debug)
 	{
-		Serial.println("-->Turn -->beginTransmission to 3");
+		My_Serial.println("-->Turn -->beginTransmission to 3");
 	}
 	Wire.write("start");
 	Wire.endTransmission();
-	Wire.beginTransmission(3);
 	if (debug)
 	{
-		Serial.println((int)degreeTurn[0][2]);
+		My_Serial.println((int)degreeTurn[0][2]);
 	}
+	Wire.beginTransmission(3);	
 	Wire.write((int)degreeTurn[0][2]);
 	Wire.endTransmission();
 
@@ -254,7 +257,7 @@ void turn()		//°¨¹FÂà°Ê¨ç¦¡
 //------turn-----end--------
 
 //---------AfterCompare-----------
-void AfterCompare()		//¹ï«e¤@¦¸ªº¦ì¸m¶i¦æÂĞ¼g
+void AfterCompare()		//å°å‰ä¸€æ¬¡çš„ä½ç½®é€²è¡Œè¦†å¯«
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -268,45 +271,44 @@ void AfterCompare()		//¹ï«e¤@¦¸ªº¦ì¸m¶i¦æÂĞ¼g
 //--------PtoP_output----------
 void PtoP_output()
 {
-	Serial.println();
-	Serial.println("PtoP_output");
-	OK();
+	My_Serial.println();
+	My_Serial.println("PtoP_output");	
 	LocationCompare();
 
-	Serial.print("¤TÁû°¨¹FÂà°Ê¨¤«× = ");
+	My_Serial.print("ä¸‰é¡†é¦¬é”è½‰å‹•è§’åº¦ = ");
 	for (int i = 0; i < 3; i++)
 	{
-		Serial.print(delta._theta2[i]);
+		My_Serial.print(delta._theta2[i]);
 		if (i < 2)
 		{
-			Serial.print(" , ");
+			My_Serial.print(" , ");
 		}
 	}
-	Serial.println();
-	Serial.print("¤TÁû°¨¹FÂà°Ê¨¤«× 2= ");
+	My_Serial.println();
+	My_Serial.print("ä¸‰é¡†é¦¬é”è½‰å‹•è§’åº¦ 2= ");
 	for (int i = 0; i < 3; i++)
 	{
-		Serial.print(D[i]);
+		My_Serial.print(D[i]);
 		if (i < 2)
 		{
-			Serial.print(" , ");
+			My_Serial.print(" , ");
 		}
 	}
 	if (delta.maxArrIndex > 1)
 	{
-		Serial.println();
-		Serial.println(delta.maxArrIndex);
+		My_Serial.println();
+		My_Serial.println(delta.maxArrIndex);
 		for (int i = 0; i < 3; i++)
 		{
-			Serial.println(location[delta.maxArrIndex - 2][i]);
+			My_Serial.println(location[delta.maxArrIndex - 2][i]);
 		};
-		Serial.print("¨â¦¸¿é¤J«×¼Æ®t = ");
+		My_Serial.print("å…©æ¬¡è¼¸å…¥åº¦æ•¸å·® = ");
 		for (int i = 0; i < 3; i++)
 		{
-			Serial.print(degreeTurn[0][i]);
+			My_Serial.print(degreeTurn[0][i]);
 			if (i < 2)
 			{
-				Serial.print(" , ");
+				My_Serial.print(" , ");
 			}
 		}
 	}
@@ -314,134 +316,299 @@ void PtoP_output()
 }
 //--------PtoP_output----------end-----
 
-//---------reutrnO---------
-void return0()		//Âk¹s¨ç¦¡
-{
-	Serial.println("Âk¹s±Ò°Ê");	
-	//-----1-----
-	Wire.beginTransmission(1);
-	if (debug)
-	{
-		Serial.println("beginTransmission to 1");
-	}
-	Wire.write("return0");
+//---------reset_delta---------
+void reset_delta()	//æ­¸é›¶å‡½å¼
+{	
+	Wire.beginTransmission(0x01);
+	Wire.write("reset");
 	Wire.endTransmission();
-	Wire.beginTransmission(1);
-	Wire.write("start");
+	Wire.beginTransmission(0x02);
+	Wire.write("reset");
 	Wire.endTransmission();
-	//-----2-----
-	Wire.beginTransmission(2);
-	if (debug)
-	{
-		Serial.println("beginTransmission to 2");
-	}
-	Wire.write("return0");
-	Wire.endTransmission();
-	Wire.beginTransmission(2);
-	Wire.write("start");
-	Wire.endTransmission();
-	//-----3-----.	
-	Wire.beginTransmission(3);
-	if (debug)
-	{
-		Serial.println("beginTransmission to 3");
-	}
-	Wire.write("return0");
-	Wire.endTransmission();
-	Wire.beginTransmission(3);
-	Wire.write("start");
-	Wire.endTransmission();
-	/*delay(2000);
-	while (1)
-	{
-	Wire.requestFrom(1,4);
-	if (Wire.available())
-	{
-	returnData = Wire.read();
-	if (debug)
-	{
-	Serial.println(returnData);
-	}
-
-	}
-	if (returnData == 1)
-	{
-
-	break;
-	}
-	}*/
-}
-//---------reutrnO---------end----------
-
-void OK()
-{
-	Serial.println("OK");
-	Serial.println();
-}
-
-void ShowRE()
-{
-	Wire.beginTransmission(1);
-	Wire.write("return0");
-	Wire.endTransmission();
-	Wire.beginTransmission(1);
-	Wire.write("start");
-	Wire.endTransmission();
-	//-----2-----
-	Wire.beginTransmission(2);
-	Wire.write("return0");
-	Wire.endTransmission();
-	Wire.beginTransmission(2);
-	Wire.write("start");
-	Wire.endTransmission();
-	//-----3-----.	
-	Wire.beginTransmission(3);
-	Wire.write("return0");
-	Wire.endTransmission();
-	Wire.beginTransmission(3);
-	Wire.write("start");
+	Wire.beginTransmission(0x03);
+	Wire.write("reset");
 	Wire.endTransmission();
 }
+//---------reset_delta---------end----------
 
 void Show()
+{
+	if (debug)
+	{
+		My_Serial.println("Show");
+	}
+	else;
+	if (strcmp(choose, "0") == 0)
+	{
+		Serial.println("æ­¸é›¶");
+		reset_delta();
+	}
+	else if (strcmp(choose,"1") == 0)
+	{
+		Serial.println("è½‰å‹• (çŸ­)");
+		Show_Turn_All(0,25,153);
+	}
+	else if (strcmp(choose, "2") == 0)
+	{
+		Serial.println("è½‰å‹• (é•·)");
+		Show_Turn_All(7, 22, 7);
+	}	
+	else if (strcmp(choose, "4") == 0)
+	{
+		Serial.println("è½‰å‹• (é•·)");
+		Show_Turn_All(135, 0, 0);
+	}
+	else if (strcmp(choose, "5") == 0)
+	{
+		Serial.println("è½‰å‹• (é•·)");
+		Show_Turn_All(0, 10, 10);
+	}
+	else if (strcmp(choose, "3") == 0)
+	{
+		Serial.println("å¸ç›¤");
+		suck_plate();
+	}	
+}
+
+void Show_Turn_All(int a ,int b, int c)
 {
 	unionType Slave1;
 	unionType Slave2;
 	unionType Slave3;
-	Slave1.b = 130;
-	Slave2.b = 130;
-	Slave3.b = 400;
-	if (Serial.available())
+	Slave1.b = stepOpen(a);
+	Slave2.b = stepOpen(b);
+	Slave3.b = stepOpen(c);
+	if (debug)
 	{
-		Serial.println("hi");
-		shownumber = Serial.parseInt();
+		My_Serial.println(Slave1.b);
+		My_Serial.println(Slave2.b);
+		My_Serial.println(Slave3.b);
 	}
-	if (shownumber == 1)
+	Wire.beginTransmission(MySlave1);
+	Wire.write("start2");
+	Wire.endTransmission();
+	Wire.beginTransmission(MySlave2);
+	Wire.write("start2");
+	Wire.endTransmission();
+	Wire.beginTransmission(MySlave3);
+	Wire.write("start2");
+	Wire.endTransmission();
+	if (debug)
 	{
-		Serial.println("hi   1");
-		Wire.beginTransmission(1);
-		Wire.write("start");
-		Wire.endTransmission();
-		Wire.beginTransmission(2);
-		Wire.write("start");
-		Wire.endTransmission();
-		Wire.beginTransmission(0x03);
-		Wire.write("start");
-		Wire.endTransmission();
-		Serial.println("beginTransmission(1);");
-		Serial.println("beginTransmission(2);");
-		Serial.println("beginTransmission(3);");
-		delay(10);
-		Wire.beginTransmission(1);
-		Wire.write(Slave1.a[0]);
-		Wire.endTransmission();
-		Wire.beginTransmission(2);
-		Wire.write(Slave2.a[0]);
-		Wire.endTransmission();
-		Wire.beginTransmission(0x03);
-		Wire.write(Slave3.a[0]);
-		Wire.write(Slave3.a[1]);
-		Wire.endTransmission();
-		shownumber = 0;
+		My_Serial.println("beginTransmission(1);");
+	}
+	delay(20);
+	Wire.beginTransmission(MySlave1);
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave1.a[i] == 0)
+		{
+			break;
+		}
+		Wire.write(Slave1.a[i]);
+		Serial.println(Slave1.a[i]);
+	}
+	Wire.endTransmission();
+	if (debug)
+	{
+		My_Serial.println();
+	}
+	if (debug)
+	{
+		My_Serial.println("beginTransmission(2);");
+	}
+	Wire.beginTransmission(MySlave2);
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave2.a[i] == 0)
+		{
+			break;
+		}
+		Wire.write(Slave2.a[i]);
+		Serial.println(Slave2.a[i]);
+	}
+	Wire.endTransmission();
+	if (debug)
+	{
+		My_Serial.println();
+	}
+	if (debug)
+	{
+		My_Serial.println("beginTransmission(3);");
+	}
+	Wire.beginTransmission(MySlave3);
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave3.a[i] == 0)
+		{
+			break;
+		}
+		Wire.write(Slave3.a[i]);
+		Serial.println(Slave3.a[i]);
+	}
+	Wire.endTransmission();
+	if (debug)
+	{
+		My_Serial.println();
 	}
 }
+
+void Show_Turn()
+{
+	unionType Slave1;
+	unionType Slave2;
+	unionType Slave3;
+	Slave1.b = stepOpen(0);
+	Slave2.b = stepOpen(30);
+	Slave3.b = stepOpen(160);
+	if (debug)
+	{
+		My_Serial.println(Slave1.b);
+		My_Serial.println(Slave2.b);
+		My_Serial.println(Slave3.b);
+	}
+	Wire.beginTransmission(MySlave3);
+	Wire.write("start2");
+	Wire.endTransmission();
+	delay(2000);
+	Wire.beginTransmission(MySlave2);
+	Wire.write("start2");
+	Wire.endTransmission();
+	delay(300);
+	Wire.beginTransmission(MySlave1);
+	Wire.write("start2");
+	Wire.endTransmission();	
+	if (debug)
+	{
+		My_Serial.println("beginTransmission(1);");
+	}
+	delay(20);
+	Wire.beginTransmission(MySlave1);
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave1.a[i] == 0)
+		{
+			break;
+		}
+		Wire.write(Slave1.a[i]);
+		Serial.println(Slave1.a[i]);
+	}
+	Wire.endTransmission();
+	if (debug)
+	{
+		My_Serial.println();
+	}
+	if (debug)
+	{
+		My_Serial.println("beginTransmission(2);");
+	}
+	Wire.beginTransmission(MySlave2);
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave2.a[i] == 0)
+		{
+			break;
+		}
+		Wire.write(Slave2.a[i]);
+		Serial.println(Slave2.a[i]);
+	}
+	Wire.endTransmission();
+	if (debug)
+	{
+		My_Serial.println();
+	}
+	if (debug)
+	{
+		My_Serial.println("beginTransmission(3);");
+	}
+	Wire.beginTransmission(MySlave3);
+	for (int i = 0; i < 4; i++)
+	{
+		if (Slave3.a[i] == 0)
+		{
+			break;
+		}
+		Wire.write(Slave3.a[i]);
+		Serial.println(Slave3.a[i]);
+	}
+	Wire.endTransmission();
+	if (debug)
+	{
+		My_Serial.println();
+	}
+}
+
+void suck_plate()
+{
+	if (debug)
+	{
+		Serial.println("beginTransmission(4)");			
+	}
+	else;
+	if (suck == 0)
+	{
+		Wire.beginTransmission(MySlave4);
+		Wire.write("close");
+		Serial.println("suck 0");
+		Wire.endTransmission();
+	}
+	else if (suck == 1)
+	{
+		Wire.beginTransmission(MySlave4);
+		Wire.write("open");
+		Serial.println("suck 1");
+		Wire.endTransmission();
+	}
+	else;
+}
+
+//--------jsonå­—ä¸²è®€å–---------
+void ForJson()
+{
+	jsonNumber = 0;
+	int a = 0;
+	choose = "";	
+	suck = 0;
+	while (1)
+	{
+		if (My_Serial.available())
+		{
+			json[jsonNumber] = My_Serial.read();
+			if (json[jsonNumber] == '{')
+			{
+				a++;
+			}
+
+			if (json[jsonNumber] == '}')
+			{
+				a++;
+			}
+			jsonNumber++;
+		}
+
+		if (a == 2)
+		{
+			My_Serial.println(json);
+			StaticJsonBuffer<400> jsonBuffer;
+			JsonObject& root = jsonBuffer.parseObject(json);
+			choose = root["choose"];			
+			suck = root["suck"];
+			if (debug)
+			{
+				My_Serial.println(choose);				
+				My_Serial.println(suck);
+			}
+			a = 0;
+			break;
+		}
+	}
+}
+//--------********jsonå­—ä¸²è®€å–---------
+
+//---å¾®æ­¥
+int32_t stepOpen(int x)
+{
+	x = (x / 0.1125);
+	return x;
+}
+//--*****-å¾®æ­¥-----

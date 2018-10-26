@@ -1,30 +1,46 @@
-#include <Mifes.h>
-#include <ArduinoJson.h>
-
-int8_t json_handler(JsonObject& obj) {
-    // 在此使用 JsonObject
-    String func = obj["func"];
-
-    if(func.equals("hello")){
-        StaticJsonBuffer<128> jsonBuffer;
-        JsonObject& res = jsonBuffer.createObject();
-        res["func"] = func;
-        res["res"] = "world";
-        res.printTo(Serial);
-        return 0; // 0 代表指定被正常的處理。
-    }
-    return -1; // -1 代表不認識這個指令，要回傳錯誤。
-}
+String str;
+char R;
+//---josn
+char json[200];
+String jsonS;
+char jsonC;
+int jsonNumber = 0;
+//---
 
 void setup() {
-    // 初始化主控版程式庫
-    mcb::init();
-    // Uart 讀取到完整 JSON 時的呼叫函式
-    mcb::uart.set_json_handler(json_handler);
-    mcb::net.set_json_handler(json_handler);
+	Serial.begin(9600);
 }
 
-void loop() {
-    // 主控版功能循環
-    mcb::loop();
+void loop() 
+{
+	For_Uart();
+}
+
+void For_Uart()
+{
+	jsonC = ' ';
+	int a = 0;
+	while (1)
+	{
+		while (Serial.available())
+		{
+			jsonC = Serial.read();
+			jsonS = jsonS + jsonC;
+			if (jsonC == '{')
+			{
+				a++;
+			}
+			else if (jsonC == '}')
+			{
+				a++;
+			}
+			else;
+		}
+		if (a == 2)
+		{
+			Serial.println(jsonS);
+			a = 0;
+			break;
+		}
+	}
 }
