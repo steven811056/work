@@ -19,6 +19,7 @@ void loop()
 void For_Uart()
 {
 	jsonC = ' ';
+	jsonS = "";
 	int a = 0;
 	while (1)
 	{

@@ -13,8 +13,8 @@ uint32_t incomingInt = 0;
 const int delaytime = 30;
 int8_t data[2];
 boolean debug = 1;
-int incomingIntShow = 100;
 int Show = 0;
+int end = 0;
 
 UnionTurn testU;
 
@@ -22,6 +22,7 @@ void setup()
 {
 	Wire.begin(SLAVE_ADDRESS);
 	Wire.onReceive(test);
+	Wire.onRequest(OK);
 	Serial.begin(9600);
 	pinMode(A2, OUTPUT);
 	if (debug)
@@ -61,15 +62,14 @@ void test(int t)
 	}
 	incomingString = "";
 	while (Wire.available())
-	{
+	 {
 		incomingByte = (char)Wire.read();
 		incomingString = incomingString + incomingByte;
 		if (debug)
 		{
 			Serial.println(incomingString);
 		}
-
-	}
+	 }
 	if (incomingString == "start")
 	{
 		Wire.onReceive(testUU);
@@ -119,20 +119,9 @@ void Turn()
 		delayMicroseconds(delaytime);
 		/*Serial.print("-->");
 		Serial.println(i);*/
-	}
-	/*if (Show == 1)
-	{
-		Serial.println("delay---");
-		delay(1000);
-		Turn2();
-	}
-	if (Show == 2)
-	{
-		incomingInt = 0;
-		Show = 0;
-		Wire.onReceive(test);
-	}*/
+	}	
 	Show = 0;
+	end = 1;
 	Wire.onReceive(test);
 }
 
@@ -168,6 +157,7 @@ void Turn2()
 		Turn();
 	}*/
 	Show = 0;
+	end = 1;
 	Wire.onReceive(test);
 }
 
@@ -184,7 +174,7 @@ void return1()
 			digitalWrite(stepperPin, LOW);
 			delayMicroseconds(delaytime);
 		}
-		if (digitalRead(senser) == LOW)
+		else if (digitalRead(senser) == LOW)
 		{
 			Serial.println("senser  OK");
 			incomingString = "";
@@ -197,9 +187,17 @@ void return1()
 				digitalWrite(stepperPin, LOW);
 				delayMicroseconds(delaytime);
 			}
+			end = 1;
 			break;
 		}
-
 	}
+}
 
+void OK()
+{
+	if (end == 1)
+	{
+		Wire.write(1);
+		end = 0;
+	}
 }

@@ -9,7 +9,10 @@ I2C注意事項
 
 4.Wire.write(33); //ascii碼傳輸!  之前用3沒有顯是是因為ascii碼的3是^C的意思
 
-5.I2C要是從arduino master傳送資料，slave必須要把當筆資料都接收完，不然onReceive接收函式會有問題，原始是呼叫一次begin，
-onReceive會執行一次，要是資料沒有全部讀取出來，重新呼叫begin時，onReceive就不會被重新呼叫。
+5.I2C要是從arduino master傳送資料，slave必須要把當筆資料都接收完，不然onReceive接收函式會有問題，
+原始是呼叫一次begin，onReceive會執行一次，要是資料沒有全部讀取出來，重新呼叫begin時，
+onReceive就不會被重新呼叫。
 
 6.I2C在程式執行中Wire.onReceive(test1)可以使用Wire.onReceive(test2)來改變接收到資料後會呼叫的函式。
+
+7.I2C的requestfrom會等到子版的東西都傳完才會結束繼續下一行EX:wire.requestFrom(1,4)會子版結束通訊才結束這一行

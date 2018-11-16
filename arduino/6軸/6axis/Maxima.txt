@@ -1,0 +1,93 @@
+T0:matrix([1,0,0,0],[0,1,0,0],[0,0,1,H],[0,0,0,1]);
+Rz1:matrix([cos(t1),-sin(t1),0,0],[sin(t1),cos(t1),0,0],[0,0,1,0],[0,0,0,1]);
+T1x:matrix([1,0,0,_x],[0,1,0,_y],[0,0,1,_z],[0,0,0,1]);
+T1:matrix([1,0,0,a1],[0,1,0,0],[0,0,1,d1],[0,0,0,1]);
+Rpx1:matrix([1,0,0,0],[0,0,-1,0],[0,1,0,0],[0,0,0,1]);
+Rpx1:matrix([1,0,0,0],[0,cos(pi/2),-sin(pi/2),0],[0,sin(pi/2),cos(pi/2),0],[0,0,0,1]);
+Rz2:matrix([cos(t2),-sin(t2),0,0],[sin(t2),cos(t2),0,0],[0,0,1,0],[0,0,0,1]);
+T2x:matrix([1,0,0, _x],[0,1,0,_y],[0,0,1,_z],[0,0,0,1]);
+T2:matrix([1,0,0,a2],[0,1,0,0],[0,0,1,0],[0,0,0,1]);
+Rz3:matrix([cos(t3),-sin(t3),0,0],[sin(t3),cos(t3),0,0],[0,0,1,0],[0,0,0,1]);
+T3x:matrix([1,0,0,_x],[0,1,0,_y],[0,0,1,_z],[0,0,0,1]);
+T3:matrix([1,0,0,a3],[0,1,0,0],[0,0,1,0],[0,0,0,1]);
+Rpy3:matrix([0,0,1,0],[0,1,0,0],[-1,0,0,0],[0,0,0,1]);
+Rz4:matrix([cos(t4),-sin(t4),0,0],[sin(t4),cos(t4),0,0],[0,0,1,0],[0,0,0,1]);
+T4x:matrix([1,0,0,_x],[0,1,0,_y],[0,0,1,_z],[0,0,0,1]);
+T4:matrix([1,0,0,0],[0,1,0,0],[0,0,1,d4],[0,0,0,1]);
+Rpy4:matrix([0,0,-1,0],[0,1,0,0],[1,0,0,0],[0,0,0,1]);
+Rz5:matrix([cos(t5),-sin(t5),0,0],[sin(t5),cos(t5),0,0],[0,0,1,0],[0,0,0,1]);
+T5x:matrix([1,0,0,_x],[0,1,0,_y],[0,0,1,_z],[0 ,0,0,1]);
+T5:matrix([1,0,0,a5],[0,1,0,0],[0,0,1,0],[0 ,0,0,1]);
+Rpy6:matrix([0,0,1,0],[0,1,0,0],[-1,0,0,0],[0,0,0,1]);
+R6z:matrix([cos(t6),-sin(t6),0,0],[sin(t6),cos(t6),0,0],[0,0,1,0],[0,0,0,1]);
+T6x:matrix([1,0,0,_x],[0,1,0,_y],[0,0,1,_z],[0,0,0,1]);
+
+/*0-1*/
+M1:T0.Rz1;/* position of coordinate system first motor*/
+
+/*1-2*/
+M1x:M1.T1x;/* Draw 1st  Arm*/
+M1_1:M1.T1;/* move to second joint*/
+M1_2:M1_1.Rpx1; /*allineate the coordinate system to the next motor */
+M2:M1_2.Rz2;/* coordinate system second motor*/
+
+/*2-3*/
+M2x:M2.T2x; /* Draw 2nd Arm*/
+M2_1:M2.T2; /* translate to third joint*/
+M3:M2_1.Rz3;/* coordinate system 3rd motor*/
+M3:matrix([cos(t1)*cos(t2+t3), -cos(t1)*sin(t2+t3),sin(t1), a2*cos(t1)*cos(t2)+a1*cos(t1)],
+[sin(t1)*cos(t2+t3),-sin(t1)*sin(t2+t3),-cos(t1),a2*sin(t1)*cos(t2)+a1*sin(t1)],[sin(t2+t3),cos(t2+t3),0,H+a2*sin(t2)+d1],[0,0,0,1]);
+
+/*3-4*/
+M3x:M3.T3x;/* Draw 3rd Arm*/
+M3_1:M3.T3;/* translate to 4th joint*/
+M3_2:M3_1.Rpy3;/*align the coordinate system to the next motor */
+M4:M3_2.Rz4;/* coordinate system 4th motor*/
+
+
+/*4-5*/
+M4x:M4.T4x;/* draw  4th arm*/
+M4_1:M4.T4;/* translate to 5th joint*/
+M4_2:M4_1.Rpy4;/*align the coordinate system to the next motor*/
+M5:M4_2.Rz5;/* coordinate system 5th motor*/
+
+/*5-6*/
+M5x:M5.T5x;/* draw  5th arm*/
+M5_1:M5.T5;/* translate to 6th joint*/
+M5_2:M5_1.Rpy6;/*align the coordinate system to the next joint*/
+M6:M5_2.R6z;/* coordinate system 6th motor*/
+/*end-effector*/
+M6x:M6.T6x;
+
+
+
+
+
+Yz1:matrix([cos(t1),-sin(t1),0],[sin(t1),cos(t1),0],[0,0,1]);
+
+Yx2:matrix([1,0,0],[0,0,-1],[0,1,0]);
+Yz2:matrix([cos(t2),-sin(t2),0],[sin(t2),cos(t2),0],[0,0,1]);
+
+Yz3:matrix([cos(t3),-sin(t3),0],[sin(t3),cos(t3),0],[0,0,1]);
+
+R0:Yz1.Yx2;
+R1:R0.Yz2;
+R2:R1.Yz3;
+
+ R03:minor(M3,4,4);
+
+
+Ry:matrix([cos(b),0,sin(b)],[0,1,0],[-sin(b),0,cos(b)]);
+Rz:matrix([cos(a),-sin(a),0],[sin(a),cos(a),0],[0,0,1]);
+Rxx:matrix([1,0,0],[0,cos(c),-sin(c)],[0,sin(c),cos(c)]);
+Ryp_1:Ry.Rxx;
+Ryp:Rz.Ryp_1;
+
+ 
+ex:transpose(matrix([1,0,0]));
+N:Ryp.ex;
+Pw:(a5+d6)*N;
+
+R03:minor(M3,4,4);
+R03t:transpose(R03);
+R36:R03t.Ryp;

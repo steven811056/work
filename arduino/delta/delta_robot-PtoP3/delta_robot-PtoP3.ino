@@ -11,6 +11,9 @@
 #define WP 0.013  //下方小正三角形重心到邊長的長度
 #define UP 0.026  //下方小正三角形重心到頂點的長度
 #define SP 0.045  //下方正三角型的邊長
+#define Microstep_control 0.1	//微步控制倍率	16
+//#define Microstep_control 	//微步控制倍率	8
+//#define Microstep_control 	//微步控制倍率	4
 
 #define My_Serial Serial
 #define MySlave1 0x01
@@ -45,7 +48,7 @@ union unionType
 
 void setup()
 {
-	My_Serial.begin(9600);
+	My_Serial.begin(115200);
 	Wire.begin();	
 	delta.debugFlag = false;		
 	My_Serial.println(" start ");
@@ -393,11 +396,11 @@ void Show_Turn_All(int a ,int b, int c)
 	Wire.beginTransmission(MySlave3);
 	Wire.write("start2");
 	Wire.endTransmission();
+	delay(20);
 	if (debug)
 	{
 		My_Serial.println("beginTransmission(1);");
-	}
-	delay(20);
+	}	
 	Wire.beginTransmission(MySlave1);
 	for (int i = 0; i < 4; i++)
 	{
@@ -542,21 +545,23 @@ void suck_plate()
 {
 	if (debug)
 	{
-		Serial.println("beginTransmission(4)");			
+		//Serial.println("beginTransmission(4)");	
+		Serial.println("beginTransmission(3)");
 	}
 	else;
 	if (suck == 0)
 	{
-		Wire.beginTransmission(MySlave4);
-		Wire.write("close");
+		//Wire.beginTransmission(MySlave4);
 		Serial.println("suck 0");
+		Wire.beginTransmission(MySlave3);
+		Wire.write("close");		
 		Wire.endTransmission();
 	}
 	else if (suck == 1)
 	{
-		Wire.beginTransmission(MySlave4);
-		Wire.write("open");
 		Serial.println("suck 1");
+		Wire.beginTransmission(MySlave3);
+		Wire.write("open");		
 		Wire.endTransmission();
 	}
 	else;

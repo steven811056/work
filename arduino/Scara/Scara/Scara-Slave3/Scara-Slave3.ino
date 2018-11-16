@@ -202,7 +202,6 @@ void return1()
 			incomingString = "";			
 			break;
 		}
-
 	}
-
+	Wire.onReceive(test);
 }

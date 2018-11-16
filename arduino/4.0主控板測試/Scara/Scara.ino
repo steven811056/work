@@ -8,17 +8,14 @@
 
 #define first_arm 10	//第一節臂參數
 #define second_arm 10	//第二節臂參數
-#define Sprint(a) My_Serial.print(a)
+#define Sprint(a) Serial.print(a)
 #define debug 1
-#define My_Serial Serial
 //  slave 1 是控制AB節臂的馬達   slave 2 是控制BC節臂的馬達  slave 3 是控制Z軸的馬達
 //---
 const int stepPin[3] = { 2, 4, 6 };
 const int dirPin[3] = { 3, 5, 7 };
 //---josn
 char json[200];
-String jsonS;
-char jsonC;
 int jsonNumber = 0;
 //---
 //int16_t Address[100][3];  //輸入位址的紀錄存放
@@ -64,7 +61,7 @@ union unionType2
 void setup()
 {
 	Wire.begin();
-	My_Serial.begin(9600);
+	Serial.begin(115200);
 	/*for (int i = 0; i < 3; i++)
 	{
 	pinMode(stepPin[i], OUTPUT);
@@ -73,15 +70,15 @@ void setup()
 
 	if (debug)
 	{
-		My_Serial.print("目前初始位置:(");
+		Serial.print("目前初始位置:(");
 		for (int i = 0; i < 3; i++)
 		{
-			My_Serial.print(P[i]);
+			Serial.print(P[i]);
 			if (i < 2)
-				My_Serial.print(",");
+				Serial.print(",");
 		}
-		My_Serial.println(")");
-		My_Serial.println();
+		Serial.println(")");
+		Serial.println();
 	}
 	choose = "!";
 }
@@ -90,7 +87,7 @@ void loop()
 {
 	if (choose == "!")
 	{
-		My_Serial.println("輸入指令");
+		Serial.println("輸入指令");
 		for (int i = 0; i < sizeof(json); i++)
 		{
 			json[i] = ' ';
@@ -98,7 +95,7 @@ void loop()
 		ForJson();
 		if (debug)
 		{
-			My_Serial.println("JSON -->  OK");
+			Serial.println("JSON -->  OK");
 		}
 	}
 	while (1)
@@ -106,20 +103,20 @@ void loop()
 		if (strcmp(choose, "0") == 0)
 		{
 			scara_reset();
-
+			wait_for_slave();
 			break;
 		}
 		else if (strcmp(choose, "1") == 0) //1號模式 輸入座標
 		{
 			if (debug)
 			{
-				My_Serial.println("座標模式");
+				Serial.println("座標模式");
 			}
 			ctrl_deg();
 			choose = "!";
 			if (debug)
 			{
-				My_Serial.println();
+				Serial.println();
 			}
 			break;
 		}
@@ -127,14 +124,14 @@ void loop()
 		{
 			if (debug)
 			{
-				My_Serial.println("角度模式");
-				My_Serial.println("開始與slave通訊");
+				Serial.println("角度模式");
+				Serial.println("開始與slave通訊");
 			}
 			connect();
 			if (debug)
 			{
-				My_Serial.println("結束與slave通訊");
-				My_Serial.println();
+				Serial.println("結束與slave通訊");
+				Serial.println();
 			}
 			choose = "!";
 			break;
@@ -143,7 +140,7 @@ void loop()
 		{
 			if (debug)
 			{
-				My_Serial.println("夾爪控制");
+				Serial.println("夾爪控制");
 			}
 			else {};
 			if (suck == 2)
@@ -183,14 +180,14 @@ void ctrl_deg()
 	thetalThree = 0, thetalFour = 0, thetalTF = 0;
 	if (debug)
 	{
-		My_Serial.println("座標輸入完成--開始運算");
+		Serial.println("座標輸入完成--開始運算");
 	}
 	L_AB = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
 	if (L_AB>20 || L_AB<11 || L_AB == 0)
 	{
 		if (debug)
 		{
-			My_Serial.println("輸入錯誤，重新輸入");
+			Serial.println("輸入錯誤，重新輸入");
 		}
 		for (int i = 0; i < sizeof(json); i++)
 		{
@@ -210,7 +207,7 @@ void ctrl_deg()
 	}
 	if (debug)
 	{
-		My_Serial.println();
+		Serial.println();
 	}
 }
 //********----------------座標輸入---------------
@@ -222,11 +219,11 @@ void Quadrant_Judge()
 	{
 		if (P[0]>0)
 		{
-			My_Serial.println("第一象限");
+			Serial.println("第一象限");
 		}
 		if (P[0]<0)
 		{
-			My_Serial.println("第二象限");
+			Serial.println("第二象限");
 		}
 	}
 }
@@ -248,14 +245,14 @@ void delta_3axis()
 	}
 	if (debug)
 	{
-		My_Serial.print("運轉圈數 --> ");
-		My_Serial.println(Max);
+		Serial.print("運轉圈數 --> ");
+		Serial.println(Max);
 	}
 	L_AB = sqrt(pow(P[0], 2) + pow(P[1], 2));   //arduino的三角函數出來都是弧度，需要*180/PI
 	if (debug)
 	{
-		My_Serial.print("L_AB -> ");
-		My_Serial.println(L_AB);
+		Serial.print("L_AB -> ");
+		Serial.println(L_AB);
 	}
 	L_CG = L_AG - first_arm;
 	L_AE = L_AB - second_arm;
@@ -266,54 +263,54 @@ void delta_3axis()
 	turn = abs(P[1] / P[0]);
 	if (debug)
 	{
-		My_Serial.println(cos(abs(P[1]) / L_AB));
-		My_Serial.print("直線方程式 -> ");
-		My_Serial.print("y = ");	My_Serial.print(double(P[1]) / double(P[0]));	My_Serial.println("X");
-		My_Serial.print("垂直於方程式的直線 -> ");
-		My_Serial.print("y = ");	My_Serial.print((double(P[0]) / double(P[1]))*(-1));	My_Serial.println("X");
+		Serial.println(cos(abs(P[1]) / L_AB));
+		Serial.print("直線方程式 -> ");
+		Serial.print("y = ");	Serial.print(double(P[1]) / double(P[0]));	Serial.println("X");
+		Serial.print("垂直於方程式的直線 -> ");
+		Serial.print("y = ");	Serial.print((double(P[0]) / double(P[1]))*(-1));	Serial.println("X");
 	}
 	F_CD = (double(P[0]) / double(P[1]))*(-1);
 	if (debug)
 	{
-		My_Serial.print("F_CD 斜率 -> ");
-		My_Serial.println(F_CD);
+		Serial.print("F_CD 斜率 -> ");
+		Serial.println(F_CD);
 		//---
-		My_Serial.print("X   --> ");
-		My_Serial.print(C_X1);
-		My_Serial.print("\t");
-		My_Serial.println(C_X2);
+		Serial.print("X   --> ");
+		Serial.print(C_X1);
+		Serial.print("\t");
+		Serial.println(C_X2);
 		//--
 	}
 	thetalOne = acos(L_AP / first_arm) * 180 / PI;
 	if (debug)
 	{
-		My_Serial.print("thetalOne  turn -->");
-		My_Serial.println(cos(L_AP / first_arm));
-		My_Serial.print("thetalOne  turn -->");
-		My_Serial.println(thetalOne);
+		Serial.print("thetalOne  turn -->");
+		Serial.println(cos(L_AP / first_arm));
+		Serial.print("thetalOne  turn -->");
+		Serial.println(thetalOne);
 	}
 	//---
 	thetalTwo = atan(turn) * 180 / PI;   //A要轉thetalTwo的度數 需要為A來判斷C點的所在象限
 	if (debug)
 	{
-		My_Serial.print("thetalTwo  turn -->");
-		My_Serial.println(cos(abs(P[1]) / L_AB));
-		My_Serial.print("thetalTwo  turn -->");
-		My_Serial.println(thetalTwo);
+		Serial.print("thetalTwo  turn -->");
+		Serial.println(cos(abs(P[1]) / L_AB));
+		Serial.print("thetalTwo  turn -->");
+		Serial.println(thetalTwo);
 	}
 	//---
 	thetalThree = asin(L_AP / first_arm) * 180 / PI;
 	if (debug)
 	{
-		My_Serial.print("thetalThree  turn -->");
-		My_Serial.println(thetalThree);
+		Serial.print("thetalThree  turn -->");
+		Serial.println(thetalThree);
 	}
 	//--
 	thetalFour = asin(L_BP / second_arm) * 180 / PI;
 	if (debug)
 	{
-		My_Serial.print("thetalFour  turn -->");
-		My_Serial.println(thetalFour);
+		Serial.print("thetalFour  turn -->");
+		Serial.println(thetalFour);
 	}
 	thetalTF = 180 - thetalThree - thetalFour;
 	thetal_A[1] = thetalOne + thetalTwo;
@@ -323,9 +320,9 @@ void delta_3axis()
 	}
 	if (debug)
 	{
-		My_Serial.print("thetal_A轉動");
-		My_Serial.print(thetal_A[1]);
-		My_Serial.println("度");
+		Serial.print("thetal_A轉動");
+		Serial.print(thetal_A[1]);
+		Serial.println("度");
 	}
 	//----
 	thetal_Z[1] = P[2];
@@ -373,21 +370,21 @@ void delta_3axis()
 	}
 	if (debug)
 	{
-		My_Serial.print("輸出的3個角度 --> ");
-		My_Serial.print(thetal_A3[0]);
-		My_Serial.print(" <---> ");
-		My_Serial.print(thetal_A3[1]);
-		My_Serial.println();
-		My_Serial.print(thetal_B3[0]);
-		My_Serial.print(" <---> ");
-		My_Serial.print(thetal_B3[1]);
-		My_Serial.print(" <---> ");
-		My_Serial.print(thetal_B4);
-		My_Serial.println();
-		My_Serial.print(thetal_Z3[0]);
-		My_Serial.print(" <---> ");
-		My_Serial.print(thetal_Z3[1]);
-		My_Serial.println();
+		Serial.print("輸出的3個角度 --> ");
+		Serial.print(thetal_A3[0]);
+		Serial.print(" <---> ");
+		Serial.print(thetal_A3[1]);
+		Serial.println();
+		Serial.print(thetal_B3[0]);
+		Serial.print(" <---> ");
+		Serial.print(thetal_B3[1]);
+		Serial.print(" <---> ");
+		Serial.print(thetal_B4);
+		Serial.println();
+		Serial.print(thetal_Z3[0]);
+		Serial.print(" <---> ");
+		Serial.print(thetal_Z3[1]);
+		Serial.println();
 	}
 	//-----****	
 	//---------
@@ -397,9 +394,9 @@ void delta_3axis()
 		{
 			if (debug)
 			{
-				My_Serial.print("B返回 --> ");
-				My_Serial.println(thetal_B2[1]);
-				My_Serial.println((thetal_B2[1] * 10) / (0.05625 * 2));
+				Serial.print("B返回 --> ");
+				Serial.println(thetal_B2[1]);
+				Serial.println((thetal_B2[1] * 10) / (0.05625 * 2));
 			}
 			Slave2_1.b = (thetal_B2[1] * 10) / (0.05625 * 2);
 			if (P2[0] >= 0)
@@ -416,7 +413,7 @@ void delta_3axis()
 						break;
 					}
 					Wire.write(Slave2_1.a[i]);
-					My_Serial.println(Slave2_1.a[i]);
+					Serial.println(Slave2_1.a[i]);
 				}
 				Wire.endTransmission();
 			}
@@ -434,7 +431,7 @@ void delta_3axis()
 						break;
 					}
 					Wire.write(Slave2_1.a[i]);
-					My_Serial.println(Slave2_1.a[i]);
+					Serial.println(Slave2_1.a[i]);
 				}
 				Wire.endTransmission();
 			}
@@ -478,7 +475,7 @@ void delta_3axis()
 	{
 		if (debug)
 		{
-			My_Serial.println(" = 0");
+			Serial.println(" = 0");
 		}
 		Wire.beginTransmission(0x01);
 		Wire.write("start");
@@ -488,7 +485,7 @@ void delta_3axis()
 	{
 		if (debug)
 		{
-			My_Serial.println(" != 0");
+			Serial.println(" != 0");
 		}
 		Wire.beginTransmission(0x01);
 		Wire.write("start2");
@@ -498,7 +495,7 @@ void delta_3axis()
 	{
 		if (debug)
 		{
-			My_Serial.println(" = 0");
+			Serial.println(" = 0");
 		}
 		Wire.beginTransmission(0x03);
 		Wire.write("start");
@@ -508,7 +505,7 @@ void delta_3axis()
 	{
 		if (debug)
 		{
-			My_Serial.println(" != 0");
+			Serial.println(" != 0");
 		}
 		Wire.beginTransmission(0x03);
 		Wire.write("start2");
@@ -517,7 +514,7 @@ void delta_3axis()
 	//---**
 	if (debug)
 	{
-		My_Serial.println("beginTransmission(0x03)");
+		Serial.println("beginTransmission(0x03)");
 	}
 	Wire.beginTransmission(0x03);
 	for (int i = 0; i < 4; i++)
@@ -527,13 +524,13 @@ void delta_3axis()
 			break;
 		}
 		Wire.write(Slave3.a[i]);
-		My_Serial.println(Slave3.a[i]);
+		Serial.println(Slave3.a[i]);
 	}
 	Wire.endTransmission();
 	delay(200);
 	if (debug)
 	{
-		My_Serial.println("beginTransmission(0x01)");
+		Serial.println("beginTransmission(0x01)");
 	}
 	Wire.beginTransmission(0x01);
 	for (int i = 0; i < 4; i++)
@@ -543,12 +540,12 @@ void delta_3axis()
 			break;
 		}
 		Wire.write(Slave1.a[i]);
-		My_Serial.println(Slave1.a[i]);
+		Serial.println(Slave1.a[i]);
 	}
 	Wire.endTransmission();
 	if (debug)
 	{
-		My_Serial.println("beginTransmission(0x02)");
+		Serial.println("beginTransmission(0x02)");
 	}
 	Wire.beginTransmission(0x02);
 	for (int i = 0; i < 4; i++)
@@ -558,25 +555,56 @@ void delta_3axis()
 			break;
 		}
 		Wire.write(Slave2.a[i]);
-		My_Serial.println(Slave2.a[i]);
+		Serial.println(Slave2.a[i]);
 	}
 	Wire.endTransmission();
 	if (debug)
 	{
-		My_Serial.print("thetal_A--byte -> ");
-		My_Serial.println((byte)thetal_A[1]);
-		My_Serial.print("thetal_B轉動 -> ");
-		My_Serial.print(thetal_B[1]);
-		My_Serial.println("度");
-		My_Serial.print("Z軸旋轉 -> ");
-		My_Serial.println(P[2]);
+		Serial.print("thetal_A--byte -> ");
+		Serial.println((byte)thetal_A[1]);
+		Serial.print("thetal_B轉動 -> ");
+		Serial.print(thetal_B[1]);
+		Serial.println("度");
+		Serial.print("Z軸旋轉 -> ");
+		Serial.println(P[2]);
 	}
 	for (int i = 0; i < 2; i++)
 	{
 		P2[i] = P[i];
 	}
+	wait_for_slave();
 }
 //************---------------座標角度轉換------------
+
+//-----等待子版回復-----
+void wait_for_slave()
+{
+	if (debug)
+	{
+		Serial.println("WAIT");
+	}
+	int a = 0;
+	while (1)
+	{
+		Wire.requestFrom(0x01, 4);
+		if (Wire.available())
+		{
+			a = a + Wire.read();
+			if (debug)
+			{
+				Serial.println(a);
+			}
+		}
+		else;
+		if (a == 1)
+		{
+			Serial.println("OK");
+			break;
+		}
+		delay(50);
+	}
+}
+//-----********等待子版回復-----
 
 //---------度數直接控制-----------
 void connect()
@@ -593,55 +621,55 @@ void connect()
 	Wire.beginTransmission(0x03);
 	Wire.write("start");
 	Wire.endTransmission();
-	My_Serial.println();
-	My_Serial.println("輸入三軸角度");
+	Serial.println();
+	Serial.println("輸入三軸角度");
 	while (1)
 	{
-		if (My_Serial.available())
+		if (Serial.available())
 		{
-			P[0] = My_Serial.parseInt();
-			P[1] = My_Serial.parseInt();
-			P[2] = My_Serial.parseInt();
+			P[0] = Serial.parseInt();
+			P[1] = Serial.parseInt();
+			P[2] = Serial.parseInt();
 			break;
 		}
 	}
 	Slave1.b = P[0];
 	Slave2.b = P[1];
 	Slave3.b = P[2];
-	My_Serial.println(Slave1.b);
-	My_Serial.println(Slave2.b);
-	My_Serial.println(Slave3.b);
-	My_Serial.println();
+	Serial.println(Slave1.b);
+	Serial.println(Slave2.b);
+	Serial.println(Slave3.b);
+	Serial.println();
 	Wire.beginTransmission(0x01);
-	My_Serial.println("beginTransmission(0x01)");
+	Serial.println("beginTransmission(0x01)");
 	for (int i = 0; i < 4; i++)
 	{
 		if (Slave1.a[i] != 0)
 		{
 			Wire.write(Slave1.a[i]);
-			My_Serial.println(Slave1.a[i]);
+			Serial.println(Slave1.a[i]);
 		}
 	}
 	Wire.endTransmission();
 	Wire.beginTransmission(0x02);
-	My_Serial.println("beginTransmission(0x02)");
+	Serial.println("beginTransmission(0x02)");
 	for (int i = 0; i < 4; i++)
 	{
 		if (Slave2.a[i] != 0)
 		{
 			Wire.write(Slave2.a[i]);
-			My_Serial.println(Slave2.a[i]);
+			Serial.println(Slave2.a[i]);
 		}
 	}
 	Wire.endTransmission();
 	Wire.beginTransmission(0x03);
-	My_Serial.println("beginTransmission(0x03)");
+	Serial.println("beginTransmission(0x03)");
 	for (int i = 0; i < 4; i++)
 	{
 		if (Slave3.a[i] != 0)
 		{
 			Wire.write(Slave3.a[i]);
-			My_Serial.println(Slave3.a[i]);
+			Serial.println(Slave3.a[i]);
 		}
 	}
 	Wire.endTransmission();
@@ -665,7 +693,7 @@ void scara_reset()
   }*/
 	if (debug)
 	{
-		My_Serial.println("reset");
+		Serial.println("reset");
 	}
 	Wire.beginTransmission(0x03);
 	Wire.write("reset");
@@ -678,7 +706,7 @@ void scara_reset()
 	Wire.endTransmission();
 	if (debug)
 	{
-		My_Serial.println("reset END");
+		Serial.println("reset END");
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -705,43 +733,9 @@ void scara_reset()
 }
 //***********-----------歸零------------
 
-//------Uart---------
-void For_Uart()
-{
-	jsonC = ' ';
-	int a = 0;
-	while (1)
-	{
-		while (Serial.available())
-		{
-			jsonC = Serial.read();
-			jsonS = jsonS + jsonC;
-			if (jsonC == '{')
-			{
-				a++;
-			}
-			else if (jsonC == '}')
-			{
-				a++;
-			}
-			else;
-		}
-		if (a == 2)
-		{
-			Serial.println(jsonS);
-			break;
-		}
-	}
-}
-//------**********Uart---------
-
 //--------json字串讀取---------
 void ForJson()
 {
-	//
-	jsonC = ' ';
-	jsonS = "";
-	//
 	jsonNumber = 0;
 	int a = 0;
 	choose = "";
@@ -750,26 +744,26 @@ void ForJson()
 	P[2] = 0;
 	suck = 0;
 	while (1)
-	{		
-		/*if (My_Serial.available())
+	{
+		if (Serial.available())
 		{
-			json[jsonNumber] = My_Serial.read();
+			json[jsonNumber] = Serial.read();
 			if (json[jsonNumber] == '{')
 			{
 				a++;
 			}
-			else if (json[jsonNumber] == '}')
+
+			if (json[jsonNumber] == '}')
 			{
 				a++;
 			}
-			else;
 			jsonNumber++;
-		}*/		
+		}
 
 		if (a == 2)
 		{
-			My_Serial.println(json);
-			StaticJsonBuffer<400> jsonBuffer;
+			Serial.println(json);
+			StaticJsonBuffer<200> jsonBuffer;
 			JsonObject& root = jsonBuffer.parseObject(json);
 			choose = root["choose"];
 			P[0] = root["X"];
@@ -778,17 +772,15 @@ void ForJson()
 			suck = root["suck"];
 			if (debug)
 			{
-				My_Serial.println(choose);
-				My_Serial.println(P[0]);
-				My_Serial.println(P[1]);
-				My_Serial.println(P[2]);
-				My_Serial.println(suck);
+				Serial.println(choose);
+				Serial.println(P[0]);
+				Serial.println(P[1]);
+				Serial.println(P[2]);
+				Serial.println(suck);
 			}
-			else;
 			a = 0;
 			break;
 		}
-		else;
 	}
 }
 //--------********json字串讀取---------

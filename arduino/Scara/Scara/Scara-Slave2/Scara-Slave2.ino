@@ -22,6 +22,7 @@ void setup()
 {
 	Wire.begin(SLAVE_ADDRESS);
 	Wire.onReceive(test);
+	Wire.onRequest(requestEvent);
 	Serial.begin(9600);
 	pinMode(A2, OUTPUT);
 	if (debug)
@@ -80,12 +81,10 @@ void test(int t)
 	}
 }
 
-//void requestEvent()
-//{
-//	Serial.println(data[0]);
-//	Wire.write(data[0]);
-//
-//}
+void requestEvent()
+{	
+	Wire.write(1);
+}
 
 void testUU(int a)
 {

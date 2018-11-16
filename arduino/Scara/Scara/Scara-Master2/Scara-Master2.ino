@@ -6,28 +6,38 @@
 #include <arduino.h>
 //#include "MifesSCB.h"
 
+#define Microstep_control 0.1	//微步控制倍率	16
+//#define Microstep_control 	//微步控制倍率	8
+//#define Microstep_control 	//微步控制倍率	4
+
+#define MySerial Serial
+#define MySlave1 0x01
+#define MySlave2 0x02
+#define MySlave3 0x03
+#define MySlave4 0x04
+
 #define first_arm 10	//第一節臂參數
 #define second_arm 10	//第二節臂參數
-#define Sprint(a) Serial.print(a)
+#define Sprint(a) MySerial.print(a)
 #define debug 1
 //  slave 1 是控制AB節臂的馬達   slave 2 是控制BC節臂的馬達  slave 3 是控制Z軸的馬達
-//---
-const int stepPin[3] = { 2, 4, 6 };
-const int dirPin[3] = { 3, 5, 7 };
 //---josn
 char json[200];
 int jsonNumber = 0;
+double P[3] = { 0, 0, 0 };  //本次輸入的位置
+char* choose;	//選擇輸入模式
+int suck;		//吸盤
+int suck_turn;	//吸盤轉動角度
 //---
 //int16_t Address[100][3];  //輸入位址的紀錄存放
+//---比對
 int16_t AddressGap[3];  //輸入與前一次所在的距離差
-
-int8_t Max = 0;  //運轉圈數
-double P[3] = { 0, 0, 0 };  //本次輸入的位置
 double P2[3] = { 0,0,0 };	//上次的位置
+//----
+//----
+int8_t Max = 0;  //運轉圈數
 uint16_t t;  //運轉時間
-//char choose = '!';  //選擇輸入模式
-char* choose;
-int suck;		//吸盤
+ //---演算法相關
 double L_AB;  //A到B點的距離
 double F_CD; //CD直線的斜率
 double L_EF, L_AP, L_BP;
@@ -61,7 +71,7 @@ union unionType2
 void setup()
 {
 	Wire.begin();
-	Serial.begin(9600);	
+	Serial.begin(115200);	
 	/*for (int i = 0; i < 3; i++)
 	{
 		pinMode(stepPin[i], OUTPUT);
@@ -103,7 +113,7 @@ void loop()
 		if (strcmp(choose, "0") == 0)
 		{
 			scara_reset();
-
+			wait_for_slave();
 			break;
 		}
 		else if (strcmp(choose, "1") == 0) //1號模式 輸入座標
@@ -138,28 +148,76 @@ void loop()
 		}
 		else if (strcmp(choose, "3") == 0)
 		{
+			unionType Slave4;
 			if (debug)
 			{
-				Serial.println("夾爪控制");
+				MySerial.println("夾爪控制");
 			}
-			else{};
-			if (suck == 2)
+			else {};
+			if (suck == 0)
 			{
-				Wire.beginTransmission(4);
-				Wire.write("turn");
+				Wire.beginTransmission(MySlave4);
+				Wire.write("close");
 				Wire.endTransmission();
 			}
 			else if (suck == 1)
 			{
-				Wire.beginTransmission(4);
+				Wire.beginTransmission(MySlave4);
 				Wire.write("open");
 				Wire.endTransmission();
 			}
-			else if (suck == 0)
+			else if (suck == 2)
 			{
-				Wire.beginTransmission(4);
-				Wire.write("close");
+				Wire.beginTransmission(MySlave4);
+				Wire.write("turn");
 				Wire.endTransmission();
+				delay(1);
+				if (suck_turn >= 0)
+				{
+					Slave4.b = (suck_turn / Microstep_control);
+					if (debug)
+					{
+						MySerial.println(">0");
+					}
+					Wire.beginTransmission(MySlave4);
+					Wire.write("start");
+					Wire.endTransmission();
+					delay(10);
+					Wire.beginTransmission(MySlave4);
+					for (int i = 0; i < 4; i++)
+					{
+						if (Slave4.a[i] == 0)
+						{
+							break;
+						}
+						Wire.write(Slave4.a[i]);
+						MySerial.println(Slave4.a[i]);
+					}
+					Wire.endTransmission();
+				}
+				else if (suck_turn < 0)
+				{
+					Slave4.b = (suck_turn*(-1) / Microstep_control);
+					if (debug)
+					{
+						MySerial.println("<0");
+					}
+					Wire.beginTransmission(MySlave4);
+					Wire.write("start2");
+					Wire.endTransmission();
+					delay(10);
+					Wire.beginTransmission(MySlave4);
+					for (int i = 0; i < 4; i++)
+					{
+						if (Slave4.a[i] == 0)
+						{
+							break;
+						}
+						Wire.write(Slave4.a[i]);
+						MySerial.println(Slave4.a[i]);
+					}
+					Wire.endTransmission();
+				}
 			}
 			choose = "!";
 			break;
@@ -408,10 +466,10 @@ void delta_3axis()
 				Wire.beginTransmission(0x02);
 				for (int i = 0; i < 4; i++)
 				{
-					if (Slave2_1.a[i] == 0)
+					/*if (Slave2_1.a[i] == 0)
 					{
 						break;
-					}
+					}*/
 					Wire.write(Slave2_1.a[i]);
 					Serial.println(Slave2_1.a[i]);
 				}
@@ -426,10 +484,10 @@ void delta_3axis()
 				Wire.beginTransmission(0x02);
 				for (int i = 0; i < 4; i++)
 				{
-					if (Slave2_1.a[i] == 0)
+					/*if (Slave2_1.a[i] == 0)
 					{
 						break;
-					}
+					}*/
 					Wire.write(Slave2_1.a[i]);
 					Serial.println(Slave2_1.a[i]);
 				}
@@ -519,10 +577,10 @@ void delta_3axis()
 	Wire.beginTransmission(0x03);
 	for (int i = 0; i < 4; i++)
 	{
-		if (Slave3.a[i] == 0)
+		/*if (Slave3.a[i] == 0)
 		{
 			break;
-		}
+		}*/
 		Wire.write(Slave3.a[i]);
 		Serial.println(Slave3.a[i]);
 	}
@@ -535,10 +593,10 @@ void delta_3axis()
 	Wire.beginTransmission(0x01);	
 	for (int i = 0; i < 4; i++)
 	{
-		if (Slave1.a[i] == 0)
+		/*if (Slave1.a[i] == 0)
 		{
 			break;
-		}
+		}*/
 		Wire.write(Slave1.a[i]);
 		Serial.println(Slave1.a[i]);
 	}
@@ -550,10 +608,10 @@ void delta_3axis()
 	Wire.beginTransmission(0x02);	
 	for (int i = 0; i < 4; i++)
 	{
-		if (Slave2.a[i] == 0)
+		/*if (Slave2.a[i] == 0)
 		{
 			break;
-		}
+		}*/
 		Wire.write(Slave2.a[i]);
 		Serial.println(Slave2.a[i]);
 	}
@@ -572,8 +630,39 @@ void delta_3axis()
 	{
 		P2[i] = P[i];
 	}
+	wait_for_slave();
 }
 //************---------------座標角度轉換------------
+
+//-----等待子版回復-----
+void wait_for_slave()
+{
+	if (debug)
+	{
+		Serial.println("WAIT");
+	}
+	int a = 0;
+	while (1)
+	{		
+		Wire.requestFrom(0x01,4);
+		if (Wire.available())
+		{
+			a = a + Wire.read();
+			if (debug)
+			{
+				Serial.println(a);
+			}
+		}
+		else;
+		if (a == 1)
+		{
+			Serial.println("OK");
+			break;
+		}
+		delay(50);
+	}
+}
+//-----********等待子版回復-----
 
 //---------度數直接控制-----------
 void connect()
@@ -712,11 +801,12 @@ void ForJson()
 	P[1] = 0;
 	P[2] = 0;
 	suck = 0;
+	suck_turn = 0;
 	while (1)
 	{
-		if (Serial.available())
+		if (MySerial.available())
 		{
-			json[jsonNumber] = Serial.read();
+			json[jsonNumber] = MySerial.read();
 			if (json[jsonNumber] == '{')
 			{
 				a++;
@@ -731,23 +821,25 @@ void ForJson()
 
 		if (a == 2)
 		{
-			Serial.println(json);
-			StaticJsonBuffer<400> jsonBuffer;
+			MySerial.println(json);
+			StaticJsonBuffer<200> jsonBuffer;
 			JsonObject& root = jsonBuffer.parseObject(json);
 			choose = root["choose"];
 			P[0] = root["X"];
 			P[1] = root["Y"];
 			P[2] = root["Z"];
 			suck = root["suck"];
+			suck_turn = root["suck_turn"];
 			if (debug)
 			{
-				Serial.println(choose);
-				Serial.println(P[0]);
-				Serial.println(P[1]);
-				Serial.println(P[2]);
-				Serial.println(suck);
-			}			
-			a = 0;			
+				MySerial.println(choose);
+				MySerial.println(P[0]);
+				MySerial.println(P[1]);
+				MySerial.println(P[2]);
+				MySerial.println(suck);
+				MySerial.println(suck_turn);
+			}
+			a = 0;
 			break;
 		}
 	}

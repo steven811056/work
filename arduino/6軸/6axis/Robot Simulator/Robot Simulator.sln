@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Robot Simulator", "Robot Simulator\Robot Simulator.vcxproj", "{ADAAA44C-9F02-46A1-889B-FA7E5A312646}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADAAA44C-9F02-46A1-889B-FA7E5A312646}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ADAAA44C-9F02-46A1-889B-FA7E5A312646}.Debug|Win32.Build.0 = Debug|Win32
+		{ADAAA44C-9F02-46A1-889B-FA7E5A312646}.Release|Win32.ActiveCfg = Release|Win32
+		{ADAAA44C-9F02-46A1-889B-FA7E5A312646}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
