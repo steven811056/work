@@ -8,13 +8,14 @@ int dirPin = A0;
 int stepperPin = A1;
 
 int C=0;
-int delaytime = 100;
+int delaytime = 80;
 
 void setup()
 {
   pinMode(dirPin, OUTPUT);  
   pinMode(stepperPin, OUTPUT);
   pinMode(A2,OUTPUT);
+  pinMode(3, OUTPUT);
   Serial.begin(9600);
   Serial.println("start");
 }
@@ -22,7 +23,7 @@ void setup()
 void loop()
 {  
   digitalWrite(A2,LOW);
-  digitalWrite(6,HIGH);
+  digitalWrite(3,HIGH);
   if(Serial.available())
   {
     C=Serial.parseInt();        
@@ -65,12 +66,12 @@ void A()
 {
   digitalWrite(dirPin,HIGH);  
   delay(50);  
-  for(int i=0;i<55000;i++ )
+  while(1)
   {  
     digitalWrite(stepperPin, HIGH);  
     delayMicroseconds(delaytime);  
     digitalWrite(stepperPin, LOW);  
-    delayMicroseconds(delaytime);	
+    delayMicroseconds(2);	
   }
   delay(50);
   C=0;

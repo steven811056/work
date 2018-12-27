@@ -1,3 +1,4 @@
+#include <EEPROM.h>
 #include <SlaveUnion.h>
 #include <Wire.h>
 #include <arduino.h>
@@ -15,11 +16,13 @@ int8_t data[2];
 boolean debug = 1;
 int Show = 0;
 int end = 0;
-
+float f = 0.00f;   //Variable to store data read from EEPROM.
+int eeAddress = 1;
+int f1;
 UnionTurn testU;
 
 void setup()
-{
+{	
 	Wire.begin(SLAVE_ADDRESS);
 	Wire.onReceive(test);
 	Wire.onRequest(OK);
@@ -34,6 +37,13 @@ void setup()
 	pinMode(dirPin, OUTPUT);
 	pinMode(A2, OUTPUT);
 	digitalWrite(senser, LOW);
+	
+	EEPROM.put(eeAddress,1.2);
+	f = EEPROM.read(eeAddress);
+	f1 = EEPROM.read(eeAddress);
+	EEPROM.get(eeAddress, f);
+	Serial.println(f);
+	Serial.println(f1);
 }
 
 void loop()
@@ -43,6 +53,22 @@ void loop()
 		Serial.println("reset");
 		return1();
 		Serial.println("reset  END ");
+	}
+	if (incomingString == "add")
+	{	
+		Wire.onReceive(For_Union);
+		while (testU.END() != 1)
+		{
+			Serial.println("fail");
+			delay(5);
+		}
+		if (testU.END() == 1)
+		{
+			Serial.println("add_success");
+			Serial.println(testU.incommingByte);
+			end = 1;
+			Wire.onReceive(test);
+		}				
 	}
 	if (Show == 1)
 	{
@@ -80,12 +106,21 @@ void test(int t)
 	}
 }
 
+void For_Union(int a)
+{
+	testU.Start();	
+}
+
 void testUU(int a)
 {
 	testU.Start();
 	if (testU.END() == 1)
 	{
 		Show = 1;
+	}
+	if (testU.END() == 2)
+	{
+		Serial.println("--> Nothing ");
 	}
 }
 
@@ -95,6 +130,10 @@ void testUZ(int a)
 	if (testU.END() == 1)
 	{
 		Show = 2;
+	}
+	if (testU.END() == 2)
+	{
+		Serial.println("--> Nothing ");
 	}
 }
 

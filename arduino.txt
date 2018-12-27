@@ -3,3 +3,38 @@
 				   JsonObject& root = jsonBuffer.parseObject(json);
 				   都只能當作區域變數
 				   
+3. EEPROM	
+*EEPROM Clear: Clear the bytes in the EEPROM.
+	至於EEPROM_clear，是可以一次清除EEPROM內所有資料的方法，有需要可以使用，
+但也等於立即耗損所有位置一次的寫入次數。
+
+*EEPROM Read: Read the EEPROM and send its values to the computer.
+*EEPROM Write: Stores values from an analog input to the EEPROM.
+*EEPROM Crc: Calculates the CRC of EEPROM contents as if it was an array.
+	用來驗證原本儲存的EEPROM資料是否正確無誤
+	
+*EEPROM Get: Get values from EEPROM and prints as float on serial.
+*EEPROM Iteration: Understand how to go through the EEPROM memory locations.
+	示範用while、for等方式，批次對EEPROM位置進行操作，類似把EEPROM以陣列的資料格式來讀寫操作，
+是一個片段性的示範。
+
+*EEPROM Put: Put values in EEPROM using variable semantics.
+	由於EEPROM.write、EEPROM.read每次只能操作1個Byte（位元組）的資料，而不能以其他的資料型態來處理，
+例如浮點數一次就佔用4個Byte，等於要額外撰寫程式，才能完成4次的搬運。
+而新增的EEPROM.put、get，則可以用不同的資料型態來讀寫，例如float、byte、char、int等均可，
+一次完成一筆資料的搬運，不用再去逐Byte處理。
+
+*EEPROM Update: Stores values read from A0 into EEPROM, writing the value only if different,
+	to increase EEPROM life.
+	EEPROM.update跟EEPROM.write一樣，是一種將數值寫入EEPROM的動作，但差別是，EEPROM.update會先把要寫入位置
+的原本資料，與即將要寫入的資料進行比較，若是數值相同，就不執行寫入動作，反之，會用新數值覆蓋掉舊數值。
+若是原本的EEPROM.write，無論即將寫入位置的數值為何，一概不理會，直接將數值寫進去。
+
+Functions
+read()
+write()
+update()
+get()
+put()
+EEPROM[]
+				   

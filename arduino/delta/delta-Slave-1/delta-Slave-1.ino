@@ -108,8 +108,7 @@ void Turn()
 	incomingInt = testU.incommingByte;
 	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
-	digitalWrite(dirPin, HIGH);
-	//int32_t  i = (incomingInt * 20) /( 0.05625*2);
+	digitalWrite(dirPin, HIGH);	
 	uint32_t i = incomingInt;
 	Serial.println(i);
 	for (i; i > 0; i = i - 1)
@@ -117,22 +116,8 @@ void Turn()
 		digitalWrite(stepperPin, HIGH);
 		delayMicroseconds(delaytime);
 		digitalWrite(stepperPin, LOW);
-		delayMicroseconds(delaytime);
-		/*Serial.print("-->");
-		Serial.println(i);*/
-	}
-	/*if (Show == 1)
-	{
-	Serial.println("delay---");
-	delay(1000);
-	Turn2();
-	}
-	if (Show == 2)
-	{
-	incomingInt = 0;
-	Show = 0;
-	Wire.onReceive(test);
-	}*/
+		delayMicroseconds(delaytime);	
+	}	
 	Show = 0;
 	Wire.onReceive(test);
 }
@@ -146,8 +131,7 @@ void Turn2()
 	incomingInt = testU.incommingByte;
 	Serial.println(incomingInt);
 	digitalWrite(A2, LOW);
-	digitalWrite(dirPin, LOW);
-	//uint32_t i = (incomingInt * 20) / (0.05625 * 2);
+	digitalWrite(dirPin, LOW);	
 	uint32_t i = incomingInt;
 	for (i; i > 0; i = i - 1)
 	{
@@ -155,19 +139,7 @@ void Turn2()
 		delayMicroseconds(delaytime);
 		digitalWrite(stepperPin, LOW);
 		delayMicroseconds(delaytime);
-	}
-	/*if (Show == 1)
-	{
-	incomingInt = 0;
-	Show = 0;
-	Wire.onReceive(test);
-	}
-	if (Show == 2)
-	{
-	Serial.println("delay---");
-	delay(1000);
-	Turn();
-	}*/
+	}	
 	Show = 0;
 	Wire.onReceive(test);
 }

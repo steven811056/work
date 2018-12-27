@@ -1,0 +1,73 @@
+void ForJson()
+{
+	jsonNumber = 0;
+	int a = 0;
+	choose = "";
+	P[0] = 0;
+	P[1] = 0;
+	P[2] = 0;
+	suck = 0;
+	int size_json = sizeof(json) / sizeof(json[0]);
+	for (int i = 0; i < size_json; i++)
+	{
+		json[i] = 0;
+	}	
+	
+	auto func = [](int& aaaa) { 
+	//使用&是因為要把外面變數的記憶體位置放進來，
+	//如果沒有使用只會在func新
+	//建立一個aaaa的變數，外部的a變數的值複製近來然後再
+	//func裡面改變aaaa的值，外面的a變數的值不會有改變。
+		aaaa = 0;
+	};	//這樣在forJson裡面可以使用func函數
+
+	func(a);
+
+	while (1)
+	{
+		if(MySerial_2.available())
+		{
+			json[jsonNumber] = MySerial_2.read();					
+		}
+		if (json[0] == '{')
+		{			
+			a = 1;
+			jsonNumber++;
+			for (int i = 0; i <size_json; i++)
+			{
+				if (a == 1 && json[i] == '}')
+				{
+					a = 2;
+					break;
+				}
+			}
+		}
+		else if (json[0] != '{')
+		{
+			a = 0;
+			jsonNumber = 0;
+		}
+
+		if (a == 2)
+		{
+			MySerial.println(json);
+			StaticJsonBuffer<200> jsonBuffer;
+			JsonObject& root = jsonBuffer.parseObject(json);
+			choose = root["choose"];
+			P[0] = root["X"];
+			P[1] = root["Y"];
+			P[2] = root["Z"];
+			suck = root["suck"];
+			if (debug)
+			{
+				MySerial.println(choose);
+				MySerial.println(P[0]);
+				MySerial.println(P[1]);
+				MySerial.println(P[2]);
+				MySerial.println(suck);
+			}
+			a = 0;
+			break;
+		}
+	}
+}

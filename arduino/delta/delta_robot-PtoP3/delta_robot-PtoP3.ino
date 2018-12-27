@@ -3,6 +3,7 @@
 #include "DeltaRobInverseKin.h"
 #include "math.h"
 #include "My.h"
+#include <for_String.h>
 #include <Wire.h>
 
 #define L_UPPER 0.12 //上臂長		單位：公尺
@@ -11,10 +12,10 @@
 #define WP 0.013  //下方小正三角形重心到邊長的長度
 #define UP 0.026  //下方小正三角形重心到頂點的長度
 #define SP 0.045  //下方正三角型的邊長
-#define Microstep_control 0.1	//微步控制倍率	16
-//#define Microstep_control 	//微步控制倍率	8
-//#define Microstep_control 	//微步控制倍率	4
+#define microstep 0.1125		//微步控制倍率	16
+//#define microstep 0.225 	//微步控制倍率	8
 
+#define MySerial Serial
 #define My_Serial Serial
 #define MySlave1 0x01
 #define MySlave2 0x02
@@ -26,9 +27,14 @@ DeltaRobInverseKin delta(L_UPPER, L_LOWER, WB, WP, UP, SP);
 //--json
 char json[200];
 int jsonNumber = 0;
+int32_t turn_json;
+double P[3] = { 0, 0, 0 };  //本次輸入的位置
 //-----
 char *choose;
 int suck;
+
+int16_t Max_Speed, Add_Speed;	//最大速度與加速度
+double Max_step, add_step;	//轉換成步數
 
 double coordinate[3];			//輸入的x , y , z
 int16_t D[3] = { 0,0,0 };	//抓取演算法出來的goalPos的角度
@@ -62,6 +68,8 @@ void setup()
 	}
 
 }
+
+string_turn for_json_string_;
 
 void loop()
 {		
@@ -200,10 +208,8 @@ void LocationCompare()		//現在位置與前一次的比對
 			degreeTurn[0][i] = location[0][i] - location[1][i];
 			My_Serial.print("degreeTurn = ");
 			My_Serial.println(degreeTurn[0][i]);
-
 		}
 		AfterCompare();
-
 	}
 }
 //-------- LocationCompare -------------end ------------
@@ -568,44 +574,95 @@ void suck_plate()
 }
 
 //--------json字串讀取---------
+//void ForJson()
+//{
+//	jsonNumber = 0;
+//	int a = 0;
+//	choose = "";	
+//	suck = 0;
+//	while (1)
+//	{
+//		if (My_Serial.available())
+//		{
+//			json[jsonNumber] = My_Serial.read();
+//			if (json[jsonNumber] == '{')
+//			{
+//				a++;
+//			}
+//
+//			if (json[jsonNumber] == '}')
+//			{
+//				a++;
+//			}
+//			jsonNumber++;
+//		}
+//
+//		if (a == 2)
+//		{
+//			My_Serial.println(json);
+//			StaticJsonBuffer<400> jsonBuffer;
+//			JsonObject& root = jsonBuffer.parseObject(json);
+//			String json_string = root["choose"];
+//			for (int i = 0; i<sizeof(json_string); i++)
+//			{
+//				choose[i] = json_string[i];
+//			}
+//			suck = root["suck"];
+//			if (debug)
+//			{
+//				My_Serial.println(choose);				
+//				My_Serial.println(suck);
+//			}
+//			a = 0;
+//			break;
+//		}
+//	}
+//}
+void json_reset()
+{
+	choose = "";
+	turn_json = 0;
+}
+
 void ForJson()
 {
-	jsonNumber = 0;
-	int a = 0;
-	choose = "";	
-	suck = 0;
-	while (1)
+	json_reset();
+forjson_1:
+	for_json_string_.String_reset();
+	while (for_json_string_.String_end() != 1)
 	{
-		if (My_Serial.available())
-		{
-			json[jsonNumber] = My_Serial.read();
-			if (json[jsonNumber] == '{')
-			{
-				a++;
-			}
-
-			if (json[jsonNumber] == '}')
-			{
-				a++;
-			}
-			jsonNumber++;
-		}
-
-		if (a == 2)
-		{
-			My_Serial.println(json);
-			StaticJsonBuffer<400> jsonBuffer;
-			JsonObject& root = jsonBuffer.parseObject(json);
-			choose = root["choose"];			
-			suck = root["suck"];
-			if (debug)
-			{
-				My_Serial.println(choose);				
-				My_Serial.println(suck);
-			}
-			a = 0;
-			break;
-		}
+		for_json_string_.String_start();
+	}
+	MySerial.println("forjson-buffer");
+	MySerial.println(for_json_string_.json_string);
+	StaticJsonBuffer<150> jsonBuffer;
+	JsonObject& root = jsonBuffer.parseObject(for_json_string_.json_string);
+	if (!root.success())
+	{
+		MySerial.println("forjson-not-success");
+		for_json_string_.String_reset();
+		goto forjson_1;
+	}
+	//	>>>	用char*陣列在某些MCU編譯時會有問題
+	String json_string = root["choose"];
+	for (int i = 0; i<sizeof(json_string); i++)
+	{
+		choose[i] = json_string[i];
+	}
+	P[0] = root["X"];
+	P[1] = root["Y"];
+	P[2] = root["Z"];
+	turn_json = root["turn"];
+	turn_json = (turn_json * 360) / microstep;
+	Max_Speed = root["pps"];
+	Add_Speed = root["acc"];
+	MySerial.println(choose);
+	MySerial.println(turn_json);
+	MySerial.println(Max_Speed);
+	MySerial.println(Add_Speed);
+	while (MySerial.available() > 0)
+	{
+		MySerial.read();
 	}
 }
 //--------********json字串讀取---------
