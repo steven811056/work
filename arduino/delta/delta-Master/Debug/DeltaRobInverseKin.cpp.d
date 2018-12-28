@@ -1,15 +1,16 @@
-C:\Users\USER\AppData\Local\Temp\VMBuilds\delta-Master\uno\Debug\DeltaRobInverseKin.cpp.o: \
- C:\Users\USER\AppData\Local\Temp\VMBuilds\delta-Master\uno\Debug\DeltaRobInverseKin.cpp \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/binary.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/WCharacter.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/WString.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/HardwareSerial.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Stream.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Print.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Printable.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/USBAPI.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\variants\standard/pins_arduino.h \
- C:\Users\USER\AppData\Local\Temp\VMBuilds\delta-Master\uno\Debug\DeltaRobInverseKin.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/arduino.h
+C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\MightyCore_644\Debug\DeltaRobInverseKin.cpp.o: \
+ C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\MightyCore_644\Debug\DeltaRobInverseKin.cpp \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/binary.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WCharacter.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WString.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/HardwareSerial.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Stream.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Print.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Printable.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/USBAPI.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/wiring_extras.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\variants\standard/pins_arduino.h \
+ C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\MightyCore_644\Debug\DeltaRobInverseKin.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/arduino.h

@@ -60,6 +60,11 @@ void loop()
 		return1();
 		Serial.println("reset  END ");
 	}
+	if (incomingString == "E_Stop")
+	{
+		Serial.println("E_Stop");
+		E_Stop();		
+	}
 	if (incomingString == "start")
 	{
 		Serial.println("start");
@@ -126,6 +131,10 @@ void number(int a)
 		break;
 	case 5:
 		break;
+	case 6:		
+		incomingString = "E_Stop";
+	case 7:
+		incomingString = "E_Start";
 	default:
 		break;
 	}	
@@ -158,13 +167,21 @@ void before_step()
 	y2 = (pow(parabola_x, 2) / 4.0 / parabola_constant);
 	if(add_step > turn)
 	{
-		delaytime = 40;
-		for(int i =turn ;i>0;i--)
+		delaytime = 40;		
+		for(int i =(turn - (turn/10)) ;i>0;i--)
 		{
 			digital_step();
-		}		
+		}	
+		for (int i = (turn / 10); i > 0; i--)
+		{
+			delaytime = delaytime + 200;
+			digital_step();
+		}
 	}
-	movement( y2);
+	else
+	{
+		movement(y2);
+	}	
 }
 
 void movement( double y2)
@@ -213,16 +230,25 @@ void movement( double y2)
 	}
 }
 
-void digital_step()
+void digital_step()	//步進馬達控制
 {
 	digitalWrite(stepperPin, HIGH);
 	delayMicroseconds(delaytime);
 	digitalWrite(stepperPin, LOW);
 	delayMicroseconds(delay_low_time);
 }
-//	<<<<<		
+//	<<<<<	
 
-void return1()
+void E_Stop()	//緊急停止
+{
+	do
+	{
+		incomingString = "";
+	} while (incomingString != "E_Start");
+	MySerial.println("E_Stop --> END");
+}
+
+void return1()	//復歸原點
 {
 	incomingString = "";
 	while (1)

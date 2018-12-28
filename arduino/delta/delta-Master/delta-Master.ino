@@ -296,7 +296,6 @@ void AfterCompare()		//對前一次的位置進行覆寫
 	{
 		location[1][i] = location[0][i];
 	}
-
 }
 //---------AfterCompare-----------end-----
 
@@ -347,6 +346,44 @@ void PtoP_output()
 
 }
 //--------PtoP_output----------end-----
+
+//	>>>	緊急停止相關
+void E_Stop()
+{
+	contral_number = 6;
+	if (strcmp(choose, "stop") == 0)
+	{
+		MySerial.println("緊急停止");
+		Wire.beginTransmission(MySlave1);
+		Wire.write(contral_number);
+		Wire.endTransmission();
+		Wire.beginTransmission(MySlave2);
+		Wire.write(contral_number);
+		Wire.endTransmission();
+		Wire.beginTransmission(MySlave3);
+		Wire.write(contral_number);
+		Wire.endTransmission();
+	}
+}
+
+void E_Start()
+{
+	contral_number = 7;
+	if (strcmp(choose, "stop") == 0)
+	{
+		MySerial.println("緊急停止結束");
+		Wire.beginTransmission(MySlave1);
+		Wire.write(contral_number);
+		Wire.endTransmission();
+		Wire.beginTransmission(MySlave2);
+		Wire.write(contral_number);
+		Wire.endTransmission();
+		Wire.beginTransmission(MySlave3);
+		Wire.write(contral_number);
+		Wire.endTransmission();
+	}
+}
+//	<<<	
 
 //---------reset_delta---------
 void reset_delta()	//歸零函式
@@ -417,7 +454,7 @@ forjson_1:
 		goto forjson_1;
 	}	
 	//	>>>	用char*陣列在某些MCU編譯時會有問題
-	String json_string = root["choose"];
+	String json_string = root["func"];
 	for(int i=0;i<sizeof(json_string);i++)
 	{
 		choose[i] = json_string[i];

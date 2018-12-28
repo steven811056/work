@@ -1,6 +1,6 @@
-C:\Users\USER\AppData\Local\Temp\VMBuilds\delta-Master\uno\Debug\Wire\utility\twi.c.o: \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\libraries\Wire\src\utility\twi.c \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/binary.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\variants\standard/pins_arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\libraries\Wire\src\utility\twi.h
+C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\MightyCore_644\Debug\Wire\utility\twi.c.o: \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\libraries\Wire\src\utility\twi.c \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/binary.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\variants\standard/pins_arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\libraries\Wire\src\utility\twi.h

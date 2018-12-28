@@ -1,98 +1,99 @@
-C:\Users\USER\AppData\Local\Temp\VMBuilds\delta-Master\uno\Debug\My_String\for_String.cpp.o: \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\libraries\My_String\for_String.cpp \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\libraries\My_String\for_String.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/binary.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/WCharacter.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/WString.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/HardwareSerial.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Stream.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Print.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Printable.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/USBAPI.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\variants\standard/pins_arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Arduino.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\libraries\Wire\src/Wire.h \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/Stream.h \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/version.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/DynamicJsonBuffer.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonBufferBase.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/JsonParser.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../JsonBuffer.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/NonCopyable.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../JsonVariant.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/JsonVariantContent.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/JsonFloat.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/../Configuration.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/JsonInteger.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/JsonVariantDefault.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/JsonVariantType.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../JsonVariantBase.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../JsonVariantCasts.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Data/JsonVariantAs.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Polyfills/attributes.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../JsonVariantComparisons.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/StringTraits.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/../TypeTraits/EnableIf.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/../TypeTraits/IsBaseOf.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/../TypeTraits/IsChar.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/../TypeTraits/IsSame.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/../TypeTraits/IsConst.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/../TypeTraits/RemoveReference.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/ArduinoStream.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/CharPointer.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/FlashString.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/StdStream.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../StringTraits/StdString.hpp \
- C:\Users\USER\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\hardware\arduino\avr\cores\arduino/WString.h \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../TypeTraits/IsVariant.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../JsonVariantOr.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../TypeTraits/IsIntegral.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../TypeTraits/IsSignedIntegral.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../TypeTraits/IsUnsignedIntegral.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../JsonVariantSubscripts.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/JsonPrintable.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/DummyPrint.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/DynamicStringBuilder.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/IndentedPrint.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/JsonSerializer.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/JsonWriter.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/../Data/Encoding.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/../Serialization/FloatParts.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/../Serialization/../Polyfills/math.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/../Serialization/../TypeTraits/FloatTraits.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/Prettyfier.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../Serialization/StaticStringBuilder.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../RawJson.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../TypeTraits/IsFloatingPoint.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../TypeTraits/RemoveConst.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/../TypeTraits/IsArray.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/StringWriter.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonArray.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/JsonBufferAllocated.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/List.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ListConstIterator.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ListNode.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ListIterator.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ReferenceType.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ValueSaver.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonObject.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonPair.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/StaticJsonBuffer.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/JsonParserImpl.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/Comments.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonArrayImpl.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonArraySubscript.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonBufferImpl.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonObjectImpl.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonObjectSubscript.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonVariantImpl.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/isFloat.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/./ctype.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/isInteger.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/parseFloat.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/parseInteger.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Serialization/JsonSerializerImpl.hpp \
- C:\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson.h
+C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\MightyCore_644\Debug\My_String\for_String.cpp.o: \
+ C:\Users\123\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\libraries\My_String\for_String.cpp \
+ C:\Users\123\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\libraries\My_String\for_String.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/binary.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WCharacter.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WString.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/HardwareSerial.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Stream.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Print.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Printable.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/USBAPI.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/wiring_extras.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\variants\standard/pins_arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\libraries\Wire\src/Wire.h \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Stream.h \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/version.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/DynamicJsonBuffer.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonBufferBase.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/JsonParser.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\jsonbuffer.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Data/NonCopyable.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\JsonVariant.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Data/JsonVariantContent.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Data/JsonFloat.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\configuration.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Data/JsonInteger.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Data/JsonVariantDefault.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Data/JsonVariantType.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\JsonVariantBase.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\JsonVariantCasts.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Data/JsonVariantAs.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Polyfills/attributes.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\JsonVariantComparisons.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/StringTraits.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\typetraits\enableif.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\typetraits\isbaseof.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\typetraits\ischar.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\typetraits\IsSame.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\typetraits\isconst.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\typetraits\removereference.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/ArduinoStream.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/CharPointer.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/FlashString.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/StdStream.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/StdString.hpp \
+ C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WString.h \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsVariant.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\JsonVariantOr.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsIntegral.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsSignedIntegral.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsUnsignedIntegral.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\JsonVariantSubscripts.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/JsonPrintable.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/DummyPrint.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/DynamicStringBuilder.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/IndentedPrint.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/JsonSerializer.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/JsonWriter.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\data\encoding.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\serialization\floatparts.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\polyfills\math.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\typetraits\floattraits.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/Prettyfier.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\Serialization/StaticStringBuilder.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\RawJson.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsFloatingPoint.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/RemoveConst.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsArray.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/StringWriter.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonArray.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/JsonBufferAllocated.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/List.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ListConstIterator.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ListNode.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ListIterator.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ReferenceType.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Data/ValueSaver.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonObject.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonPair.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/StaticJsonBuffer.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/JsonParserImpl.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Deserialization/Comments.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonArrayImpl.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonArraySubscript.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonBufferImpl.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonObjectImpl.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonObjectSubscript.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/JsonVariantImpl.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/isFloat.hpp \
+ c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\polyfills\ctype.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/isInteger.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/parseFloat.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Polyfills/parseInteger.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/Serialization/JsonSerializerImpl.hpp \
+ C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson.h
