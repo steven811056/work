@@ -1,21 +1,20 @@
-C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\MightyCore_644\Debug\My_String\for_String.cpp.o: \
+C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\mega_atmega2560\Debug\My_String\for_String.cpp.o: \
  C:\Users\123\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\libraries\My_String\for_String.cpp \
  C:\Users\123\Desktop\arduinoIDE\arduino-1.8.3\ -\ bootloader\libraries\My_String\for_String.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/arduino.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/binary.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WCharacter.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WString.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/HardwareSerial.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Stream.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Print.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Printable.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/USBAPI.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Arduino.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/wiring_extras.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\variants\standard/pins_arduino.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Arduino.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\libraries\Wire\src/Wire.h \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/Stream.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/binary.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/WCharacter.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/WString.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/HardwareSerial.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/Stream.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/Print.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/Printable.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/USBAPI.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/Arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\variants\mega/pins_arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/Arduino.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\libraries\Wire\src/Wire.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/Stream.h \
  C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson.hpp \
  C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/version.hpp \
  C:\Users\123\Desktop\steven-git\work\arduino\libraries\ArduinoJson\src/ArduinoJson/DynamicJsonBuffer.hpp \
@@ -47,7 +46,7 @@ C:\Users\123\AppData\Local\Temp\VMBuilds\delta-Master\MightyCore_644\Debug\My_St
  c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/FlashString.hpp \
  c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/StdStream.hpp \
  c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\StringTraits/StdString.hpp \
- C:\Users\123\AppData\Local\arduino15\packages\MightyCore\hardware\avr\2.0.1\cores\MCUdude_corefiles/WString.h \
+ C:\Users\123\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.23\cores\arduino/WString.h \
  c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsVariant.hpp \
  c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\JsonVariantOr.hpp \
  c:\users\123\desktop\steven-git\work\arduino\libraries\arduinojson\src\arduinojson\TypeTraits/IsIntegral.hpp \

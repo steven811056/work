@@ -7,8 +7,8 @@
 #define MySerial Serial
 #define delay_low_time 2
 #define microstep 0.1125
+#define Slave_Address 0x01
 
-int SLAVE_ADDRESS = 0x01;
 char incomingByte = '0';
 int incommingint;
 String incomingString = "";
@@ -29,19 +29,21 @@ int stepperPin = A1;
 const int senser = 2;
 //	<<<	控制板腳位相關
 uint32_t incomingInt = 0;
-int delaytime = 250;
+int delaytime = 200;
 int Show = 0;
 
 
 void setup()
 {	
 	Serial_begin;	
-	Wire.begin(SLAVE_ADDRESS);
+	Wire.begin(Slave_Address);
 	Wire.onReceive(number);
 	pinMode(A2, OUTPUT);
 	if (debug)
 	{
-		Serial.println("--> Slave 1 Ready");
+		Serial.print("Slave ");
+		Serial.print(Slave_Address);
+		Serial.println("--> Ready");
 	}
 	pinMode(senser, INPUT);
 	pinMode(stepperPin, OUTPUT);
@@ -167,14 +169,26 @@ void before_step()
 	y2 = (pow(parabola_x, 2) / 4.0 / parabola_constant);
 	if(add_step > turn)
 	{
-		delaytime = 40;		
-		for(int i =(turn - (turn/10)) ;i>0;i--)
+		delaytime = 400;	
+		for (int i = (turn / 10); i > 0; i--)
+		{
+			if (delaytime > 100)
+			{
+				delaytime = delaytime - 3;
+			}			
+			else
+			{
+				delaytime = 100;
+			}
+			digital_step();
+		}
+		for(int i =(turn - (turn/10)*2) ;i>0;i--)
 		{
 			digital_step();
 		}	
 		for (int i = (turn / 10); i > 0; i--)
 		{
-			delaytime = delaytime + 200;
+			delaytime = delaytime + 10;
 			digital_step();
 		}
 	}
@@ -184,7 +198,7 @@ void before_step()
 	}	
 }
 
-void movement( double y2)
+void movement( double y2)		//
 {
 	double x,y;	//	拋物線方程式 開口向上 X^2 = 4C Y 		
 	add_delaytime = (Max_step / add_step);
@@ -250,6 +264,7 @@ void E_Stop()	//緊急停止
 
 void return1()	//復歸原點
 {
+	delaytime = 200;
 	incomingString = "";
 	while (1)
 	{
